@@ -1,25 +1,42 @@
-import React from 'react';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
-import { trTR } from '@material-ui/core/locale';
+import React from "react";
+import { Route, Switch } from "react-router-dom";
 
-import MiniDrawer from './components/MiniDrawer';
-import StaffCareerList from './components/StaffCareerList/StaffCareerList';
-import { Route, Switch } from 'react-router-dom'
+import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
+import { trTR } from "@material-ui/core/locale";
+import Box from '@material-ui/core/Box';
 
 
-const theme = createMuiTheme({
-  palette: {
-    primary: { main: '#1976d2' },
+import Header from './components/Header';
+import LeftMenu from './components/LeftMenu';
+import StaffDefinitionEditor from './components/StaffDefinitionEditor';
+
+
+const theme = createMuiTheme(
+  {
+    palette: {
+      primary: {
+        main: "#1976d2"
+      }
+    }
   },
-}, trTR);
+  trTR
+);
 
 function App() {
   return (
     <ThemeProvider theme={theme}>
-        <Switch>
-          <Route exact path="/" component={MiniDrawer} />
-          <Route path="/Staff-Career-List" component={StaffCareerList} />
-        </Switch>
+      <Header />
+      <Box display="flex" flexDirection="row">
+        <Box>
+          <LeftMenu />
+        </Box>
+        <Box>
+          <Switch>
+            <Route path="/"  component={StaffDefinitionEditor} />
+            <Route path='/Staff-Definition' component={StaffDefinitionEditor} />
+          </Switch>
+        </Box>
+      </Box>
     </ThemeProvider>
   );
 }
