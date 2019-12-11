@@ -2,17 +2,25 @@ import React from 'react';
 import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
-import DeleteIcon from '@material-ui/icons/Delete';
-import Button from '@material-ui/core/Button';
-import CreateIcon from '@material-ui/icons/Create';
-import InfoIcon from '@material-ui/icons/Info';
+import {makeStyles} from '@material-ui/core/styles';
 
 import FilterModal from "./Staff/FilterModal";
 import StaffDefinitionEditorModal from "./Staff/StaffDefinitionEditorModal";
+import StaffAbout from "./Staff/StaffAbout";
+
+const useStyles = makeStyles(theme => ({
+    textColor: {
+        opacity: .8,
+        fontWeight: "bold",
+        color: "#495057"
+    }
+}));
 
 function UserList(data) {
+    const classes = useStyles();
+
     let user = data.user;
-    return <Box border={1} borderRadius={10} borderColor={"#E5E8E9"} m={2} p={1}>
+    return <Box border={1} borderRadius={10} borderColor={"#E5E8E9"} p={1} marginTop={1}>
         <Grid container direction="row" justify="space-between" alignItems="center">
             <Box>
                 <Grid container direction="row" justify="flex-start" alignItems="center">
@@ -25,10 +33,10 @@ function UserList(data) {
                         <Grid container direction="row" justify="center" alignItems="center">
                             <Box>
                                 <Grid container direction="column" justify="flex-end" alignItems="flex-start">
-                                    <Box>
+                                    <Box className={classes.textColor}>
                                         Full Name
                                     </Box>
-                                    <Box>
+                                    <Box className={classes.textColor}>
                                         Alias
                                     </Box>
                                 </Grid>
@@ -48,26 +56,43 @@ function UserList(data) {
                 </Grid>
             </Box>
             <Box>
-                <Grid container direction="row" justify="space-between" alignItems="center">
-                    <Button color="primary">
-                        <InfoIcon/>
-                    </Button>
-                    <Button color="primary">
-                        <CreateIcon/>
-                    </Button>
-                    <Button color="secondary">
-                        <DeleteIcon/>
-                    </Button>
+                <Grid container direction="row" justify="center" alignItems="center">
+                    <Box>
+                        <Grid container direction="column" justify="flex-end" alignItems="flex-start">
+                            <Box className={classes.textColor}>
+                                Class
+                            </Box>
+                            <Box className={classes.textColor}>
+                                Experience
+                            </Box>
+                            <Box className={classes.textColor}>
+                                Status
+                            </Box>
+                        </Grid>
+                    </Box>
+                    <Box marginLeft={1}>
+                        <Grid container direction="column" justify="flex-start" alignItems="flex-start">
+                            <Box>
+                                {user.Class}
+                            </Box>
+                            <Box>
+                                {user.Experience}
+                            </Box>
+                            <Box>
+                                {user.Status}
+                            </Box>
+                        </Grid>
+                    </Box>
                 </Grid>
             </Box>
+            <Box>
+                <StaffAbout Staff={user}/>
+            </Box>
         </Grid>
-        <Box fontSize={12} marginTop={1} fontWeight="fontWeightRegular">
-            Begin Time: 23 Aralık 2019 19:47:03
-        </Box>
     </Box>;
 }
 
-export default class StaffCareerList extends React.Component {
+export default class StaffList extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -86,7 +111,8 @@ export default class StaffCareerList extends React.Component {
                     Class: "Boss",
                     Experience: "FOUNDER",
                     Status: "Recruitment",
-                    ProcessTime: "25.10.2019 19:47:44"
+                    ProcessTime: "25.10.2019 19:47:44",
+                    Working: true
                 }, {
                     Alias: "Bulent",
                     FullName: "Mehmet Tuna",
@@ -101,9 +127,10 @@ export default class StaffCareerList extends React.Component {
                     Class: "Boss",
                     Experience: "FOUNDER",
                     Status: "Recruitment",
-                    ProcessTime: "25.10.2019 19:47:44"
+                    ProcessTime: "25.10.2019 19:47:44",
+                    Working: false
                 }
-            ],
+            ]
         };
     };
 
@@ -113,23 +140,24 @@ export default class StaffCareerList extends React.Component {
             .userListData
             .map((data, key) => <UserList key={key} user={data}/>);
         return (
-            <div
-                style={{
-                width: '85%',
-                margin: "auto",
-                marginTop: 10
+            <Box
+                mx="auto"
+                marginTop="2em"
+                width={{
+                xs: "100%",
+                md: "90%",
+                lg: "85%"
             }}>
                 <Box>
                     <Grid container direction="row" justify="space-between" alignItems="center">
                         <StaffDefinitionEditorModal/>
-                        <FilterModal />
+                        <FilterModal/>
                     </Grid>
                 </Box>
-                <Box>
+                <Box minWidth={600}>
                     {userList}
                 </Box>
-            </div>
+            </Box>
         )
     }
 };
-

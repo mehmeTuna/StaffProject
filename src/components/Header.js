@@ -36,7 +36,7 @@ export default function Header() {
                         Header
                     </Typography>
                     <Typography variant="h6" className={classes.title}>
-                        O an yapılan işlem yazılabilir buraya
+                        Staff List
                     </Typography>
                     <Button color="inherit">Login</Button>
                 </Toolbar>

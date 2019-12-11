@@ -1,25 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import CreateIcon from '@material-ui/icons/Create';
 
-import UserDefine from "./StaffDefinitionPaged/UserDefine";
-import WorkingCondition from "./StaffDefinitionPaged/WorkingCondition";
-import WorkingTimecondition from "./StaffDefinitionPaged/WorkingTimeCondition";
+import StaffDefine from "./StaffDefine";
 
 export default function StaffDefinitionEditorModal() {
-    const [fullWidth,
-        setFullWidth] = React.useState(true);
-    const [maxWidth,
-        setMaxWidth] = React.useState('md');
+    const [fullWidth] = React.useState(true);
+    const [maxWidth] = React.useState('md');
     const [open,
         setOpen] = React.useState(false);
     const [scroll,
         setScroll] = React.useState('paper');
 
-       const [count, setCount] = useState(1);
 
     const handleClickOpen = scrollType => () => {
         setOpen(true);
@@ -55,16 +50,14 @@ export default function StaffDefinitionEditorModal() {
                 aria-labelledby="responsive-dialog-title"
                 aria-describedby="scroll-dialog-description">
                 <DialogContent dividers={scroll === 'paper'}>
-                    {count === 1 && <UserDefine/>}
-                    {count === 2 && <WorkingCondition/>}
-                    {count === 3 && <WorkingTimecondition/>}
+                     <StaffDefine/>
                 </DialogContent>
                 <DialogActions>
-                    <Button onClick={() => setCount(count - 1)} color="primary">
-                        Previous
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
                     </Button>
-                    <Button onClick={() => setCount(count + 1)} color="primary">
-                       {count === 3 ? "Save" : "Next"}
+                    <Button onClick={handleClose} color="primary">
+                       Save
                     </Button>
                 </DialogActions>
             </Dialog>
