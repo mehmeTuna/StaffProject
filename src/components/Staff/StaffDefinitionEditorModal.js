@@ -15,7 +15,6 @@ export default function StaffDefinitionEditorModal() {
     const [scroll,
         setScroll] = React.useState('paper');
 
-
     const handleClickOpen = scrollType => () => {
         setOpen(true);
         setScroll(scrollType);
@@ -50,14 +49,14 @@ export default function StaffDefinitionEditorModal() {
                 aria-labelledby="responsive-dialog-title"
                 aria-describedby="scroll-dialog-description">
                 <DialogContent dividers={scroll === 'paper'}>
-                     <StaffDefine/>
+                    <StaffDefine/>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
                         Cancel
                     </Button>
                     <Button onClick={handleClose} color="primary">
-                       Save
+                        Save
                     </Button>
                 </DialogActions>
             </Dialog>

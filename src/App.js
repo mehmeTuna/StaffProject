@@ -9,7 +9,7 @@ import StaffList from './components/StaffList';
 const theme = createMuiTheme({
     palette: {
         primary: {
-            main: "#1976d2"
+            main: "#75B72B"
         }
     }
 }, trTR);

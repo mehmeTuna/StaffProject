@@ -9,15 +9,14 @@ import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Button from '@material-ui/core/Button';
 import DateFnsUtils from '@date-io/date-fns';
-import HeroAvatar from './HeroAvatar';
 import FormLabel from '@material-ui/core/FormLabel';
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import DescriptionIcon from '@material-ui/icons/Description';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 
 import Progress from "./StaffDefinitionPaged/Porgress";
+import WorkingTimeDefined from "./../WorkingTimeDefined";
 
 const useStyles = makeStyles(theme => ({
     formControl: {
@@ -35,6 +34,9 @@ export default function StaffDefine() {
         step: 2
     }
 
+    const [password,
+        setPassword] = React.useState("");
+
     // The first commit of Material-UI
     const [selectedDate,
         setSelectedDate] = React.useState(new Date());
@@ -44,236 +46,169 @@ export default function StaffDefine() {
     };
 
     const classes = useStyles();
-    const [age,
-        setAge] = React.useState('');
+    const [experience,
+        setExperience] = React.useState('');
 
-    const [state,
-        setState] = React.useState({gilad: true, jason: false, antoine: false});
-    const {gilad, jason, antoine} = state;
+    const [workingTime,
+        setWorkingTime] = React.useState('');
+
+    const workingTimeChange = event => {
+        setWorkingTime(event.target.value);
+    };
 
     const handleChange = event => {
-        setAge(event.target.value);
+        setExperience(event.target.value);
     };
 
-    const handleChangeEvent = name => event => {
-        setState({
-            ...state,
-            [name]: event.target.checked
-        });
-    };
+    const createPassword = () => {
+        setPassword("12345");
+    }
+
     return (
-        <Grid container direction="column" justify="center" alignItems="center">
-            <Box>
-                <Progress progress={user}/>
-            </Box>
-            <Box>
-                <Grid container direction="column" justify="center" alignItems="center">
-                    <form noValidate autoComplete="off">
-                        <Grid container direction="row" justify="center" alignItems="center">
-                            <Box m={1}><TextField id="standard-basic" label="Fore Name"/></Box>
-                            <Box m={1}><TextField id="standard-basic" label="Middle Name"/></Box>
-                            <Box m={1}><TextField id="standard-b asic" label="Last Name"/></Box>
-                        </Grid>
-                        <Grid container direction="row" justify="center" alignItems="center">
-                            <Box minWidth="40%" m={1}><TextField fullWidth id="standard-b asic" label="Email"/></Box>
-                            <Box minWidth="45%" m={1}>
-                                <Grid container direction="row" justify="center" alignItems="center">
-                                    <Box>
-                                        <TextField id="standard-b asic" label="Password"/>
-                                    </Box>
-                                    <Box>
-                                        <Button variant="contained" color="primary">
-                                            Set Password
-                                        </Button>
-                                    </Box>
-                                </Grid>
-                            </Box>
-                        </Grid>
-                        <Grid container direction="row" justify="center" alignItems="center">
-                            <Box m={1}>
-                                <TextField
-                                    id="outlined-textarea"
-                                    label="Adress"
-                                    placeholder="Adress"
-                                    multiline/>
-                            </Box>
-                            <Box m={1}>
-                                <TextField
-                                    id="filled-number"
-                                    label="Telephone"
-                                    type="number"
-                                    InputLabelProps={{
-                                    shrink: true
-                                }}/>
-                            </Box>
-                            <Box m={1}>
-                                <TextField
-                                    id="filled-number"
-                                    label="Gsm"
-                                    type="number"
-                                    InputLabelProps={{
-                                    shrink: true
-                                }}/>
-                            </Box>
-                        </Grid>
-                        <Grid container direction="row" justify="center" alignItems="center">
-                            <Box m={1}>
-                                <FormControl className={classes.formControl}>
-                                    <Select
-                                        value={age}
-                                        onChange={handleChange}
-                                        displayEmpty
-                                        className={classes.selectEmpty}>
-                                        <MenuItem value="" disabled>
-                                            Gender
-                                        </MenuItem>
-                                        <MenuItem value={10}>Unspecified</MenuItem>
-                                        <MenuItem value={20}>Mela</MenuItem>
-                                        <MenuItem value={30}>Female</MenuItem>
-                                    </Select>
-                                    <FormHelperText></FormHelperText>
-                                </FormControl>
-                            </Box>
-                            <Box m={1}>
-                                <FormControl className={classes.formControl}>
-                                    <Select
-                                        value={age}
-                                        onChange={handleChange}
-                                        displayEmpty
-                                        className={classes.selectEmpty}>
-                                        <MenuItem value="" disabled>
-                                            Martial Status
-                                        </MenuItem>
-                                        <MenuItem value={10}>Unspecified</MenuItem>
-                                        <MenuItem value={20}>Single</MenuItem>
-                                        <MenuItem value={30}>Married</MenuItem>
-                                    </Select>
-                                    <FormHelperText></FormHelperText>
-                                </FormControl>
-                            </Box>
-                            <Box m={1}>
-                                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                                    <KeyboardDatePicker
-                                        margin="normal"
-                                        id="date-picker-dialog"
-                                        label="Birthday"
-                                        format="MM/dd/yyyy"
-                                        value={selectedDate}
-                                        onChange={handleDateChange}
-                                        KeyboardButtonProps={{
-                                        'aria-label': 'change date'
-                                    }}/>
-                                </MuiPickersUtilsProvider>
-                            </Box>
-                        </Grid>
-                    </form>
-                </Grid>
-            </Box>
-            <Box>
-                <Grid container direction="row" justify="center" alignItems="center">
-                    <Box m={1}>
-                        <FormControl className={classes.formControl}>
-                            <Select
-                                value={age}
-                                onChange={handleChange}
-                                displayEmpty
-                                className={classes.selectEmpty}>
-                                <MenuItem value="" disabled>
-                                    Experience
-                                </MenuItem>
-                                <MenuItem value={10}>Unspecified</MenuItem>
-                                <MenuItem value={20}>Mela</MenuItem>
-                                <MenuItem value={30}>Female</MenuItem>
-                            </Select>
-                            <FormHelperText></FormHelperText>
-                        </FormControl>
-                    </Box>
-                    <Box m={1}>
-                        <TextField
-                            id="filled-number"
-                            label="Periode"
-                            type="number"
-                            InputLabelProps={{
-                            shrink: true
-                        }}/>
-                    </Box>
-                    <Box m={1}>
-                        <FormControl className={classes.formControl}>
-                            <Select
-                                value={age}
-                                onChange={handleChange}
-                                displayEmpty
-                                className={classes.selectEmpty}>
-                                <MenuItem value="" disabled>
-                                    Factor
-                                </MenuItem>
-                                <MenuItem value={10}>Unspecified</MenuItem>
-                                <MenuItem value={20}>Mela</MenuItem>
-                                <MenuItem value={30}>Female</MenuItem>
-                            </Select>
-                            <FormHelperText></FormHelperText>
-                        </FormControl>
-                    </Box>
-                    <Box m={1}>
-                        <TextField
-                            id="filled-number"
-                            label="Pay"
-                            type="number"
-                            InputLabelProps={{
-                            shrink: true
-                        }}/>
-                    </Box>
-                </Grid>
-            </Box>
-            <Box>
+        <React.Fragment>
+            {workingTime === 'free' && <WorkingTimeDefined type={workingTime}/>}
+            {workingTime === 'planned' && <WorkingTimeDefined type={workingTime}/>}
+            {workingTime === 'fullTime' && <WorkingTimeDefined type={workingTime}/>}
+            <Grid container direction="column" justify="center" alignItems="center">
                 <Box>
+                    <Progress progress={user}/>
+                </Box>
+                <Box>
+                    <Grid container direction="column" justify="center" alignItems="center">
+                        <form noValidate autoComplete="off">
+                            <Grid container direction="row" justify="center" alignItems="center">
+                                <Box m={1}><TextField id="standard-basic" label="Fore Name"/></Box>
+                                <Box m={1}><TextField id="standard-basic" label="Middle Name"/></Box>
+                                <Box m={1}><TextField id="standard-b asic" label="Last Name"/></Box>
+                            </Grid>
+                            <Grid container direction="row" justify="center" alignItems="center">
+                                <Box minWidth="45%" m={1}>
+                                    <Grid container direction="row" justify="center" alignItems="center">
+                                        <Box m={1}>
+                                        <TextField id="standard-b asic" label="GSM"/>
+                                        </Box>
+                                        <Box>
+                                            {password === ""
+                                                ? <Button variant="contained" color="primary" onClick={createPassword}>
+                                                        Set Password
+                                                    </Button>
+                                                : <TextField id="standard-b asic" label="Password" value={password}/>
+}
+                                        </Box>
+                                    </Grid>
+                                </Box>
+                            </Grid>
+                            <Grid container direction="row" justify="center" alignItems="center">
+                                <Box m={1}>
+                                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                                        <KeyboardDatePicker
+                                            margin="normal"
+                                            id="date-picker-dialog"
+                                            label="Birthday"
+                                            format="MM/dd/yyyy"
+                                            value={selectedDate}
+                                            onChange={handleDateChange}
+                                            KeyboardButtonProps={{
+                                            'aria-label': 'change date'
+                                        }}/>
+                                    </MuiPickersUtilsProvider>
+                                </Box>
+                                <Box m={1}>
+                                    <FormControl className={classes.formControl}>
+                                        <Select
+                                            value={experience}
+                                            onChange={handleChange}
+                                            displayEmpty
+                                            className={classes.selectEmpty}>
+                                            <MenuItem value="" disabled>
+                                                Experience
+                                            </MenuItem>
+                                            <MenuItem value={10}>Unspecified</MenuItem>
+                                            <MenuItem value={20}>Mela</MenuItem>
+                                            <MenuItem value={30}>Female</MenuItem>
+                                        </Select>
+                                        <FormHelperText></FormHelperText>
+                                    </FormControl>
+                                </Box>
+                            </Grid>
+                        </form>
+                    </Grid>
+                </Box>
+                {experience !== "" && <Box>
                     <Grid container direction="row" justify="center" alignItems="center">
-                        <Box marginRight={5}>
-                            <HeroAvatar/>
+                        <Box m={1}>
+                            <TextField
+                                id="filled-number"
+                                label="Periode"
+                                type="number"
+                                InputLabelProps={{
+                                shrink: true
+                            }}/>
                         </Box>
+                        <Box m={1}>
+                            <FormControl className={classes.formControl}>
+                                <Select
+                                    value={experience}
+                                    onChange={handleChange}
+                                    displayEmpty
+                                    className={classes.selectEmpty}>
+                                    <MenuItem value="" disabled>
+                                        Factor
+                                    </MenuItem>
+                                    <MenuItem value={10}>Unspecified</MenuItem>
+                                    <MenuItem value={20}>Mela</MenuItem>
+                                    <MenuItem value={30}>Female</MenuItem>
+                                </Select>
+                                <FormHelperText></FormHelperText>
+                            </FormControl>
+                        </Box>
+                        <Box m={1}>
+                            <TextField
+                                id="filled-number"
+                                label="Pay"
+                                type="number"
+                                InputLabelProps={{
+                                shrink: true
+                            }}/>
+                        </Box>
+                    </Grid>
+                </Box>
+}
+                {experience !== "" && <Box>
+                    <Grid container direction="row" justify="center" alignItems="center">
                         <Box>
                             <FormControl component="fieldset" className={classes.formControl}>
                                 <FormLabel component="legend">Working Time Conditions</FormLabel>
-                                <FormGroup>
-                                    <FormControlLabel
-                                        control={< Checkbox checked = {
-                                        gilad
-                                    }
-                                    onChange = {
-                                        handleChangeEvent('gilad')
-                                    }
-                                    value = "gilad" />}
-                                        label="Free Time"/>
-                                    <FormControlLabel
-                                        control={< Checkbox checked = {
-                                        jason
-                                    }
-                                    onChange = {
-                                        handleChangeEvent('jason')
-                                    }
-                                    value = "jason" />}
-                                        label="Planned Time"/>
-                                    <FormControlLabel
-                                        control={< Checkbox checked = {
-                                        antoine
-                                    }
-                                    onChange = {
-                                        handleChangeEvent('antoine')
-                                    }
-                                    value = "antoine" />}
-                                        label="Full Time"/>
-                                </FormGroup>
-                                <FormHelperText>
-                                    <Button variant="contained" color="primary">
-                                        <DescriptionIcon/>
-                                        Generate
-                                    </Button>
-                                </FormHelperText>
+                                <FormControl component="fieldset">
+                                    <RadioGroup
+                                        aria-label="position"
+                                        name="position"
+                                        value={workingTime}
+                                        onChange={workingTimeChange}
+                                        row>
+                                        <FormControlLabel
+                                            value="free"
+                                            control={< Radio color = "primary" />}
+                                            label="Free Time"
+                                            labelPlacement="end"/>
+                                        <FormControlLabel
+                                            value="planned"
+                                            control={< Radio color = "primary" />}
+                                            label="Planned Time"
+                                            labelPlacement="end"/>
+                                        <FormControlLabel
+                                            value="fullTime"
+                                            control={< Radio color = "primary" />}
+                                            label="Full Time"
+                                            labelPlacement="end"/>
+                                    </RadioGroup>
+                                </FormControl>
                             </FormControl>
                         </Box>
                     </Grid>
                 </Box>
-            </Box>
-        </Grid>
+}
+            </Grid>
+        </React.Fragment>
     );
 }

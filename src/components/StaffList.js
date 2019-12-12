@@ -3,6 +3,7 @@ import Grid from '@material-ui/core/Grid';
 import Box from '@material-ui/core/Box';
 import Avatar from '@material-ui/core/Avatar';
 import {makeStyles} from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
 
 import FilterModal from "./Staff/FilterModal";
 import StaffDefinitionEditorModal from "./Staff/StaffDefinitionEditorModal";
@@ -25,9 +26,9 @@ function UserList(data) {
             <Box>
                 <Grid container direction="row" justify="flex-start" alignItems="center">
                     <Box marginRight={2} component="div" display="inline">
-                        {user.img === undefined
+                        {user.img !== undefined
                             ? <Avatar>H</Avatar>
-                            : <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg"/>}
+                            : <Avatar alt="Remy Sharp" src="https://picsum.photos/id/696/200/300"/>}
                     </Box>
                     <Box>
                         <Grid container direction="row" justify="center" alignItems="center">
@@ -82,6 +83,19 @@ function UserList(data) {
                                 {user.Status}
                             </Box>
                         </Grid>
+                    </Box>
+                </Grid>
+            </Box>
+            <Box>
+                <Grid container direction="row" justify="center" alignItems="center">
+                    <Box>
+                        {user.active !== undefined
+                            ? <Button size="small" color="secondary">
+                                    S. Working
+                                </Button>
+                            : <Button size="small" color="secondary">
+                                Dont S. Wokring
+                            </Button>}
                     </Box>
                 </Grid>
             </Box>
@@ -143,8 +157,13 @@ export default class StaffList extends React.Component {
             <Box
                 mx="auto"
                 marginTop="2em"
+                marginLeft={{
+                    xs:10,
+                    md:10,
+                    lg:15
+                }}
                 width={{
-                xs: "100%",
+                xs: "90%",
                 md: "90%",
                 lg: "85%"
             }}>

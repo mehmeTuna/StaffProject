@@ -108,7 +108,7 @@ export default function FilterModal() {
                             </MuiPickersUtilsProvider>
                         </Box>
                         <Box>
-                            <FormControl component="fieldset">
+                            <FormControl component="    ">
                                 <FormLabel component="legend">Gender</FormLabel>
                                 <FormGroup>
                                     <FormControlLabel
