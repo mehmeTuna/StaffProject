@@ -43,7 +43,9 @@ class BusinessController extends Controller
             "Username" => $request["businessUsername"],
             "Address" => $request["businessAddress"],
             "BusinessName" => $request["businessName"],
-            "Phone" => $request["businessTelephone"]
+            "Phone" => $request["businessTelephone"],
+            "ExperienceClass" => null,
+            "Country" => "TR_tr"
         ]);
 
         $staffAdmin = Staff::create([
@@ -74,6 +76,7 @@ class BusinessController extends Controller
             "address" => $business->Address,
             "name" => $business->BusinessName,
             "phone" => $business->Phone,
+            "country" => "TR",
             "careers" => [
                 "count" => 0,
                 "career" => [],

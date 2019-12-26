@@ -1,6 +1,7 @@
 import React from "react";
 import {TimePicker, KeyboardTimePicker} from "@material-ui/pickers";
 import {Select} from "@material-ui/core";
+import axios from "axios";
 
 class ExperienceDefine extends React.Component {
 
@@ -22,6 +23,26 @@ class ExperienceDefine extends React.Component {
             sunday: []
         };
 
+        this.createExperience = this
+            .createExperience
+            .bind(this);
+    }
+
+    componentDidMount() {
+        this.createExperience();
+    }
+
+    createExperience() {
+        axios
+            .post("/business/experience/create",{
+                name :"experience 1",
+                pay: 1,
+                factor: 1,
+                periode: 1,
+                workingClass: 1,
+                workingPlanData: 1
+            })
+            .then((res) => console.log(res.data));
     }
 
     render() {

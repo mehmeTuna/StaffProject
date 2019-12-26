@@ -19,6 +19,8 @@ Route::post('/business/admin', 'BusinessController@businessData');
 
 Route::get("/{businessUsername}", 'BusinessController@home');
 
+Route::post("/{businessUsername}/experience/create", 'ExperienceController@register');
+
 Route::get("/{businessUsername}/{operation}", 'BusinessController@home');
 
 Route::get("/{businessUsername}/{operation}/{type}", 'BusinessController@home');

@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
-    protected $visible= ['Id','Email', 'Longitute', 'Latitude', 'Options', 'Data', 'created_at', 'updated_at'];
-    protected $fillable= ['Email', 'Username', 'Address', 'BusinessName', 'Phone'];
+    protected $visible= ['Id','Email', 'Longitute', 'Latitude', 'Options', 'Data', 'created_at', 'updated_at', 'Country', 'ExperienceClass'];
+    protected $fillable= ['Email', 'Username', 'Address', 'BusinessName', 'Phone', 'ExperienceClass', 'Country'];
     protected $table = 'business';
     protected $primaryKey = 'Id';
     public $timestamps = true;
@@ -20,7 +20,20 @@ class Business extends Model
     protected $casts = [
         'Data' => 'object',
         'Options' => 'object',
+        'ExperienceClass' => 'object'
     ];
+
+
+    /**
+     *
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setExperienceClassAttribute($value)
+    {
+        $this->attributes['ExperienceClass'] = json_encode($value);
+    }
 
     //ex: $category = Category::active()->get(); aktif olan kategori
     public function scopeActive($query)
