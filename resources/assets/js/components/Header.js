@@ -17,6 +17,8 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import PermIdentityIcon from '@material-ui/icons/PermIdentity';
 import FolderIcon from '@material-ui/icons/Folder';
 import HomeIcon from '@material-ui/icons/Home';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import { Grid } from '@material-ui/core';
 
 const drawerWidth = 220;
 
@@ -126,6 +128,12 @@ export default function Header() {
                 [classes.appBarShift]: open
             })}>
                 <Toolbar>
+                    <Grid
+                        container
+                        direction="row"
+                        justify="space-between"
+                        alignItems="center"
+                    >
                     <IconButton
                         color="inherit"
                         aria-label="open drawer"
@@ -136,6 +144,8 @@ export default function Header() {
                     })}>
                         <MenuIcon/>
                     </IconButton>
+                    <AccountCircleIcon className={classes.menuButton}/>
+                    </Grid>
                 </Toolbar>
             </AppBar>
             <Drawer

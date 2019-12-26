@@ -4,7 +4,8 @@ import {createMuiTheme, ThemeProvider} from "@material-ui/core/styles";
 import {trTR} from "@material-ui/core/locale";
 
 import Header from './Header';
-import StaffList from "./StaffList";
+import Content from "./Content";
+
 
 const theme = createMuiTheme({
     palette: {
@@ -19,8 +20,8 @@ function Home() {
         <ThemeProvider theme={theme}>
             <Header/>
             <Switch>
-                <Route path='/Staff-List' component={StaffList}/>
-                <Route path="/" component={StaffList}/>
+                <Route path='/Staff-List' component={Content}/>
+                <Route path="/" component={Content}/>
             </Switch>
         </ThemeProvider>
     );

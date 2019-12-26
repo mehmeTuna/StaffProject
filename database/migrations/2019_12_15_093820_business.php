@@ -13,18 +13,21 @@ class Business extends Migration
      */
     public function up()
     {
-        Schema::create('Business', function (Blueprint $table) {
+        Schema::create('business', function (Blueprint $table) {
             $table->comment = 'İşletme';
             $table->increments('Id');
             $table->char('Email', 255);
-            $table->text('WebPage')->default(null);
-            $table->char('Image', 150)->default(null)->comment('Görseli'); 
-            $table->double('Longitute', 8, 8)->default(0)->comment('Boylamı');
-            $table->double('Latitude', 8, 8)->default(0)->comment('Enlemi');
+            $table->char('Username', 100);
+            $table->char('Phone', 50);
+            $table->boolean('Active')->default(1);
+            $table->text('WebPage')->default(null)->nullable();
+            $table->char('Image', 150)->default(null)->nullable()->comment('Görseli'); 
+            $table->float('Longitute', 10, 6)->default(null)->nullable()->comment('Boylamı');
+            $table->float('Latitude', 10, 6)->default(null)->nullable()->comment('Enlemi');
             $table->text('Address')->default(null)->comment('Adresi');
-            $table->text('CompanyName')->default(null)->comment('İşletmenin/Şirketin adı.');
-            $table->longText('Options');
-            $table->longText('Data');
+            $table->text('BusinessName')->comment('İşletmenin/Şirketin adı.');
+            $table->longText('Options')->default(null)->nullable();
+            $table->longText('Data')->default(null)->nullable();
             $table->timestamps();
         });
     }

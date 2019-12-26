@@ -11,6 +11,18 @@
 |
 */
 
-Route::get('/', function () {
-    return view('home');
-});
+Route::get('/business/register', 'BusinessController@registerPage');
+
+Route::post('/business/register', 'BusinessController@register');
+
+Route::post('/business/admin', 'BusinessController@businessData');
+
+Route::get("/{businessUsername}", 'BusinessController@home');
+
+Route::get("/{businessUsername}/{operation}", 'BusinessController@home');
+
+Route::get("/{businessUsername}/{operation}/{type}", 'BusinessController@home');
+
+
+//development ortamında varsayılan kayıt sayfasına gider
+Route::get('/', 'WelcomeController@index');
