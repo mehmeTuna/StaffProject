@@ -23,8 +23,8 @@ const App = () => {
                     <div className="content-wrapper">
                         <div className="row">
                             {false && <StaffCreate/>}
-                            {true && <ExperienceDefine/>}
-                            {false && <StaffList/>}
+                            {false && <ExperienceDefine/>}
+                            {true && <StaffList/>}
                         </div>
                     </div>
                 </div>

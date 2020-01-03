@@ -15,7 +15,16 @@ class ExperienceController extends Controller
     {
         $businessAdmin = session ("businessAdmin");
         $businessId = $businessAdmin["businessId"];
-        $business = Business::find(  $businessId);
+        $business = Business::find(  10);
+        $minWage = $business->minWage ;
+
+        return response ()->json ("experience");
+
+
+
+
+
+        return response()->json (Business::find(  $businessId)->minWage ());
 
 
         $validator = Validator::make($request->all (), [

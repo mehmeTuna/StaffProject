@@ -11,8 +11,6 @@
 |
 */
 
-Route::get('/business/register', 'BusinessController@registerPage');
-
 Route::post('/business/register', 'BusinessController@register');
 
 Route::post('/business/admin', 'BusinessController@businessData');
@@ -25,6 +23,12 @@ Route::get("/{businessUsername}/{operation}", 'BusinessController@home');
 
 Route::get("/{businessUsername}/{operation}/{type}", 'BusinessController@home');
 
+//data controller
+Route::post("/business/staff/list", 'ResponseDataController@getBusinessStaffList');
+Route::post("/business/location/minWage", 'ResponseDataController@getBusinessLocationMinWage');
+
+
 
 //development ortamında varsayılan kayıt sayfasına gider
+Route::get('/home', 'WelcomeController@index');
 Route::get('/', 'WelcomeController@index');

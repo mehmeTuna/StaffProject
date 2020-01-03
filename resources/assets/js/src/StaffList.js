@@ -1,4 +1,5 @@
 import React from "react";
+import Axios from "axios";
 
 function StaffTableList(value) {
 
@@ -35,114 +36,16 @@ class StaffList extends React.Component {
         super(props);
 
         this.state = {
-            user: [
-                {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }, {
-                    img: "../../images/faces/face1.jpg",
-                    fullName: "Full Name",
-                    class: "Boss",
-                    experience: "Founder",
-                    gsm: "5451245454",
-                    workingTime: "Free Time",
-                    working: "yes"
-                }
-            ]
+            user: []
         }
+    }
+
+    async componentDidMount() {
+        const {data} = await Axios.post("/business/staff/list");
+
+        this.setState({user: data});
+
+        console.log(this.state.user);
     }
     render() {
         return (
@@ -179,7 +82,7 @@ class StaffList extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    { StaffTableList(this.state.user)}
+                                {StaffTableList(this.state.user)}
                                 </tbody>
                             </table>
                         </div>

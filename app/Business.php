@@ -2,12 +2,14 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Business extends Model
 {
-    protected $visible= ['Id','Email', 'Longitute', 'Latitude', 'Options', 'Data', 'created_at', 'updated_at', 'Country', 'ExperienceClass'];
-    protected $fillable= ['Email', 'Username', 'Address', 'BusinessName', 'Phone', 'ExperienceClass', 'Country'];
+    protected $visible= ['Id','Email', "Password", 'Longitute', 'Latitude', 'Options', 'Data', 'created_at', 'updated_at', 'Country', 'ExperienceClass', 'Lang'];
+    protected $fillable= ['Email', "Password", 'Username', 'Address', 'BusinessName', 'Phone', 'ExperienceClass', 'Country', 'Lang'];
     protected $table = 'business';
     protected $primaryKey = 'Id';
     public $timestamps = true;
@@ -22,6 +24,46 @@ class Business extends Model
         'Options' => 'object',
         'ExperienceClass' => 'object'
     ];
+
+
+
+    public function minWage() : HasMany
+    {
+       return  $this->hasMany ("App\MinWage", "Country", "Country");
+    }
+
+    /**
+     * Get admin record associated with the Business
+     */
+    public function admin()
+    {
+       return  $this->hasOne('App\BusinessAdmin','Id','AdminId' );
+    }
+
+    public function signature()
+    {
+        return $this->hasOne ("App\Signature", "Business", "Id");
+    }
+
+    public function experience()
+    {
+        return $this->hasOne ("App\Experience", "Business", "Id");
+    }
+
+    public function relay()
+    {
+        return $this->hasOne ("App\Relay", "Business", "Id");
+    }
+    public function kiosk ()
+    {
+        return $this->hasOne ("App\Kiosk", "Business", "Id");
+    }
+
+    public function staff()
+    {
+        return $this->hasMany ("App\Staff", "Business", "Id")
+                      ->where("Admin", 0);
+    }
 
 
     /**
@@ -63,30 +105,5 @@ class Business extends Model
         $this->attributes['Options'] = json_encode($value);
     }
 
-    /**
-     * Get admin record associated with the Business
-     */
-    public function admin()
-    {
-        $this->hasOne('App\BusinessAdmin','Id','AdminId' );
-    }
 
-    public function signature()
-    {
-        $this->hasOne ("App\Signature", "Business", "Id");
-    }
-
-    public function experience()
-    {
-        $this->hasOne ("App\Experience", "Business", "Id");
-    }
-
-    public function relay()
-    {
-        $this->hasOne ("App\Relay", "Business", "Id");
-    }
-    public function kiosk ()
-    {
-        $this->hasOne ("App\Kiosk", "Business", "Id");
-    }
 }

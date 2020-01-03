@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
-    protected $visible = ["ForeName", "MiddleName", "LastName", "Birthday", "Image", "Adress", "Password", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Lang", "Business", "Employment", "Career", "TimeSheetMap"];
-    protected $fillable = ["FirstName", "LastName", "Telephone", "Password", "Business"];
+    protected $visible = ["FirstName", "LastName", "Birthday", "Image", "Adress", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Lang", "Business", "Employment", "Career", "TimeSheetMap"];
+    protected $fillable = ["Admin", "FirstName", "LastName", "Birthday", "Image", "Adress", "Password", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Lang", "Business", "Employment", "Career", "TimeSheetMap"];
     protected $table = "Staff";
     protected $primaryKey = "Id";
     public $timestamps = true ;
@@ -20,6 +20,11 @@ class Staff extends Model
     public function career()
     {
         $this->hasManyThrough ("App\Career", "App\Recompense", "Staff", "Staff", "Id" ,"Id");
+    }
+
+    public function staffClass()
+    {
+        $this->hasOne ("App\Career", "Staff", "Id");
     }
 
 
