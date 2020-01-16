@@ -52,6 +52,8 @@
     "redux": "^4.0.4",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
+    "sweetalert2": "^9.6.0",
+    "sweetalert2-react-content": "^2.0.2",
     "uuid": "^3.3.2",
     "validate.js": "^0.12.0"
   }

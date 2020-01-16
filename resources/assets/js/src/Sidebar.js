@@ -1,26 +1,24 @@
 import React from "react";
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 
-const Sidebar = () => {
-
+const Sidebar = (props) => {
     return (
         <nav className="sidebar sidebar-offcanvas" id="sidebar">
             <div className="user-profile">
                 <div className="user-image">
-                    <img src="images/faces/face28.png"/>
+                    {props.data.img != null && <img src={props.data.img}/>}
                 </div>
-                <div className="user-name">
-                    Edward Spencer
-                </div>
+                <div className="user-name"></div>
                 <div className="user-designation">
-                    Developer
+                    {props.data.username}
                 </div>
             </div>
             <ul className="nav">
                 <li className="nav-item">
-                    <a className="nav-link" href="index.html">
+                    <Link to="/" className="nav-link">
                         <i className="icon-box menu-icon"></i>
-                        <span className="menu-title">Dashboard</span>
-                    </a>
+                        <span className="menu-title">AnaSayfa</span>
+                    </Link>
                 </li>
                 <li className="nav-item">
                     <a
@@ -36,14 +34,12 @@ const Sidebar = () => {
                     <div className="collapse" id="auth">
                         <ul className="nav flex-column sub-menu">
                             <li className="nav-item">
-                                <a className="nav-link" href="staff/list">
-                                    Staff List
-                                </a>
+                                <Link to={'/' + `${props.data.username + '/staff/list'}`} className="nav-link">Staff List</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="staff/create">
-                                    Staff Create
-                                </a>
+                                <Link
+                                    to={'/' + `${props.data.username + '/staff/create'}`}
+                                    className="nav-link">Staff Create</Link>
                             </li>
                         </ul>
                     </div>
@@ -62,16 +58,20 @@ const Sidebar = () => {
                     <div className="collapse" id="ui-basic">
                         <ul className="nav flex-column sub-menu">
                             <li className="nav-item">
-                                <a className="nav-link" href="experience/create">Experience Create</a>
+                                <Link
+                                    to={'/' + `${props.data.username + '/experience/create'}`}
+                                    className="nav-link">Experience Create</Link>
                             </li>
                             <li className="nav-item">
-                                <a className="nav-link" href="experience/list">Experience List</a>
+                                <Link
+                                    to={'/' + `${props.data.username + '/experience/list'}`}
+                                    className="nav-link">Experience List</Link>
                             </li>
                         </ul>
                     </div>
                 </li>
                 <li className="nav-item">
-                    <a className="nav-link" href="docs/documentation.html">
+                    <a className="nav-link" href="/docs">
                         <i className="icon-book menu-icon"></i>
                         <span className="menu-title">Documentation</span>
                     </a>

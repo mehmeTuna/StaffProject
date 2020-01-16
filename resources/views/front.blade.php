@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="tr">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -10,18 +10,18 @@
 
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600|Montserrat:200,300,400" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{asset('front/assets/css/bootstrap/bootstrap.css')}}">
-    <link rel="stylesheet" href="{{asset('front/assets/fonts/ionicons/css/ionicons.min.css')}}">
-    <link rel="stylesheet" href="{{asset('front/assets/fonts/law-icons/font/flaticon.css')}}">
+    <link rel="stylesheet" href="/public/front/assets/css/bootstrap/bootstrap.css">
+    <link rel="stylesheet" href="/public/front/assets/fonts/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="/public/front/assets/fonts/law-icons/font/flaticon.css">
 
-    <link rel="stylesheet" href="{{asset('front/assets/fonts/fontawesome/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" href="/public/front/assets/fonts/fontawesome/css/font-awesome.min.css">
 
-    <link rel="stylesheet" href="{{asset('front/assets/css/slick.css')}}">
-    <link rel="stylesheet" href="{{asset('front/assets/css/slick-theme.css')}}">
+    <link rel="stylesheet" href="/public/front/assets/css/slick.css">
+    <link rel="stylesheet" href="/public/front/assets/css/slick-theme.css">
 
-    <link rel="stylesheet" href="{{asset('front/assets/css/helpers.css')}}">
-    <link rel="stylesheet" href="{{asset('front/assets/css/style.css')}}">
-    <link rel="stylesheet" href="{{asset('front/assets/css/landing-2.css')}}">
+    <link rel="stylesheet" href="/public/front/assets/css/helpers.css">
+    <link rel="stylesheet" href="/public/front/assets/css/style.css">
+    <link rel="stylesheet" href="/public/front/assets/css/landing-2.css">
 </head>
 <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
 
@@ -552,14 +552,14 @@
 
 
 
-<script src="{{asset('front/assets/js/jquery.min.js')}}"></script>
-<script src="{{asset('front/assets/js/popper.min.js')}}"></script>
-<script src="{{asset('front/assets/js/bootstrap.min.js')}}"></script>
-<script src="{{asset('front/assets/js/slick.min.js')}}"></script>
-<script src="{{asset('front/assets/js/jquery.mb.YTPlayer.min.js')}}"></script>
-<script src="{{asset('front/assets/js/jquery.waypoints.min.js')}}"></script>
-<script src="{{asset('front/assets/js/jquery.easing.1.3.js')}}"></script>
-<script src="{{asset('front/assets/js/main.js')}}"></script>
+<script src="/public/front/assets/js/jquery.min.js"></script>
+<script src="/public/front/assets/js/popper.min.js"></script>
+<script src="/public/front/assets/js/bootstrap.min.js"></script>
+<script src="/public/front/assets/js/slick.min.js"></script>
+<script src="/public/front/assets/js/jquery.mb.YTPlayer.min.js"></script>
+<script src="/public/front/assets/js/jquery.waypoints.min.js"></script>
+<script src="/public/front/assets/js/jquery.easing.1.3.js"></script>
+<script src="/public/front/assets/js/main.js"></script>
 
 </body>
 </html>

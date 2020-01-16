@@ -13,7 +13,7 @@
 
 Route::post('/business/register', 'BusinessController@register');
 
-Route::post('/business/admin', 'BusinessController@businessData');
+Route::post('/business/data', 'BusinessController@businessData');
 
 Route::get("/{businessUsername}", 'BusinessController@home');
 

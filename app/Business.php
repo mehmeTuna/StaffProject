@@ -27,7 +27,7 @@ class Business extends Model
 
 
 
-    public function minWage() : HasMany
+    public function minWage() 
     {
        return  $this->hasMany ("App\MinWage", "Country", "Country");
     }
@@ -61,8 +61,7 @@ class Business extends Model
 
     public function staff()
     {
-        return $this->hasMany ("App\Staff", "Business", "Id")
-                      ->where("Admin", 0);
+        return $this->hasMany ("App\Staff", "Business", "Id");
     }
 
 

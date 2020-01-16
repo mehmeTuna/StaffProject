@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Business;
+use App\Staff;
+use App\Experience;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -40,22 +42,37 @@ class BusinessController extends Controller
             "Lang" => "TR_tr",
         ]);
 
-        session ("businessId", $business->Id);
+        session()->put("businessId", $business->Id);
         return redirect("/{$business->Username}");
     }
 
     public function home()
     {
-        dd (session()->all());
-        $business = Business::where( "Id" ,session()->get("businessId"));
+        if(!session()->has("businessId"))
+            return view('business.register');
 
-        dd($business);
-
-        return view("business.Home");
+            return view("business.Home");
     }
 
     public function businessData()
     {
-        return response()->json(session()->get("business"));
+        if(!session()->has("businessId"))
+            return view('business.register');
+
+        $id = session()->get("businessId");
+        $business = Business::where("id", $id)->get();
+
+        $staffCount = Staff::where("Business", $id)->count();
+        $experienceCount = Experience::where("Business", $id)->count();
+
+
+        return response()->json([
+            "email" => $business[0]->Email,
+            "username" => $business[0]->Username,
+            "img" => $business[0]->Image,
+            "name" => $business[0]->BusinessName,
+            "staff" => $staffCount,
+            "experience" => $experienceCount
+        ]);
     }
 }

@@ -1,20 +1,54 @@
 import React from "react";
 import axios from "axios";
 import TimeKeeper from 'react-timekeeper';
+import Swal from 'sweetalert2';
+import withReactContent from 'sweetalert2-react-content';
 
-function PlanList(data) {
+const sweet = withReactContent(Swal);
 
-    const response = data.map((value, key) => <button key={key} type="button" className="btn btn-info font-weight-bold">
-        <span className="m-1">
-            {value.started}
-            - {value.end}
-        </span>
-        <span className="badge badge-light">
-            <i className="icon-cross"></i>
-        </span>
-    </button>);
+function PlanList(props) {
+    if (typeof props.data !== "object") 
+        return;
+    
+    const response = props
+        .data
+        .map((value, key) => <button
+            key={key}
+            type="button"
+            onClick={() => props.deleteTime(key, props.day)}
+            className="m-2 btn btn-info font-weight-bold">
+            <span className="m-1">
+                {value.start}
+                - {value.end}
+            </span>
+            <span className="badge badge-light">
+                <i className="icon-cross"></i>
+            </span>
+        </button>);
 
     return response;
+}
+
+function ShowStartClock(props) {
+    return <div className="row">
+        <div className="mx-auto">
+            <h3>Select Start Clock</h3>
+            <TimeKeeper
+                switchToMinuteOnHourSelect={true}
+                onChange={(event) => props.selected(event)}/>
+        </div>
+    </div>;
+}
+
+function ShowEndClock(props) {
+    return <div className="row">
+        <div className="mx-auto">
+            <h3>Select End Clock"</h3>
+            <TimeKeeper
+                switchToMinuteOnHourSelect={true}
+                onChange={(event) => props.selected(event)}/>
+        </div>
+    </div>;
 }
 
 class ExperienceDefine extends React.Component {
@@ -22,6 +56,8 @@ class ExperienceDefine extends React.Component {
         super(props);
 
         this.state = {
+            selectedStartTime: "",
+            selectedEndTime: "",
             showDate: false,
             isMinWage: [],
             lang: "",
@@ -30,31 +66,43 @@ class ExperienceDefine extends React.Component {
             factor: "hour",
             periode: "1",
             workingPlan: "",
-            isCurrentDayDate: {
-                day: "",
-                start: "",
-                end: "",
-                name: ""
-            },
-            workingPlanData: [
-                [], //monday
-                [], //tuesday
-                [], //wednesday
-                [], //thursday
-                [], //friday
-                [], //saturday
-                [], //sunday
-            ]
+            monday: [],
+            tuesday: [],
+            wednesday: [],
+            thursday: [],
+            friday: [],
+            saturday: [],
+            sunday: [],
+            selectedDay: ""
         };
 
         this.createExperience = this
             .createExperience
             .bind(this);
 
-        this.selectCustomDate = this
-            .selectCustomDate
+        this.handleSubmit = this
+            .handleSubmit
             .bind(this);
 
+        this.customClock = this
+            .customClock
+            .bind(this);
+
+        this.setSelectedStartTime = this
+            .setSelectedStartTime
+            .bind(this);
+
+        this.setSelectedEndTime = this
+            .setSelectedEndTime
+            .bind(this);
+
+        this.dataSet = this
+            .dataSet
+            .bind(this);
+
+        this.deleteTime = this
+            .deleteTime
+            .bind(this);
     }
 
     async componentDidMount() {
@@ -63,8 +111,85 @@ class ExperienceDefine extends React.Component {
 
     }
 
-    handleSubmit(event) {
+    handleSubmit() {
         console.log(this.state);
+    }
+
+    deleteTime(key, day) {
+        switch (day) {
+            case "monday":
+                let data = this.state.monday;
+                data.splice(key, 1);
+                this.setState({data});
+                break;
+            case "tuesday":
+                console.log(data);
+                break;
+            case "wednesday":
+                console.log(data);
+                break;
+            case "thursday":
+                console.log(data);
+                break;
+            case "friday":
+                console.log(data);
+                break;
+            case "saturday":
+                console.log(data);
+                break;
+            case "sunday":
+                console.log(data);
+                break;
+        }
+    }
+
+    dataSet() {
+        if (this.state.selectedStartTime === "" || this.state.selectedEndTime === "") 
+            return;
+        switch (this.state.selectedDay) {
+            case "monday":
+                let data = this.state.monday;
+                data.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
+                this.setState({data});
+                break;
+            case "tuesday":
+                console.log(data);
+                break;
+            case "wednesday":
+                console.log(data);
+                break;
+            case "thursday":
+                console.log(data);
+                break;
+            case "friday":
+                console.log(data);
+                break;
+            case "saturday":
+                console.log(data);
+                break;
+            case "sunday":
+                console.log(data);
+                break;
+        }
+    }
+
+    setSelectedStartTime(data) {
+        this.setState({selectedStartTime: data.formatted24});
+    }
+
+    setSelectedEndTime(data) {
+        this.setState({selectedEndTime: data.formatted24});
+    }
+
+    customClock(data) {
+        this.setState({selectedDay: data});
+        sweet
+            .fire(<ShowStartClock selected={this.setSelectedStartTime}/>)
+            .then(() => {
+                return sweet
+                    .fire(<ShowEndClock dataSet={this.dataSet} selected={this.setSelectedEndTime}/>)
+                    .then(() => this.dataSet())
+            });
     }
 
     createExperience() {
@@ -76,27 +201,6 @@ class ExperienceDefine extends React.Component {
             working: 1,
             workingPlanData: 1
         });
-    }
-
-    selectCustomDate(data) {
-        let hour = data.clock.hour;
-        let minute = data.clock.minute;
-        let day = data.day;
-
-        let customizeDate = {
-            day: day,
-            start: hour + " " + minute,
-            end: "",
-            name: ""
-        };
-
-        if (this.state.isCurrentDayDate.day !== "" && this.state.isCurrentDayDate.start !== "" && this.state.isCurrentDayDate.end !== "") {
-            let data = this.state.workingPlanData;
-            data.push(customizeDate);
-            this.setState({workingPlanData: data});
-        }
-        this.setState({isCurrentDayDate: customizeDate});
-        console.log(data.clock.hour);
     }
 
     render() {
@@ -128,10 +232,16 @@ class ExperienceDefine extends React.Component {
                                             <label className="col-sm-3 col-form-label">Pay</label>
                                             <div className="col-sm-9">
                                                 <input
+                                                    type="text"
                                                     className="form-control"
                                                     placeholder="Pay"
                                                     value={this.state.pay}
-                                                    onChange={(event) => this.setState({pay: event.target.value})}/>
+                                                    onChange={(event) => this.setState({
+                                                    pay: event
+                                                        .target
+                                                        .value
+                                                        .replace(/\D/, '')
+                                                })}/>
                                             </div>
                                         </div>
                                     </div>
@@ -213,21 +323,15 @@ class ExperienceDefine extends React.Component {
                                 <p className="card-description">
                                     Seçilen çalışma şekline bağlı çalışma planı tanımlama
                                 </p>
-                                <div className="row display-2">
+                                <div className="row display-3">
                                     <div className="col-3">Pazartesi
                                     </div>
                                     <div className="col-9">
-                                        {this.state.showDate === true && <TimeKeeper
-                                            switchToMinuteOnHourSelect={true}
-                                            closeOnMinuteSelect={true}
-                                            onChange={(event) => this.selectCustomDate({day: 0, clock: event})}
-                                            onDoneClick={() => this.setState({showDate: false})}/>}
+                                        {this.state.monday.length !== 0 && <PlanList data={this.state.monday} day="monday" deleteTime={this.deleteTime}/>}
                                         <button
                                             type="button"
-                                            className="btn btn-info font-weight-bold"
-                                            onClick={() => {
-                                            this.setState({showDate: true})
-                                        }}>
+                                            className="m-2 btn btn-info font-weight-bold"
+                                            onClick={() => this.customClock("monday")}>
                                             <span className="badge">
                                                 <i className="icon-circle-plus"></i>
                                             </span>
@@ -235,14 +339,16 @@ class ExperienceDefine extends React.Component {
                                                 Add new Plan
                                             </span>
                                         </button>
-                                        {this.state.monday !== 0 && PlanList(this.state.monday)}
                                     </div>
                                 </div>
                                 <div className="row display-3">
                                     <div className="col-3">Salı
                                     </div>
                                     <div className="col-9">
-                                        <button type="button" className="btn btn-info font-weight-bold">
+                                        <button
+                                            type="button"
+                                            className="m-2 btn btn-info font-weight-bold"
+                                            onClick={() => this.customClock("tuesday")}>
                                             <span className="badge">
                                                 <i className="icon-circle-plus"></i>
                                             </span>
@@ -257,7 +363,10 @@ class ExperienceDefine extends React.Component {
                                     <div className="col-3">Çarşamba
                                     </div>
                                     <div className="col-9">
-                                        <button type="button" className="btn btn-info font-weight-bold">
+                                        <button
+                                            type="button"
+                                            className="m-2 btn btn-info font-weight-bold"
+                                            onClick={() => this.customClock("wednesday")}>
                                             <span className="badge">
                                                 <i className="icon-circle-plus"></i>
                                             </span>
@@ -265,14 +374,17 @@ class ExperienceDefine extends React.Component {
                                                 Add new Plan
                                             </span>
                                         </button>
-                                        {this.state.wednesday !== 0 && PlanList(this.state.tuesday)}
+                                        {this.state.wednesday !== 0 && PlanList(this.state.wednesday)}
                                     </div>
                                 </div>
                                 <div className="row display-3">
                                     <div className="col-3">Perşembe
                                     </div>
                                     <div className="col-9">
-                                        <button type="button" className="btn btn-info font-weight-bold">
+                                        <button
+                                            type="button"
+                                            className="m-2 btn btn-info font-weight-bold"
+                                            onClick={() => this.customClock("thursday")}>
                                             <span className="badge">
                                                 <i className="icon-circle-plus"></i>
                                             </span>
@@ -287,7 +399,10 @@ class ExperienceDefine extends React.Component {
                                     <div className="col-3">Cuma
                                     </div>
                                     <div className="col-9">
-                                        <button type="button" className="btn btn-info font-weight-bold">
+                                        <button
+                                            type="button"
+                                            className="m-2 btn btn-info font-weight-bold"
+                                            onClick={() => this.customClock("friday")}>
                                             <span className="badge">
                                                 <i className="icon-circle-plus"></i>
                                             </span>
@@ -302,7 +417,10 @@ class ExperienceDefine extends React.Component {
                                     <div className="col-3">Cumartesi
                                     </div>
                                     <div className="col-9">
-                                        <button type="button" className="btn btn-info font-weight-bold">
+                                        <button
+                                            type="button"
+                                            className="m-2 btn btn-info font-weight-bold"
+                                            onClick={() => this.customClock("saturday")}>
                                             <span className="badge">
                                                 <i className="icon-circle-plus"></i>
                                             </span>
@@ -317,7 +435,10 @@ class ExperienceDefine extends React.Component {
                                     <div className="col-3">Pazar
                                     </div>
                                     <div className="col-9">
-                                        <button type="button" className="btn btn-info font-weight-bold">
+                                        <button
+                                            type="button"
+                                            className="m-2 btn btn-info font-weight-bold"
+                                            onClick={() => this.customClock("sunday")}>
                                             <span className="badge">
                                                 <i className="icon-circle-plus"></i>
                                             </span>
@@ -327,6 +448,19 @@ class ExperienceDefine extends React.Component {
                                         </button>
                                         {this.state.sunday !== 0 && PlanList(this.state.sunday)}
                                     </div>
+                                </div>
+                                <div className="row display-3">
+                                    <button
+                                        type="button"
+                                        className="btn btn-success font-weight-bold mx-auto mt-4"
+                                        onClick={this.handleSubmit}>
+                                        <span className="badge">
+                                            <i className="icon-circle-plus"></i>
+                                        </span>
+                                        <span>
+                                            Create
+                                        </span>
+                                    </button>
                                 </div>
                             </form>
                         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Business;
+use App\Staff;
 use Illuminate\Http\Request;
 
 class ResponseDataController extends Controller
@@ -24,16 +25,16 @@ class ResponseDataController extends Controller
 
     public function getBusinessStaffList()
     {
-        if(!session ()->has('businessAdmin'))
+        if(!session ()->has('businessId'))
             return response()->json ([
                 "status" => false ,
                 "text" => "please login before",
             ]);
 
         $data = session ('businessAdmin');
-        $business = Business::find($data["businessId"])->staff;
+        $staffList = Staff::where("Business", $data)->get();
 
         return response ()
-            ->json ($business);
+            ->json ($staffList->toArray());
     }
 }

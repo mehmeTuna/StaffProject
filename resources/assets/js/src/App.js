@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom'
-import {Router} from 'react-router-dom';
+import {BrowserRouter as Router, Switch, Route, Link} from "react-router-dom";
 import axios from "axios";
 
 import Navbar from "./Navbar";
@@ -11,28 +11,66 @@ import StaffCreate from "./StaffCreate";
 import StaffList from "./StaffList";
 
 import ExperienceDefine from "./ExperienceDefine";
+import ExperienceList from './ExperienceList';
 
+class App extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            bussData: {}
+        }
+    }
 
-const App = () => {
-    return (
-        <div className="container-scroller">
-            <Navbar/>
-            <div className="container-fluid page-body-wrapper">
-                <Sidebar/>
-                <div className="main-panel">
-                    <div className="content-wrapper">
-                        <div className="row">
-                            {false && <StaffCreate/>}
-                            {false && <ExperienceDefine/>}
-                            {true && <StaffList/>}
+    async componentDidMount() {
+        let self = this;
+        await axios
+            .post("/business/data")
+            .then(response => {
+                self.setState({bussData: response.data});
+            });
+    }
+    render() {
+        return (
+            <Router>
+                <div className="container-scroller">
+                    <Navbar/>
+                    <div className="container-fluid page-body-wrapper">
+                        <Sidebar data={this.state.bussData}/>
+                        <div className="main-panel">
+                            <div className="content-wrapper">
+                                <div className="row">
+                                    <Switch>
+                                        <Route path={'/' + `${this.state.bussData.username + '/staff/create'}`}>
+                                            <StaffCreate/>
+                                        </Route>
+                                        <Route path={'/' + `${this.state.bussData.username + '/experience/create'}`}>
+                                            <ExperienceDefine/>
+                                        </Route>
+                                        <Route path={'/' + `${this.state.bussData.username + '/experience/List'}`}>
+                                            <ExperienceList/>
+                                        </Route>
+                                        <Route path={'/' + `${this.state.bussData.username + '/staff/list'}`}>
+                                            <StaffList/>
+                                        </Route>
+                                        <Route path="/">
+                                            <Home/>
+                                        </Route>
+                                    </Switch>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <Footer/>
                 </div>
-            </div>
-            <Footer/>
-        </div>
-    );
-};
+            </Router>
+        );
+    }
+}
+
+function Home() {
+    return <h2>Home Bu kısma istatikler ve şirket verileri gelecek
+    </h2>;
+}
 
 if (document.getElementById('root')) {
     ReactDOM.render(

@@ -7,8 +7,8 @@ const Navbar = () => {
             <nav className="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
                 <div
                     className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                    <a className="navbar-brand brand-logo" href="index.html"><img src="images/logo.svg" alt="logo"/></a>
-                    <a className="navbar-brand brand-logo-mini" href="index.html"><img src="images/logo-mini.svg" alt="logo"/></a>
+                    <a className="navbar-brand brand-logo" href="/"><img src="/publicimages/logo.svg" alt="logo"/></a>
+                    <a className="navbar-brand brand-logo-mini" href="/"><img src="/public/images/logo-mini.svg" alt="logo"/></a>
                 </div>
                 <div
                     className="navbar-menu-wrapper d-flex align-items-center justify-content-end">
@@ -53,7 +53,7 @@ const Navbar = () => {
                                 <p className="mb-0 font-weight-normal float-left dropdown-header">Messages</p>
                                 <a className="dropdown-item preview-item">
                                     <div className="preview-thumbnail">
-                                        <img src="images/faces/face4.jpg" alt="image" className="profile-pic"/>
+                                        <img src="/public/images/faces/face4.jpg" alt="image" className="profile-pic"/>
                                     </div>
                                     <div className="preview-item-content flex-grow">
                                         <h6 className="preview-subject ellipsis font-weight-normal">David Grey
@@ -65,7 +65,7 @@ const Navbar = () => {
                                 </a>
                                 <a className="dropdown-item preview-item">
                                     <div className="preview-thumbnail">
-                                        <img src="images/faces/face2.jpg" alt="image" className="profile-pic"/>
+                                        <img src="/public/images/faces/face2.jpg" alt="image" className="profile-pic"/>
                                     </div>
                                     <div className="preview-item-content flex-grow">
                                         <h6 className="preview-subject ellipsis font-weight-normal">Tim Cook
@@ -77,7 +77,7 @@ const Navbar = () => {
                                 </a>
                                 <a className="dropdown-item preview-item">
                                     <div className="preview-thumbnail">
-                                        <img src="images/faces/face3.jpg" alt="image" className="profile-pic"/>
+                                        <img src="/public/images/faces/face3.jpg" alt="image" className="profile-pic"/>
                                     </div>
                                     <div className="preview-item-content flex-grow">
                                         <h6 className="preview-subject ellipsis font-weight-normal">

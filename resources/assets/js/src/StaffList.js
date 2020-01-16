@@ -42,6 +42,9 @@ class StaffList extends React.Component {
 
     async componentDidMount() {
         const {data} = await Axios.post("/business/staff/list");
+        if (data.status === false) {
+            window.location.href = "/";
+        }
 
         this.setState({user: data});
 
@@ -50,7 +53,8 @@ class StaffList extends React.Component {
     render() {
         return (
             <div className="col-lg-12 grid-margin stretch-card">
-                <div className="card">
+                {this.state.user.length === 0 && "Tanımlı staff bulunamadı"}
+                {this.state.user.length !== 0 && <div className="card">
                     <div className="card-body">
                         <h4 className="card-title">Staff List</h4>
                         <p className="card-description"></p>
@@ -82,12 +86,12 @@ class StaffList extends React.Component {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                {StaffTableList(this.state.user)}
+                                    {StaffTableList(this.state.user)}
                                 </tbody>
                             </table>
                         </div>
                     </div>
-                </div>
+                </div>}
             </div>
         )
     };
