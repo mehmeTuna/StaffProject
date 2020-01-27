@@ -3,29 +3,28 @@ import Axios from "axios";
 
 function ExperienceTableList(value) {
 
-    const list = value.map((value, key) => <tr key={key}>
-        <td className="py-1">
-            <img src={value.img} alt={value.fullName}/>
-        </td>
-        <td>
-            {value.fullName}
-        </td>
-        <td>
-            {value.class}
-        </td>
-        <td>
-            {value.experience}
-        </td>
-        <td>
-            {value.gsm}
-        </td>
-        <td>
-            {value.workingTime}
-        </td>
-        <td>
-            {value.working}
-        </td>
-    </tr>);
+    const list = value
+        .data
+        .map((value, key) => <tr key={key}>
+            <td className="py-1">
+                {value.Identifier}
+            </td>
+            <td>
+                {value.WorkClass}
+            </td>
+            <td>
+                {value.Pay}
+            </td>
+            <td>
+                {value.Factor}
+            </td>
+            <td>
+                {value.Periode}
+            </td>
+            <td>
+                {value.Class}
+            </td>
+        </tr>);
 
     return list;
 }
@@ -36,25 +35,61 @@ class ExperienceList extends React.Component {
         super(props);
 
         this.state = {
-            user: []
+            list: []
         }
     }
 
     async componentDidMount() {
-        const {data} = await Axios.post("/business/staff/list");
-        if (data.status === false) {
-            window.location.href = "/";
-        }
+        const {data} = await Axios.post("/business/experience/list");
 
-        this.setState({user: data});
-
-        console.log(this.state.user);
+        this.setState({list: data});
     }
+
     render() {
         return (
-            <div className="col-lg-12 grid-margin stretch-card">
-               Tanımlı Experience bulunamadı
-            </div>
+            <React.Fragment>
+                {this.state.list.length == 0
+                    ? <div className="col-lg-12 grid-margin stretch-card">
+                            Tanımlı Experience bulunamadı
+                        </div>
+                    : <div className="col-lg-12 grid-margin stretch-card">
+                        <div className="card">
+                            <div className="card-body">
+                                <h4 className="card-title">Experience List</h4>
+                                <p className="card-description"></p>
+                                <div className="table-responsive">
+                                    <table className="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    Name
+                                                </th>
+                                                <th>
+                                                    Work Class
+                                                </th>
+                                                <th>
+                                                    Pay
+                                                </th>
+                                                <th>
+                                                    Factor
+                                                </th>
+                                                <th>
+                                                    Periode
+                                                </th>
+                                                <th>
+                                                    Class
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <ExperienceTableList data={this.state.list}/>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>}
+            </React.Fragment>
         )
     };
 };

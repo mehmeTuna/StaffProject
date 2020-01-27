@@ -73,12 +73,14 @@ class ExperienceDefine extends React.Component {
             friday: [],
             saturday: [],
             sunday: [],
-            selectedDay: ""
+            selectedDay: "",
+            alert: {
+                pay: {
+                    status: false,
+                    text: 'minimum tutar giriniz'
+                }
+            }
         };
-
-        this.createExperience = this
-            .createExperience
-            .bind(this);
 
         this.handleSubmit = this
             .handleSubmit
@@ -103,42 +105,75 @@ class ExperienceDefine extends React.Component {
         this.deleteTime = this
             .deleteTime
             .bind(this);
+
+        this.paymnetControl = this
+            .paymentControl
+            .bind(this);
     }
 
     async componentDidMount() {
-        const {data} = await axios.post("/business/location/minWage");
-        this.setState({isMinWage: data});
+        const {data} = await axios.post('/business/location/minWage');
 
+        this.setState({isMinWage: data});
     }
 
     handleSubmit() {
-        console.log(this.state);
+        axios.post(`/${this.props.data.username}/experience/create`, {
+            experienceName: this.state.name,
+            experiencePay: parseInt(this.state.pay),
+            experienceFactor: this.state.factor,
+            experiencePeriode: parseInt(this.state.periode),
+            workingPlan: this.state.workingPlan,
+            monday: this.state.monday,
+            tuesday: this.state.tuesday,
+            wednesday: this.state.wednesday,
+            thursday: this.state.thursday,
+            friday: this.state.friday,
+            saturday: this.state.saturday,
+            sunday: this.state.sunday
+        }).then((res) => {
+            sweet
+                .fire('Created')
+                .then(() => location.href = `/${this.props.data.username}/experience/list`);
+        });
     }
 
     deleteTime(key, day) {
         switch (day) {
             case "monday":
-                let data = this.state.monday;
-                data.splice(key, 1);
-                this.setState({data});
+                let dataMonday = this.state.monday;
+                dataMonday.splice(key, 1);
+                this.setState({monday: dataMonday});
                 break;
             case "tuesday":
-                console.log(data);
+                let dataTuesday = this.state.tuesday;
+                dataTuesday.splice(key, 1);
+                this.setState({tuesday: dataTuesday});
                 break;
             case "wednesday":
-                console.log(data);
+                let dataWednesday = this.state.wednesday;
+                dataWednesday.splice(key, 1);
+                this.setState({wednesday: dataWednesday});
                 break;
             case "thursday":
-                console.log(data);
+                let dataThursday = this.state.thursday;
+                dataThursday.splice(key, 1);
+                this.setState({Thursday: dataThursday});
                 break;
             case "friday":
-                console.log(data);
+                let dataFriday = this.state.friday;
+                dataFriday.splice(key, 1);
+                this.setState({friday: dataFriday});
                 break;
             case "saturday":
-                console.log(data);
+                let dataSaturday = this.state.saturday;
+                dataSaturday.splice(key, 1);
+                this.setState({saturday: dataSaturday});
                 break;
             case "sunday":
-                console.log(data);
+                let dataSunday = this.state.sunday;
+                dataSunday.splice(key, 1);
+                this.setState({sunday: dataSunday});
                 break;
         }
     }
@@ -148,27 +183,42 @@ class ExperienceDefine extends React.Component {
             return;
         switch (this.state.selectedDay) {
             case "monday":
-                let data = this.state.monday;
-                data.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
-                this.setState({data});
+                let dataMonday = this.state.monday;
+                dataMonday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
+                this.setState({monday: dataMonday});
                 break;
             case "tuesday":
-                console.log(data);
+                let dataTuesday = this.state.tuesday;
+                dataTuesday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
+                this.setState({tuesday: dataTuesday});
                 break;
             case "wednesday":
-                console.log(data);
+                let dataWednesday = this.state.wednesday;
+                dataWednesday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
+                this.setState({wednesday: dataWednesday});
                 break;
             case "thursday":
-                console.log(data);
+                let dataThursday = this.state.thursday;
+                dataThursday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
+                this.setState({Thursday: dataThursday});
                 break;
             case "friday":
-                console.log(data);
+                let dataFriday = this.state.friday;
+                dataFriday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
+                this.setState({friday: dataFriday});
                 break;
             case "saturday":
-                console.log(data);
+                let dataSaturday = this.state.saturday;
+                dataSaturday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
+                this.setState({saturday: dataSaturday});
                 break;
             case "sunday":
-                console.log(data);
+                let dataSunday = this.state.sunday;
+                dataSunday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
+                this.setState({sunday: dataSunday});
+                break;
+            default:
+                console.log('dataSet foksiyion kismi default');
                 break;
         }
     }
@@ -192,15 +242,27 @@ class ExperienceDefine extends React.Component {
             });
     }
 
-    createExperience() {
-        axios.post("/business/experience/create", {
-            name: this.state.name,
-            pay: this.state.pay,
-            factor: this.state.factor,
-            periode: this.state.periode,
-            working: 1,
-            workingPlanData: 1
-        });
+    paymentControl(val) {
+        let min = this.state.isMinWage[0].Value;
+
+        this
+            .state
+            .isMinWage
+            .forEach((val, key) => val.Value < min
+                ? min = val.Value
+                : '');
+
+        if (val < min) {
+            let alert = this.state.alert;
+            alert.pay.status = true;
+            alert.pay.text = `minimum ${min} tutar giriniz`;
+            this.setState({alert: alert});
+        } else {
+            let alert = this.state.alert;
+            alert.pay.status = false;
+            this.setState({alert: alert});
+        }
+
     }
 
     render() {
@@ -228,6 +290,8 @@ class ExperienceDefine extends React.Component {
                                         </div>
                                     </div>
                                     <div className="col-md-6">
+                                        {this.state.alert.pay.status == true && <p className='col-sm-6 mx-auto text-danger'>
+                                            {this.state.alert.pay.text}</p>}
                                         <div className="form-group row">
                                             <label className="col-sm-3 col-form-label">Pay</label>
                                             <div className="col-sm-9">
@@ -241,7 +305,8 @@ class ExperienceDefine extends React.Component {
                                                         .target
                                                         .value
                                                         .replace(/\D/, '')
-                                                })}/>
+                                                })}
+                                                    onBlur={(e) => this.paymentControl(e.target.value)}/>
                                             </div>
                                         </div>
                                     </div>
@@ -274,49 +339,53 @@ class ExperienceDefine extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row">
-                                    <div className="col-md-9">
-                                        <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Working Plan</label>
-                                            <div className="col-sm-3">
-                                                <div className="form-check">
-                                                    <label className="form-check-label">
-                                                        <input
-                                                            type="radio"
-                                                            className="form-check-input"
-                                                            checked={this.state.workingPlan === "freeTime"}
-                                                            onChange={(event) => this.setState({workingPlan: event.target.value})}
-                                                            value="freeTime"/>
-                                                        Free Time
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div className="col-sm-3">
-                                                <div className="form-check">
-                                                    <label className="form-check-label">
-                                                        <input
-                                                            type="radio"
-                                                            className="form-check-input"
-                                                            checked={this.state.workingPlan === "plannedTime"}
-                                                            onChange={(event) => this.setState({workingPlan: event.target.value})}
-                                                            value="plannedTime"/>
-                                                        Planned Time
-                                                    </label>
-                                                </div>
-                                            </div>
-                                            <div className="col-sm-3">
-                                                <div className="form-check">
-                                                    <label className="form-check-label">
-                                                        <input
-                                                            type="radio"
-                                                            className="form-check-input"
-                                                            checked={this.state.workingPlan === "fullTime"}
-                                                            onChange={(event) => this.setState({workingPlan: event.target.value})}
-                                                            value="fullTime"/>
-                                                        Full Time
-                                                    </label>
-                                                </div>
-                                            </div>
+                                <div className="row d-flex align-items-center">
+                                    <label className="col-sm-3 col-form-label">Working Plan</label>
+                                    <div className="col-sm-3">
+                                        <div
+                                            className="form-check d-flex flex-row align-items-center"
+                                            onClick={(event) => this.setState({workingPlan: 'freeTime'})}>
+                                            <label className="form-check-label">
+                                                <input
+                                                    type="radio"
+                                                    className="form-check-input"
+                                                    name="membershipRadios"
+                                                    id='membershipRadios'
+                                                    checked={this.state.workingPlan === "freeTime"}
+                                                    onChange={(event) => this.setState({workingPlan: event.target.value})}
+                                                    value="freeTime"/> {this.state.workingPlan == 'freeTime' && <i className='icon-check icon-lg text-primary'></i>}
+                                                Free Time
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-3">
+                                        <div
+                                            className="form-check d-flex flex-row align-items-center"
+                                            onClick={(event) => this.setState({workingPlan: 'plannedTime'})}>
+                                            <label className="form-check-label">
+                                                <input
+                                                    type="radio"
+                                                    className="form-check-input"
+                                                    checked={this.state.workingPlan === "plannedTime"}
+                                                    onChange={(event) => this.setState({workingPlan: event.target.value})}
+                                                    value="plannedTime"/> {this.state.workingPlan == 'plannedTime' && <i className='icon-check icon-lg text-primary'></i>}
+                                                Planned Time
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div className="col-sm-3">
+                                        <div
+                                            className="form-check d-flex flex-row align-items-center"
+                                            onClick={() => this.setState({workingPlan: 'fullTime'})}>
+                                            <label className="form-check-label">
+                                                <input
+                                                    type="radio"
+                                                    className="form-check-input"
+                                                    checked={this.state.workingPlan === "fullTime"}
+                                                    onChange={(event) => this.setState({workingPlan: event.target.value})}
+                                                    value="fullTime"/> {this.state.workingPlan == 'fullTime' && <i className='icon-check icon-lg text-primary'></i>}
+                                                Full Time
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
@@ -345,6 +414,7 @@ class ExperienceDefine extends React.Component {
                                     <div className="col-3">Salı
                                     </div>
                                     <div className="col-9">
+                                        {this.state.tuesday.length !== 0 && <PlanList data={this.state.tuesday} day="tuesday" deleteTime={this.deleteTime}/>}
                                         <button
                                             type="button"
                                             className="m-2 btn btn-info font-weight-bold"
@@ -356,13 +426,16 @@ class ExperienceDefine extends React.Component {
                                                 Add new Plan
                                             </span>
                                         </button>
-                                        {this.state.tuesday !== 0 && PlanList(this.state.tuesday)}
                                     </div>
                                 </div>
                                 <div className="row display-3">
                                     <div className="col-3">Çarşamba
                                     </div>
                                     <div className="col-9">
+                                        {this.state.wednesday.length !== 0 && <PlanList
+                                            data={this.state.wednesday}
+                                            day="wednesday"
+                                            deleteTime={this.deleteTime}/>}
                                         <button
                                             type="button"
                                             className="m-2 btn btn-info font-weight-bold"
@@ -374,13 +447,16 @@ class ExperienceDefine extends React.Component {
                                                 Add new Plan
                                             </span>
                                         </button>
-                                        {this.state.wednesday !== 0 && PlanList(this.state.wednesday)}
                                     </div>
                                 </div>
                                 <div className="row display-3">
                                     <div className="col-3">Perşembe
                                     </div>
                                     <div className="col-9">
+                                        {this.state.thursday.length !== 0 && <PlanList
+                                            data={this.state.thursday}
+                                            day="thursday"
+                                            deleteTime={this.deleteTime}/>}
                                         <button
                                             type="button"
                                             className="m-2 btn btn-info font-weight-bold"
@@ -392,13 +468,13 @@ class ExperienceDefine extends React.Component {
                                                 Add new Plan
                                             </span>
                                         </button>
-                                        {this.state.thursday !== 0 && PlanList(this.state.thursday)}
                                     </div>
                                 </div>
                                 <div className="row display-3">
                                     <div className="col-3">Cuma
                                     </div>
                                     <div className="col-9">
+                                        {this.state.friday.length !== 0 && <PlanList data={this.state.friday} day="friday" deleteTime={this.deleteTime}/>}
                                         <button
                                             type="button"
                                             className="m-2 btn btn-info font-weight-bold"
@@ -410,13 +486,16 @@ class ExperienceDefine extends React.Component {
                                                 Add new Plan
                                             </span>
                                         </button>
-                                        {this.state.friday !== 0 && PlanList(this.state.friday)}
                                     </div>
                                 </div>
                                 <div className="row display-3">
                                     <div className="col-3">Cumartesi
                                     </div>
                                     <div className="col-9">
+                                        {this.state.saturday.length !== 0 && <PlanList
+                                            data={this.state.saturday}
+                                            day="saturday"
+                                            deleteTime={this.deleteTime}/>}
                                         <button
                                             type="button"
                                             className="m-2 btn btn-info font-weight-bold"
@@ -428,13 +507,13 @@ class ExperienceDefine extends React.Component {
                                                 Add new Plan
                                             </span>
                                         </button>
-                                        {this.state.saturday !== 0 && PlanList(this.state.saturday)}
                                     </div>
                                 </div>
                                 <div className="row display-3">
                                     <div className="col-3">Pazar
                                     </div>
                                     <div className="col-9">
+                                        {this.state.sunday.length !== 0 && <PlanList data={this.state.sunday} day="sunday" deleteTime={this.deleteTime}/>}
                                         <button
                                             type="button"
                                             className="m-2 btn btn-info font-weight-bold"
@@ -446,7 +525,6 @@ class ExperienceDefine extends React.Component {
                                                 Add new Plan
                                             </span>
                                         </button>
-                                        {this.state.sunday !== 0 && PlanList(this.state.sunday)}
                                     </div>
                                 </div>
                                 <div className="row display-3">

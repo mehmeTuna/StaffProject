@@ -15,6 +15,8 @@
             href="/public/vendors/mdi/css/materialdesignicons.min.css">
         <link rel="stylesheet" href="/public/vendors/feather/feather.css">
         <link rel="stylesheet" href="/public/vendors/base/vendor.bundle.base.css">
+        <link rel='stylesheet' href='/public/vendors/select2/select2.min.css'>   
+        <link rel='stylesheet' href='/public/vendors/select2-bootstrap-theme/select2-bootstrap.min.css'> 
         <!-- endinject -->
         <!-- plugin css for this page -->
         <link

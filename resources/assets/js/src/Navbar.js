@@ -1,14 +1,22 @@
 import React from "react";
 
-const Navbar = () => {
+const Navbar = (props) => {
 
     return (
         <div>
             <nav className="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
                 <div
                     className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-                    <a className="navbar-brand brand-logo" href="/"><img src="/publicimages/logo.svg" alt="logo"/></a>
-                    <a className="navbar-brand brand-logo-mini" href="/"><img src="/public/images/logo-mini.svg" alt="logo"/></a>
+                    {props.img != null && <Link
+                        to={'/' + `${props.data.username}`}
+                        className="navbar-brand brand-logo">
+                        <img src={props.data.img} alt={props.data.username}/>
+                    </Link>}
+                    {props.img != null && <Link
+                        to={'/' + `${props.data.username}`}
+                        className="navbar-brand brand-logo-mini">
+                        <img src={props.data.img} alt={props.data.username}/>
+                    </Link>}
                 </div>
                 <div
                     className="navbar-menu-wrapper d-flex align-items-center justify-content-end">

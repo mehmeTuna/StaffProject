@@ -3,38 +3,39 @@
 namespace App\Http\Controllers;
 
 use App\Business;
-use App\Staff;
+use App\Experience;
 use Illuminate\Http\Request;
 
 class ResponseDataController extends Controller
 {
-    public function getBusinessLocationMinWage()
-    {
-        if(!session ()->has('businessAdmin'))
-            return response()->json ([
-                "status" => false ,
-                "text" => "please login before",
-            ]);
 
-        $data = session ('businessAdmin');
-        $business = Business::find($data["businessId"])->minWage;
-
-        return response ()
-            ->json ($business);
-    }
-
-    public function getBusinessStaffList()
+    public function isLogin()
     {
         if(!session ()->has('businessId'))
             return response()->json ([
                 "status" => false ,
                 "text" => "please login before",
             ]);
+    }
 
-        $data = session ('businessAdmin');
-        $staffList = Staff::where("Business", $data)->get();
+    public function getBusinessLocationMinWage()
+    {
+        $this->isLogin();
+
+        $lang = Business::find( session ('businessId'))->minWage;
 
         return response ()
-            ->json ($staffList->toArray());
+            ->json ($lang);
     }
+
+    public function experienceList()
+    {
+        $this->isLogin();
+
+        $response = Experience::where('Business', session ('businessId'))->get();
+
+        return response ()
+            ->json ($response);
+    }
+
 }

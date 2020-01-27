@@ -53,7 +53,7 @@ class StaffList extends React.Component {
     render() {
         return (
             <div className="col-lg-12 grid-margin stretch-card">
-                {this.state.user.length === 0 && "Tanımlı staff bulunamadı"}
+                {this.state.user.length === 0 && "Staff kismindaki calisma plani kismi aktfi edildikten sonra bu kisim eklenecek"}
                 {this.state.user.length !== 0 && <div className="card">
                     <div className="card-body">
                         <h4 className="card-title">Staff List</h4>

@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Landing &mdash; Free One Page Bootstrap 4 Template by uicookies.com</title>
-    <meta name="description" content="Free Bootstrap 4 Template by uicookies.com">
-    <meta name="keywords" content="Free website templates, Free bootstrap themes, Free template, Free bootstrap, Free website template">
+    <title> Version 1.0 </title>
+    <meta name="description" content="description">
+    <meta name="keywords" content="keywords">
 
     <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600|Montserrat:200,300,400" rel="stylesheet">
 
@@ -24,10 +24,9 @@
     <link rel="stylesheet" href="/public/front/assets/css/landing-2.css">
 </head>
 <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
-
 <nav class="navbar navbar-expand-lg navbar-dark pb_navbar pb_scrolled-light" id="pb-navbar">
     <div class="container">
-        <a class="navbar-brand" href="index.html">Landing</a>
+        <a class="navbar-brand" href="#">Landing</a>
         <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse" data-target="#probootstrap-navbar" aria-controls="probootstrap-navbar" aria-expanded="false" aria-label="Toggle navigation">
             <span><i class="ion-navicon"></i></span>
         </button>
@@ -38,7 +37,7 @@
                 <li class="nav-item"><a class="nav-link" href="#section-reviews">Reviews</a></li>
                 <li class="nav-item"><a class="nav-link" href="#section-pricing">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="#section-faq">FAQ</a></li>
-                <li class="nav-item cta-btn ml-xl-2 ml-lg-2 ml-md-0 ml-sm-0 ml-0"><a class="nav-link" href="https://uicookies.com/" target="_blank"><span class="pb_rounded-4 px-4">Get Started</span></a></li>
+                <li class="nav-item cta-btn ml-xl-2 ml-lg-2 ml-md-0 ml-sm-0 ml-0"><a class="nav-link" href="#" target="_blank"><span class="pb_rounded-4 px-4">Get Started</span></a></li>
             </ul>
         </div>
     </div>

@@ -2,10 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Business;
-use App\Charge;
 use App\Experience;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -13,27 +10,15 @@ class ExperienceController extends Controller
 {
     public function register(Request $request)
     {
-        $businessAdmin = session ("businessAdmin");
-        $businessId = $businessAdmin["businessId"];
-        $business = Business::find(  10);
-        $minWage = $business->minWage ;
 
-        return response ()->json ("experience");
-
-
-
-
-
-        return response()->json (Business::find(  $businessId)->minWage ());
-
+        $businessId = session ("businessId");
 
         $validator = Validator::make($request->all (), [
-            "name" =>"required|min:3|max:100",
-            "pay" =>"required",
-            "factor" => "required",
-            "periode" => "required",
-            "workingClass" =>"required",
-            "workingPlanData" => "required",
+            'experienceName' => 'bail|required|min:3|max:100',
+            'experiencePay' => 'bail|required|numeric',
+            'experienceFactor' => 'bail|required',
+            'experiencePeriode' => 'bail|required|numeric',
+            'workingPlan' => 'bail|required',
         ]);
 
         if ($validator->fails()) {
@@ -42,35 +27,38 @@ class ExperienceController extends Controller
         }
 
 
-        $workClass = [ 0, 1, 2];
-        if(!in_array ($request->workingClass, $workClass))
-            return response()->json (["working-plan" => "not defined"]);
-        $workClass = $request->workingClass;
+        $workClass = ['freeTime', 'plannedTime', 'fullTime'];//TODO: db den al ona kontrol et sonraki adimda
+        if(!in_array ($request->workingPlan, $workClass))
+            return response()->json (['status' => false, 'workingPlan' => 'not defined']);
 
-        //TODO: yeni veri eklendiğinde eski json yapısı silinmemesi lazım ona bir çözüm bul
-        //şu an içn eskini siler yenisini yazar
-        $business->update(["ExperienceClass", ["id"=>1, "name" => $request->workingClass]]);
+
+        $workPlan = array_keys($workClass, $request->workingPlan); //db ye sayisal olarak eklenecek
 
         $experience = Experience::create([
-            "WorkClass" =>  $workClass,
+            "WorkClass" =>  $workPlan[0],
             "Color" => null,
-            "Business" => $business->Id,
-            "Identifier" => $request->name,
-            "Class" => 1,
+            'OwnerClass' => 0,
+            'Business' => $businessId,
+            'Identifier' =>  $request->experienceName,
+            'Class' => 1 , //TODO: business tablosundan kontrol edilip eklenecek,
+            'Periode' => $request->experiencePeriode,
+            'Factor' => $request->experienceFactor,
+            'Pay' => $request->experiencePay,
+            'workingPlan' => [
+                'monday' => $request->monday,
+                'tuesday' => $request->tuesday,
+                'wednesday' => $request->wednesday,
+                'thursday' => $request->thursday,
+                'friday' => $request->friday,
+                'saturday' => $request->saturday,
+                'sunday' => $request->sunday
+            ]
         ]);
 
-        $charge = Charge::create([
-            "manager" => $businessAdmin["Id"],
-            "Business" => $business["Id"],
-            "Periode" => $request->periode,
-            "Factor" => $request->factor,
-            "Pay" => $request->pay,
-            "Experience" => $experience->Id,
+        return response ()->json([
+            'status' => true,
+            'text' => 'kayit basarili'
         ]);
-
-        $experience->update (["Charge" => $charge->Id]);
-
-        return response ("basarılı");
 
     }
 }

@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
-    protected $visible = ["FirstName", "LastName", "Birthday", "Image", "Adress", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Lang", "Business", "Employment", "Career", "TimeSheetMap"];
-    protected $fillable = ["Admin", "FirstName", "LastName", "Birthday", "Image", "Adress", "Password", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Lang", "Business", "Employment", "Career", "TimeSheetMap"];
+    protected $visible = ["FirstName", "LastName", "Birthday", "Image", "Adress", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap"];
+    protected $fillable = ["FirstName", "LastName", "Birthday", "Image", "Adress", "Password", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap"];
     protected $table = "Staff";
     protected $primaryKey = "Id";
     public $timestamps = true ;

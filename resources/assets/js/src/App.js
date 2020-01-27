@@ -22,6 +22,7 @@ class App extends React.Component {
     }
 
     async componentDidMount() {
+        
         let self = this;
         await axios
             .post("/business/data")
@@ -33,7 +34,7 @@ class App extends React.Component {
         return (
             <Router>
                 <div className="container-scroller">
-                    <Navbar/>
+                    <Navbar data={this.state.bussData}/>
                     <div className="container-fluid page-body-wrapper">
                         <Sidebar data={this.state.bussData}/>
                         <div className="main-panel">
@@ -41,15 +42,15 @@ class App extends React.Component {
                                 <div className="row">
                                     <Switch>
                                         <Route path={'/' + `${this.state.bussData.username + '/staff/create'}`}>
-                                            <StaffCreate/>
+                                            <StaffCreate data={this.state.bussData}/>
                                         </Route>
                                         <Route path={'/' + `${this.state.bussData.username + '/experience/create'}`}>
-                                            <ExperienceDefine/>
+                                            <ExperienceDefine data={this.state.bussData}/>
                                         </Route>
                                         <Route path={'/' + `${this.state.bussData.username + '/experience/List'}`}>
                                             <ExperienceList/>
                                         </Route>
-                                        <Route path={'/' + `${this.state.bussData.username + '/staff/list'}`}>
+                                        <Route path={'/' + `${this.state.bussData.username + '/staff/list'}`}> 
                                             <StaffList/>
                                         </Route>
                                         <Route path="/">

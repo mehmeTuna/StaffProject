@@ -15,7 +15,7 @@ const Sidebar = (props) => {
             </div>
             <ul className="nav">
                 <li className="nav-item">
-                    <Link to="/" className="nav-link">
+                    <Link to={'/' + `${props.data.username}`} className="nav-link">
                         <i className="icon-box menu-icon"></i>
                         <span className="menu-title">AnaSayfa</span>
                     </Link>
