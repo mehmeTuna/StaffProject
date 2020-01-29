@@ -33,14 +33,6 @@ class StaffController extends Controller
         }
 
 
-
-        $workClass = ['freeTime', 'plannedTime', 'fullTime'];//TODO: db den al ona kontrol et sonraki adimda
-        if(!in_array ($request->workingPlan, $workClass))
-          //  return response()->json (['status' => false, 'workingPlan' => 'not defined']);
-
-
-        $workPlan = array_keys($workClass, $request->workingPlan); //db ye sayisal olarak eklenecek
-
         //employment su asamada ekli degil
         //TODO: meployment kismi eklenecek
 
@@ -68,7 +60,8 @@ class StaffController extends Controller
           "Business" => $businessId,
           "Employment" => 1,
           "Career" => $career->Id,
-          "TimeSheetMap" => 1
+          "TimeSheetMap" => 1,
+           'workingPlan' => $request->workingPlan
         ]);
 
         $employment = Employment::create([

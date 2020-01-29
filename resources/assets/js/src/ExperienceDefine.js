@@ -109,12 +109,29 @@ class ExperienceDefine extends React.Component {
         this.paymnetControl = this
             .paymentControl
             .bind(this);
+
+        this.compareTime = this.compareTime.bind(this);
     }
 
     async componentDidMount() {
         const {data} = await axios.post('/business/location/minWage');
 
         this.setState({isMinWage: data});
+    }
+
+    compareTime(str1, str2){
+        if(str1 === str2){
+            return 0;
+        }
+        let time1 = str1.split(':');
+        let time2 = str2.split(':');
+        if(eval(time1[0]) > eval(time2[0])){
+            return 1;
+        } else if(eval(time1[0]) === eval(time2[0]) && eval(time1[1]) > eval(time2[1])) {
+            return 1;
+        } else {
+            return -1;
+        }
     }
 
     handleSubmit() {
@@ -181,41 +198,60 @@ class ExperienceDefine extends React.Component {
     dataSet() {
         if (this.state.selectedStartTime === "" || this.state.selectedEndTime === "") 
             return;
+
+        if(this.compareTime(this.state.selectedStartTime, this.state.selectedEndTime) === 1){
+            sweet.fire({
+                position: 'top-end',
+                icon: 'info',
+                title: 'Cikis saati giris saatinden once olamaz',
+                showConfirmButton: false,
+                timer: 1500
+            }).then(() => this.setState({selectedStartTime : '', selectedEndTime: ''}));
+            return ;
+        }
+
         switch (this.state.selectedDay) {
             case "monday":
                 let dataMonday = this.state.monday;
                 dataMonday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({monday: dataMonday});
+                this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "tuesday":
                 let dataTuesday = this.state.tuesday;
                 dataTuesday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({tuesday: dataTuesday});
+                this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "wednesday":
                 let dataWednesday = this.state.wednesday;
                 dataWednesday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({wednesday: dataWednesday});
+                this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "thursday":
                 let dataThursday = this.state.thursday;
                 dataThursday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({Thursday: dataThursday});
+                this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "friday":
                 let dataFriday = this.state.friday;
                 dataFriday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({friday: dataFriday});
+                this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "saturday":
                 let dataSaturday = this.state.saturday;
                 dataSaturday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({saturday: dataSaturday});
+                this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "sunday":
                 let dataSunday = this.state.sunday;
                 dataSunday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({sunday: dataSunday});
+                this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             default:
                 console.log('dataSet foksiyion kismi default');
@@ -271,15 +307,12 @@ class ExperienceDefine extends React.Component {
                 <div className="col-12 grid-margin">
                     <div className="card">
                         <div className="card-body">
-                            <h4 className="card-title">Experience Define</h4>
+                            <h4 className="text-center display-4">Experience Define</h4>
                             <form className="form-sample" onSubmit={this.handleSubmit}>
-                                <p className="card-description">
-                                    Experience info
-                                </p>
                                 <div className="row">
                                     <div className="col-md-6">
                                         <div className="form-group row">
-                                            <label className="col-sm-3 col-form-label">Experience Name</label>
+                                            <label className="col-sm-3 col-form-label mb-4">Experience Name</label>
                                             <div className="col-sm-9">
                                                 <input
                                                     type="text"
@@ -290,7 +323,7 @@ class ExperienceDefine extends React.Component {
                                         </div>
                                     </div>
                                     <div className="col-md-6">
-                                        {this.state.alert.pay.status == true && <p className='col-sm-6 mx-auto text-danger'>
+                                        {this.state.alert.pay.status === true && <p className='col-sm-6 mx-auto text-danger'>
                                             {this.state.alert.pay.text}</p>}
                                         <div className="form-group row">
                                             <label className="col-sm-3 col-form-label">Pay</label>
@@ -304,7 +337,7 @@ class ExperienceDefine extends React.Component {
                                                     pay: event
                                                         .target
                                                         .value
-                                                        .replace(/\D/, '')
+                                                        .replace(/[^0-9]+\.?[^0-9]/g, '')
                                                 })}
                                                     onBlur={(e) => this.paymentControl(e.target.value)}/>
                                             </div>
@@ -339,56 +372,31 @@ class ExperienceDefine extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                                <div className="row d-flex align-items-center">
-                                    <label className="col-sm-3 col-form-label">Working Plan</label>
-                                    <div className="col-sm-3">
-                                        <div
-                                            className="form-check d-flex flex-row align-items-center"
-                                            onClick={(event) => this.setState({workingPlan: 'freeTime'})}>
-                                            <label className="form-check-label">
-                                                <input
-                                                    type="radio"
-                                                    className="form-check-input"
-                                                    name="membershipRadios"
-                                                    id='membershipRadios'
-                                                    checked={this.state.workingPlan === "freeTime"}
-                                                    onChange={(event) => this.setState({workingPlan: event.target.value})}
-                                                    value="freeTime"/> {this.state.workingPlan == 'freeTime' && <i className='icon-check icon-lg text-primary'></i>}
-                                                Free Time
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-3">
-                                        <div
-                                            className="form-check d-flex flex-row align-items-center"
-                                            onClick={(event) => this.setState({workingPlan: 'plannedTime'})}>
-                                            <label className="form-check-label">
-                                                <input
-                                                    type="radio"
-                                                    className="form-check-input"
-                                                    checked={this.state.workingPlan === "plannedTime"}
-                                                    onChange={(event) => this.setState({workingPlan: event.target.value})}
-                                                    value="plannedTime"/> {this.state.workingPlan == 'plannedTime' && <i className='icon-check icon-lg text-primary'></i>}
-                                                Planned Time
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-3">
-                                        <div
-                                            className="form-check d-flex flex-row align-items-center"
-                                            onClick={() => this.setState({workingPlan: 'fullTime'})}>
-                                            <label className="form-check-label">
-                                                <input
-                                                    type="radio"
-                                                    className="form-check-input"
-                                                    checked={this.state.workingPlan === "fullTime"}
-                                                    onChange={(event) => this.setState({workingPlan: event.target.value})}
-                                                    value="fullTime"/> {this.state.workingPlan == 'fullTime' && <i className='icon-check icon-lg text-primary'></i>}
-                                                Full Time
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div className='row flex-grow col-md-12 grid-margin stretch-card'>
+                    <div className={this.state.workingPlan === '' ? 'col-sm-12 col-md-12 grid-margin stretch-card' : 'col-sm-12 col-md-4 grid-margin stretch-card'}>
+                        <div className='card text-center'>
+                            <div className="card-body">Working Plan Select</div>
+                            <div className="card-body display-4 btn-outline-success btn-fw" onClick={(event) => this.setState({workingPlan: 'freeTime'})}>
+                                {this.state.workingPlan === 'freeTime' && <i className='icon-check icon-lg text-primary'/>}
+                                Free Time
+                            </div>
+                            <div className="card-body display-4 btn-outline-success btn-fw" onClick={(event) => this.setState({workingPlan: 'plannedTime'})}>
+                                {this.state.workingPlan === 'plannedTime' && <i className='icon-check icon-lg text-primary'/>}
+                                Planned Time
+                            </div>
+                            <div className="card-body display-4 btn-outline-success btn-fw" onClick={() => this.setState({workingPlan: 'fullTime'})}>
+                                {this.state.workingPlan === 'fullTime' && <i className='icon-check icon-lg text-primary'/>}
+                                Full Time
+                            </div>
+                        </div>
+                    </div>
+                    {this.state.workingPlan !== '' && <div className='col-md-8 grid-margin stretch-card'>
+                        <div className='card'>
+                            <div className='card-body'>
                                 <p className="card-description">
                                     Seçilen çalışma şekline bağlı çalışma planı tanımlama
                                 </p>
@@ -402,7 +410,7 @@ class ExperienceDefine extends React.Component {
                                             className="m-2 btn btn-info font-weight-bold"
                                             onClick={() => this.customClock("monday")}>
                                             <span className="badge">
-                                                <i className="icon-circle-plus"></i>
+                                                <i className="icon-circle-plus"/>
                                             </span>
                                             <span>
                                                 Add new Plan
@@ -420,7 +428,7 @@ class ExperienceDefine extends React.Component {
                                             className="m-2 btn btn-info font-weight-bold"
                                             onClick={() => this.customClock("tuesday")}>
                                             <span className="badge">
-                                                <i className="icon-circle-plus"></i>
+                                                <i className="icon-circle-plus"/>
                                             </span>
                                             <span>
                                                 Add new Plan
@@ -441,7 +449,7 @@ class ExperienceDefine extends React.Component {
                                             className="m-2 btn btn-info font-weight-bold"
                                             onClick={() => this.customClock("wednesday")}>
                                             <span className="badge">
-                                                <i className="icon-circle-plus"></i>
+                                                <i className="icon-circle-plus"/>
                                             </span>
                                             <span>
                                                 Add new Plan
@@ -462,7 +470,7 @@ class ExperienceDefine extends React.Component {
                                             className="m-2 btn btn-info font-weight-bold"
                                             onClick={() => this.customClock("thursday")}>
                                             <span className="badge">
-                                                <i className="icon-circle-plus"></i>
+                                                <i className="icon-circle-plus"/>
                                             </span>
                                             <span>
                                                 Add new Plan
@@ -480,7 +488,7 @@ class ExperienceDefine extends React.Component {
                                             className="m-2 btn btn-info font-weight-bold"
                                             onClick={() => this.customClock("friday")}>
                                             <span className="badge">
-                                                <i className="icon-circle-plus"></i>
+                                                <i className="icon-circle-plus"/>
                                             </span>
                                             <span>
                                                 Add new Plan
@@ -501,7 +509,7 @@ class ExperienceDefine extends React.Component {
                                             className="m-2 btn btn-info font-weight-bold"
                                             onClick={() => this.customClock("saturday")}>
                                             <span className="badge">
-                                                <i className="icon-circle-plus"></i>
+                                                <i className="icon-circle-plus"/>
                                             </span>
                                             <span>
                                                 Add new Plan
@@ -519,7 +527,7 @@ class ExperienceDefine extends React.Component {
                                             className="m-2 btn btn-info font-weight-bold"
                                             onClick={() => this.customClock("sunday")}>
                                             <span className="badge">
-                                                <i className="icon-circle-plus"></i>
+                                                <i className="icon-circle-plus"/>
                                             </span>
                                             <span>
                                                 Add new Plan
@@ -527,20 +535,26 @@ class ExperienceDefine extends React.Component {
                                         </button>
                                     </div>
                                 </div>
-                                <div className="row display-3">
-                                    <button
-                                        type="button"
-                                        className="btn btn-success font-weight-bold mx-auto mt-4"
-                                        onClick={this.handleSubmit}>
+                            </div>
+                        </div>
+                    </div>}
+                </div>
+                <div className='col-sm-12 col-md-12 grid-margin stretch-card'>
+                    <div className='card'>
+                        <div className='card-body'>
+                            <div className="row display-3">
+                                <button
+                                    type="button"
+                                    className="btn btn-success font-weight-bold mx-auto mt-4"
+                                    onClick={this.handleSubmit}>
                                         <span className="badge">
-                                            <i className="icon-circle-plus"></i>
+                                            <i className="icon-circle-plus"/>
                                         </span>
                                         <span>
                                             Create
                                         </span>
-                                    </button>
-                                </div>
-                            </form>
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

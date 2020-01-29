@@ -1,34 +1,60 @@
 import React from "react";
 import Axios from "axios";
 
-function ExperienceTableList(value) {
 
-    const list = value
-        .data
-        .map((value, key) => <tr key={key}>
-            <td className="py-1">
-                {value.Identifier}
-            </td>
-            <td>
-                {value.WorkClass}
-            </td>
-            <td>
-                {value.Pay}
-            </td>
-            <td>
-                {value.Factor}
-            </td>
-            <td>
-                {value.Periode}
-            </td>
-            <td>
-                {value.Class}
-            </td>
-        </tr>);
-
-    return list;
+function dayPlanList(data){
+    return data.map((value, key)=> <button
+        key={key}
+        type="button"
+        className="m-2 btn btn-info font-weight-bold">
+            <span className="m-1">
+                {value.start}
+                - {value.end}
+            </span>
+    </button>) ;
 }
 
+function ExperienceRender(data){
+
+    return data.data.map((val, key)=><div key={key} className="col-lg-12 grid-margin stretch-card">
+        <div className='card'>
+            <div className='card-body'>
+                <div className="col-sm-12 mb-4 mb-xl-0">
+                    <h4 className="font-weight-bold text-dark">{val.Identifier}</h4>
+                </div>
+                <div className='row mt-3'>
+                    <div className='col-xl-3 flex-column d-flex grid-margin stretch-card'>
+                        <div className='row flex-grow'>
+                            <div className='col-sm-12 grid-margin '>
+                                <div className='card'>
+                                    <div className='card-body'>
+                                        <div className='card-title'> Pay: <span className='text-muted'>{val.Pay}</span> </div>
+                                        <div className='card-title'> Factor:<span className='text-muted'>{val.Factor}</span></div>
+                                        <div className='card-title'> Period: <span className='text-muted'>{val.Periode}</span> </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className='col-xl-9 d-flex grid-margin stretch-card'>
+                        <div className='card'>
+                            <div className='card-body'>
+                                <div className='card-title'>Plan</div>
+                                {val.workingPlan !== undefined && val.workingPlan.monday.length !== 0 && <h1 className='display-4'>Monday {dayPlanList(val.workingPlan.monday)}</h1>}
+                                {val.workingPlan !== undefined && val.workingPlan.tuesday.length !== 0 && <h1 className='display-4'>Tuesday {dayPlanList(val.workingPlan.tuesday)}</h1>}
+                                {val.workingPlan !== undefined && val.workingPlan.wednesday.length !== 0 && <h1 className='display-4'>Wednesday {dayPlanList(val.workingPlan.wednesday)}</h1>}
+                                {val.workingPlan !== undefined && val.workingPlan.thursday.length !== 0 && <h1 className='display-4'>Thursday {dayPlanList(val.workingPlan.thursday)}</h1>}
+                                {val.workingPlan !== undefined && val.workingPlan.friday.length !== 0 && <h1 className='display-4'>Friday {dayPlanList(val.workingPlan.friday)}</h1>}
+                                {val.workingPlan !== undefined && val.workingPlan.saturday.length !== 0 && <h1 className='display-4'>Saturday {dayPlanList(val.workingPlan.saturday)}</h1>}
+                                {val.workingPlan !== undefined && val.workingPlan.sunday.length !== 0 && <h1 className='display-4'>Sunday {dayPlanList(val.workingPlan.sunday)}</h1>}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>);
+}
 class ExperienceList extends React.Component {
 
     constructor(props) {
@@ -48,47 +74,11 @@ class ExperienceList extends React.Component {
     render() {
         return (
             <React.Fragment>
-                {this.state.list.length == 0
+                {this.state.list.length === 0
                     ? <div className="col-lg-12 grid-margin stretch-card">
                             Tanımlı Experience bulunamadı
                         </div>
-                    : <div className="col-lg-12 grid-margin stretch-card">
-                        <div className="card">
-                            <div className="card-body">
-                                <h4 className="card-title">Experience List</h4>
-                                <p className="card-description"></p>
-                                <div className="table-responsive">
-                                    <table className="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th>
-                                                    Name
-                                                </th>
-                                                <th>
-                                                    Work Class
-                                                </th>
-                                                <th>
-                                                    Pay
-                                                </th>
-                                                <th>
-                                                    Factor
-                                                </th>
-                                                <th>
-                                                    Periode
-                                                </th>
-                                                <th>
-                                                    Class
-                                                </th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <ExperienceTableList data={this.state.list}/>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>}
+                    : <ExperienceRender data={this.state.list} />}
             </React.Fragment>
         )
     };
