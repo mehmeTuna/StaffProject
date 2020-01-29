@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import axios from "axios";
 import withReactContent from 'sweetalert2-react-content';
 import TimeKeeper from "react-timekeeper";
+import { Redirect } from "react-router-dom";
 
 const sweet = withReactContent(Swal);
 
@@ -83,7 +84,8 @@ class StaffCreate extends React.Component {
                     status: false,
                     text: 'minimum tutar giriniz'
                 }
-            }
+            },
+            redirect: null,
         };
 
         this.handleSubmit = this
@@ -132,12 +134,13 @@ class StaffCreate extends React.Component {
             telephone: this.state.telephone,
             email: this.state.email,
             password: this.state.password,
-            workingPlan : this.state.workingData[this.state.selectedExperience].workingPlan
+            workingPlan : this.state.workingData[this.state.selectedExperience].workingPlan,
+            experience: this.state.selectedExperience
         }).then((res) => {
             if(res.data.status === true){
                 sweet
                 .fire('Created')
-                .then(()=> location.href = `/${this.props.data.username}/staff/list`);
+                .then(()=> this.setState({ redirect: `/${this.props.data.username}/staff/list` }));
             }else {
                 sweet
                 .fire('Gerekli alanlari doldurunuz');
@@ -176,32 +179,32 @@ class StaffCreate extends React.Component {
                 console.log(this.state.workingData);
                 break;
             case "tuesday":
-                let dataTuesday = this.state.workingData[this.state.selectedExperience];
+                let dataTuesday = this.state.workingData;
                 dataTuesday[this.state.selectedExperience].workingPlan.tuesday.splice(key, 1);
                 this.setState({workingData: dataTuesday});
                 break;
             case "wednesday":
-                let dataWednesday = this.state.workingData[this.state.selectedExperience];
+                let dataWednesday = this.state.workingData;
                 dataWednesday[this.state.selectedExperience].workingPlan.wednesday.splice(key, 1);
                 this.setState({workingData: dataWednesday});
                 break;
             case "thursday":
-                let dataThursday = this.state.workingData[this.state.selectedExperience];
+                let dataThursday = this.state.workingData;
                 dataThursday[this.state.selectedExperience].workingPlan.thursday.splice(key, 1);
                 this.setState({workingData: dataThursday});
                 break;
             case "friday":
-                let dataFriday = this.state.workingData[this.state.selectedExperience];
+                let dataFriday = this.state.workingData;
                 dataFriday[this.state.selectedExperience].workingPlan.friday.splice(key, 1);
                 this.setState({workingData: dataFriday});
                 break;
             case "saturday":
-                let dataSaturday = this.state.workingData[this.state.selectedExperience];
+                let dataSaturday = this.state.workingData;
                 dataSaturday[this.state.selectedExperience].workingPlan.saturday.splice(key, 1);
                 this.setState({workingData: dataSaturday});
                 break;
             case "sunday":
-                let dataSunday = this.state.workingData[this.state.selectedExperience];
+                let dataSunday = this.state.workingData;
                 dataSunday[this.state.selectedExperience].workingPlan.sunday.splice(key, 1);
                 this.setState({workingData: dataSunday});
                 break;
@@ -231,37 +234,37 @@ class StaffCreate extends React.Component {
                 this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "tuesday":
-                let dataTuesday = this.state.workingData[this.state.selectedExperience];
+                let dataTuesday = this.state.workingData;
                 dataTuesday[this.state.selectedExperience].workingPlan.tuesday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({workingData: dataTuesday});
                 this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "wednesday":
-                let dataWednesday = this.state.workingData[this.state.selectedExperience];
+                let dataWednesday = this.state.workingData;
                 dataWednesday[this.state.selectedExperience].workingPlan.wednesday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({workingData: dataWednesday});
                 this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "thursday":
-                let dataThursday = this.state.workingData[this.state.selectedExperience];
+                let dataThursday = this.state.workingData;
                 dataThursday[this.state.selectedExperience].workingPlan.thursday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({workingData: dataThursday});
                 this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "friday":
-                let dataFriday = this.state.workingData[this.state.selectedExperience];
+                let dataFriday = this.state.workingData;
                 dataFriday[this.state.selectedExperience].workingPlan.friday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({workingData: dataFriday});
                 this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "saturday":
-                let dataSaturday = this.state.workingData[this.state.selectedExperience];
+                let dataSaturday = this.state.workingData;
                 dataSaturday[this.state.selectedExperience].workingPlan.saturday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({workingData: dataSaturday});
                 this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
                 break;
             case "sunday":
-                let dataSunday = this.state.workingData[this.state.selectedExperience];
+                let dataSunday = this.state.workingData;
                 dataSunday[this.state.selectedExperience].workingPlan.sunday.push({start: this.state.selectedStartTime, end: this.state.selectedEndTime});
                 this.setState({workingData: dataSunday});
                 this.setState({selectedStartTime: '' , selectedEndTime: ''}) ;
@@ -333,6 +336,9 @@ class StaffCreate extends React.Component {
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+          }
         return (
             <div className="col-12 grid-margin">
                 <div className="card grid-margin">

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Business;
 use App\Experience;
+use App\Staff;
 use Illuminate\Http\Request;
 
 class ResponseDataController extends Controller
@@ -33,6 +34,16 @@ class ResponseDataController extends Controller
         $this->isLogin();
 
         $response = Experience::where('Business', session ('businessId'))->get();
+
+        return response ()
+            ->json ($response);
+    }
+
+    public function staffList()
+    {
+        $this->isLogin();
+
+        $response = Staff::where('Business', session ('businessId'))->get();
 
         return response ()
             ->json ($response);

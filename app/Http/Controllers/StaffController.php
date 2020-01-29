@@ -61,7 +61,8 @@ class StaffController extends Controller
           "Employment" => 1,
           "Career" => $career->Id,
           "TimeSheetMap" => 1,
-           'workingPlan' => $request->workingPlan
+           'workingPlan' => $request->workingPlan,
+           'Experience' => $request->experience,
         ]);
 
         $employment = Employment::create([

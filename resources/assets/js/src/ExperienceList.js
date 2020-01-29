@@ -1,6 +1,6 @@
 import React from "react";
 import Axios from "axios";
-
+import {Link} from "react-router-dom";
 
 function dayPlanList(data){
     return data.map((value, key)=> <button
@@ -55,6 +55,8 @@ function ExperienceRender(data){
         </div>
     </div>);
 }
+
+
 class ExperienceList extends React.Component {
 
     constructor(props) {
@@ -75,9 +77,29 @@ class ExperienceList extends React.Component {
         return (
             <React.Fragment>
                 {this.state.list.length === 0
-                    ? <div className="col-lg-12 grid-margin stretch-card">
-                            Tanımlı Experience bulunamadı
+                    ? <div className='col-sm-12 col-md-12 grid-margin stretch-card'>
+                    <div className='card'>
+                        <div className='card-body text-center'>
+                            <div className='card-title'>
+                                <h4 className='font-weight-bold text-dark'>Herhangi bir tanimli Experience bulunamadi yeni bir tane tanimlamak istermisiniz</h4>
+                            </div>
+                            <div className="row display-3">
+                                <Link
+                                    to={'/' + `${this.props.data.username + '/experience/create'}`}
+                                    className="nav-link mx-auto">
+                                    <button type="button" className="btn btn-success font-weight-bold mx-auto mt-4">
+                                        <span className="badge">
+                                            <i className="icon-circle-plus"/>
+                                        </span>
+                                        <span>
+                                            Create
+                                        </span>
+                                    </button>
+                                </Link>
+                            </div>
                         </div>
+                    </div>
+                </div>
                     : <ExperienceRender data={this.state.list} />}
             </React.Fragment>
         )

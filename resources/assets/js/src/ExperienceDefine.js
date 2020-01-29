@@ -3,6 +3,7 @@ import axios from "axios";
 import TimeKeeper from 'react-timekeeper';
 import Swal from 'sweetalert2';
 import withReactContent from 'sweetalert2-react-content';
+import { Redirect } from "react-router-dom";
 
 const sweet = withReactContent(Swal);
 
@@ -79,7 +80,8 @@ class ExperienceDefine extends React.Component {
                     status: false,
                     text: 'minimum tutar giriniz'
                 }
-            }
+            },
+            redirect: null
         };
 
         this.handleSubmit = this
@@ -151,7 +153,7 @@ class ExperienceDefine extends React.Component {
         }).then((res) => {
             sweet
                 .fire('Created')
-                .then(() => location.href = `/${this.props.data.username}/experience/list`);
+                .then(() => this.setState({ redirect: `/${this.props.data.username}/experience/list`}));
         });
     }
 
@@ -302,6 +304,9 @@ class ExperienceDefine extends React.Component {
     }
 
     render() {
+        if (this.state.redirect) {
+            return <Redirect to={this.state.redirect} />
+          }
         return (
             <React.Fragment>
                 <div className="col-12 grid-margin">

@@ -48,10 +48,10 @@ class App extends React.Component {
                                             <ExperienceDefine data={this.state.bussData}/>
                                         </Route>
                                         <Route path={'/' + `${this.state.bussData.username + '/experience/List'}`}>
-                                            <ExperienceList/>
+                                            <ExperienceList data={this.state.bussData}/>
                                         </Route>
                                         <Route path={'/' + `${this.state.bussData.username + '/staff/list'}`}> 
-                                            <StaffList/>
+                                            <StaffList data={this.state.bussData}/>
                                         </Route>
                                         <Route path="/">
                                             <Home/>

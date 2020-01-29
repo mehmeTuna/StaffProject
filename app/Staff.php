@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
-    protected $visible = ["FirstName", "LastName", "Birthday", "Image", "Adress", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap", 'workingPlan'];
-    protected $fillable = ["FirstName", "LastName", "Birthday", "Image", "Adress", "Password", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap", 'workingPlan'];
-    protected $table = "Staff";
+    protected $visible = ["FirstName", "LastName", "Birthday", "Image", "Adress", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap", 'workingPlan', 'Experience'];
+    protected $fillable = ["FirstName", "LastName", "Birthday", "Image", "Adress", "Password", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap", 'workingPlan', 'Experience'];
+    protected $table = "staff";
     protected $primaryKey = "Id";
     public $timestamps = true ;
+    protected $casts = ['workingPlan' => 'object'];
 
     public function setworkingPlanAttribute($value)
     {
