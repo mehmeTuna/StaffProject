@@ -10,6 +10,12 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('qr-code', function () {
+
+  return QrCode::size(500)->generate('Mehmet Tuna Qr Code kismi');
+  
+});
+
 
 Route::post('/business/register', 'BusinessController@register'); //isletme kayit icin post edilecek yer
 
@@ -29,7 +35,8 @@ Route::post("/business/staff/list", 'ResponseDataController@staffList');
 Route::post("/business/experience/list", 'ResponseDataController@experienceList');
 Route::post("/business/location/minWage", 'ResponseDataController@getBusinessLocationMinWage');
 
-
+//kiosk islemleri bu kisim istekleri  sadece  kiosk requestleri icin dir
+Route::get('/business/kiosk/qr/generate', 'KioskController@generateQr');
 
 //varsayılan kayıt sayfasına gider
 Route::get('/home', 'WelcomeController@index');
