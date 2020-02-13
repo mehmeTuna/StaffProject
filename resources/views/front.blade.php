@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="/public/front/assets/css/helpers.css">
     <link rel="stylesheet" href="/public/front/assets/css/style.css">
     <link rel="stylesheet" href="/public/front/assets/css/landing-2.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
 </head>
 <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
 <nav class="navbar navbar-expand-lg navbar-dark pb_navbar pb_scrolled-light" id="pb-navbar">
@@ -33,11 +34,12 @@
         <div class="collapse navbar-collapse" id="probootstrap-navbar">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link" href="#section-home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/kiosk/ekle">Kiosk Register</a></li>
                 <li class="nav-item"><a class="nav-link" href="#section-features">Features</a></li>
                 <li class="nav-item"><a class="nav-link" href="#section-reviews">Reviews</a></li>
                 <li class="nav-item"><a class="nav-link" href="#section-pricing">Pricing</a></li>
                 <li class="nav-item"><a class="nav-link" href="#section-faq">FAQ</a></li>
-                <li class="nav-item cta-btn ml-xl-2 ml-lg-2 ml-md-0 ml-sm-0 ml-0"><a class="nav-link" href="#" target="_blank"><span class="pb_rounded-4 px-4">Get Started</span></a></li>
+                <li class="nav-item cta-btn ml-xl-2 ml-lg-2 ml-md-0 ml-sm-0 ml-0"><a class="nav-link" href="/business/giris" ><span class="pb_rounded-4 px-4">Login</span></a></li>
             </ul>
         </div>
     </div>
@@ -51,9 +53,9 @@
     <div class="container">
         <div class="row align-items-center justify-content-center">
             <div class="col-md-6">
-                <h2 class="heading mb-3">Fly makes you faster</h2>
+                <h2 class="heading mb-3">Kontroller hic bu kadar kolay olmamisti</h2>
                 <div class="sub-heading">
-                    <p class="mb-4">New free template by <a href="http://uicookies.com" target="_blank">uicookies.com</a>. For more templates visit the <a href="http://uicookies.com" target="_blank">site</a>. Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+                    <p class="mb-4"> </p>
                     <p class="mb-5"><a class="btn btn-success btn-lg pb_btn-pill smoothscroll" href="#section-pricing"><span class="pb_font-14 text-uppercase pb_letter-spacing-1">See Pricing</span></a></p>
                 </div>
             </div>
@@ -526,6 +528,16 @@
 </section>
 <!-- END section -->
 
+<!-- START Bootstrap-Cookie-Alert -->
+<div class="alert text-center cookiealert" role="alert">
+    <b>Cerez politikasi </b> Daha fazla bilgi icin  <a href="#" target="_blank">sayfasini ziyaret ediniz</a>
+
+    <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
+        Anladim
+    </button>
+</div>
+<!-- END Bootstrap-Cookie-Alert -->
+
 <footer class="pb_footer bg-light" role="contentinfo">
     <div class="container">
         <div class="row text-center">
@@ -550,7 +562,7 @@
 <div id="pb_loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#1d82ff"/></svg></div>
 
 
-
+<script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script><!-- cookie policy js file-->
 <script src="/public/front/assets/js/jquery.min.js"></script>
 <script src="/public/front/assets/js/popper.min.js"></script>
 <script src="/public/front/assets/js/bootstrap.min.js"></script>

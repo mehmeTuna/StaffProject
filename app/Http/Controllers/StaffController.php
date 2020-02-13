@@ -5,11 +5,17 @@ namespace App\Http\Controllers;
 use App\Staff;
 use App\Career;
 use App\Employment;
+use Carbon\Carbon;
+use http\Env\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class StaffController extends Controller
 {
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function register(Request $request)
     {
 
@@ -32,6 +38,25 @@ class StaffController extends Controller
             return response ()->json (['status' => false , 'errors' => $errors->all()]);
         }
 
+        $staffWorkingPlan = $request->workingPlan ;
+        $calculatedTime = 0 ;
+
+        $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
+
+            for ($counter = 0 ; $counter <= 6; $counter++)
+            {
+                if(count($staffWorkingPlan[$days[$counter]]))
+                {
+                    foreach ($staffWorkingPlan[$days[$counter]] as $result)
+                    {
+                        $startTime = Carbon::parse($result['start']);
+                        $finishTime = Carbon::parse($result['end']);
+
+                        $totalDuration = $finishTime->diffInSeconds($startTime);
+                       $calculatedTime += $totalDuration ;
+                    }
+                }
+            }
 
         //employment su asamada ekli degil
         //TODO: meployment kismi eklenecek
@@ -41,7 +66,7 @@ class StaffController extends Controller
           'EndTime' => null,
           'WorkClass' => 1,//TODO: bu kisim frontend e working plan kismi hazir olduktan sonra eklenecek simdilik varsayilan 1,
           'Staff' => null,
-          'Experience' => 1,
+          'Experience' => $request->experience,
           'Recompense' => 1
         ]);
 
@@ -63,6 +88,10 @@ class StaffController extends Controller
           "TimeSheetMap" => 1,
            'workingPlan' => $request->workingPlan,
            'Experience' => $request->experience,
+            'Factor' => $request->factor,
+            'Pay' => $request->pay,
+            'Periode' => $request->periode,
+            'operationtime' => $calculatedTime,
         ]);
 
         $employment = Employment::create([

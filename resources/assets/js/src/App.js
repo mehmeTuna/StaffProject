@@ -12,6 +12,8 @@ import StaffList from "./StaffList";
 
 import ExperienceDefine from "./ExperienceDefine";
 import ExperienceList from './ExperienceList';
+import KioskList from './KioskList';
+import KioskDefine from './KioskDefine';
 
 class App extends React.Component {
     constructor(props) {
@@ -52,6 +54,12 @@ class App extends React.Component {
                                         </Route>
                                         <Route path={'/' + `${this.state.bussData.username + '/staff/list'}`}> 
                                             <StaffList data={this.state.bussData}/>
+                                        </Route>
+                                        <Route path={'/' + `${this.state.bussData.username + '/kiosk/list'}`}> 
+                                            <KioskList data={this.state.bussData}/>
+                                        </Route>
+                                        <Route path={'/' + `${this.state.bussData.username + '/kiosk/create'}`}> 
+                                            <KioskDefine data={this.state.bussData}/>
                                         </Route>
                                         <Route path="/">
                                             <Home/>

@@ -14,7 +14,7 @@ class Kiosk extends Model
 
     public function business()
     {
-        $this->hasOne ("App\Business", "Id", "Business");
+        return $this->hasOne ("App\Business", "Id", "Business");
     }
 
 }

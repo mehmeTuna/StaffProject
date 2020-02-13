@@ -17,6 +17,63 @@ class BusinessController extends Controller
         return view('business.register');
     }
 
+    public function loginPage()
+    {
+        return view('business.login');
+    }
+
+    public function login(Request $request)
+    {
+        $validator = Validator::make($request->all() ,[
+            'username' => 'required|email',
+            'password' => 'required|min:3|max:100'
+        ]);
+
+        if ($validator->fails()) {
+            return response ()->json ([
+                'status' => false,
+                'text' => 'Gecerli bir email ve parola giriniz'
+            ]);
+        }
+
+        $business = Business::where('Email', $request->username)->get();
+
+        if(!isset($business[0])){
+            return response()->json([
+                'status' => false,
+                'text' => 'Kullanici adi ve parola hatali'
+            ]);
+        }
+
+        if (!Hash::check($request->password, $business[0]->Password))
+        {
+            return response()->json([
+                'status' => false,
+                'text' => 'Parola Hatali',
+                'url' => '/business/giris',
+            ]);
+        }
+
+        session()->put('businessId', $business[0]->Id);
+
+        return response()->json([
+            'status' => true ,
+            'text' => 'is login',
+            'url' => '/'. $business[0]->Username.'/',
+        ]);
+    }
+
+    public function logout()
+    {
+        if(session()->has('businessId')){
+            session()->forget('businessId');
+            return response()->json([
+                'status' => true,
+                'text' => 'is logut'
+            ]);
+        }
+    }
+
     
     public function register(Request $request)
     {
@@ -43,7 +100,7 @@ class BusinessController extends Controller
         ]);
 
         session()->put("businessId", $business->Id);
-        return redirect("/{$business->Username}");
+        return redirect("/{$business->Username}/");
     }
 
     public function home()

@@ -81,6 +81,32 @@ export default class Sidebar extends React.Component{
                             </ul>
                         </div>
                     </li>
+                    <li  className={this.state.experience === false ? 'nav-item' : 'nav-item active'}>
+                        <a
+                            className="nav-link"
+                            data-toggle="collapse"
+                            href="#kiosk"
+                            aria-expanded="false"
+                            aria-controls="kiosk">
+                            <i className="icon-disc menu-icon"/>
+                            <span className="menu-title">Kiosk</span>
+                            <i className="menu-arrow"/>
+                        </a>
+                        <div className="collapse" id="kiosk">
+                            <ul className="nav flex-column sub-menu">
+                                <li className="nav-item">
+                                    <Link
+                                        to={'/' + `${this.props.data.username + '/kiosk/create'}`}
+                                        className="nav-link">Kiosk Create</Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link
+                                        to={'/' + `${this.props.data.username + '/kiosk/list'}`}
+                                        className="nav-link">Kiosk List</Link>
+                                </li>
+                            </ul>
+                        </div>
+                    </li>
                     <li className="nav-item">
                         <a className="nav-link" href="/docs">
                             <i className="icon-book menu-icon"/>
