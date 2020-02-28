@@ -1,9 +1,5 @@
 import React from 'react';
 import Axios from 'axios';
-import Swal from 'sweetalert2';
-import withReactContent from 'sweetalert2-react-content';
-
-const sweet = withReactContent(Swal);
 
 export default class Login extends React.Component{
 
@@ -15,7 +11,7 @@ export default class Login extends React.Component{
             password: '',
             alert: false,
             alertText: 'Kullanici adi veya parola hatali',
-        }
+        };
 
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -36,15 +32,8 @@ export default class Login extends React.Component{
 
         if(data.status === true){
             this.setState({alert: false});
-            sweet.fire({
-                position: 'top-end',
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 1500
-              });
+            window.location.href = '/staff/home';
         }
-
-        console.log(data);
     }
 
 

@@ -1,10 +1,11 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { Redirect } from "react-router-dom";
 import Swal from "sweetalert2";
 import axios from "axios";
 import withReactContent from "sweetalert2-react-content";
 import TimeField from "react-simple-timefield";
-import { Redirect } from "react-router-dom";
+import DatePicker from "react-date-picker";
+import Input from "react-phone-number-input/input";
 
 const sweet = withReactContent(Swal);
 
@@ -28,34 +29,6 @@ function PlanList(props) {
   ));
 }
 
-function ShowStartClock(props) {
-  return (
-    <div className="row">
-      <div className="mx-auto">
-        <h3>Select Start Clock</h3>
-        <TimeKeeper
-          switchToMinuteOnHourSelect={true}
-          onChange={event => props.selected(event)}
-        />
-      </div>
-    </div>
-  );
-}
-
-function ShowEndClock(props) {
-  return (
-    <div className="row">
-      <div className="mx-auto">
-        <h3>Select End Clock"</h3>
-        <TimeKeeper
-          switchToMinuteOnHourSelect={true}
-          onChange={event => props.selected(event)}
-        />
-      </div>
-    </div>
-  );
-}
-
 function ExperinceSelect(data) {
   return data.map((value, key) => (
     <option key={key} value={key}>
@@ -69,11 +42,12 @@ class StaffCreate extends React.Component {
     super(props);
 
     this.state = {
+      img: [],
       firstName: "",
       lastName: "",
-      gender: "",
-      martialStatus: "",
-      birthday: "",
+      gender: "unspecified",
+      martialStatus: "unspecified",
+      birthday: new Date(new Date().setFullYear(new Date().getFullYear() - 20)),
       address: "",
       telephone: "",
       email: "",
@@ -88,16 +62,12 @@ class StaffCreate extends React.Component {
       periode: "1",
       workingData: [],
       selectedExperience: "",
-      alert: {
-        pay: {
-          status: false,
-          text: "minimum tutar giriniz"
-        }
-      },
+      alert: false,
       redirect: null
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
     this.customClock = this.customClock.bind(this);
 
@@ -117,23 +87,73 @@ class StaffCreate extends React.Component {
   }
 
   handleSubmit() {
+    if (this.state.selectedExperience === "") {
+      sweet.fire({
+        title: "Experince Secin",
+        timer: 1500
+      });
+      return;
+    }
+
+    if (this.state.img.length === 0) {
+      sweet.fire({
+        title: "Resim Secin",
+        timer: 1500
+      });
+      return;
+    }
+
+    let formData = new FormData();
+
+    if (this.state.img.length > 0) {
+      for (let a = 0; a < this.state.img.length; a++) {
+        formData.set("img" + a, this.state.img[a].file);
+      }
+    }
+
+    let customDate = new Date(this.state.birthday);
+
+    let date = JSON.stringify(customDate);
+    date = date.slice(1, 11);
+
+    formData.set("firstName", this.state.firstName);
+    formData.set("lastName", this.state.lastName);
+    formData.set("gender", this.state.gender);
+    formData.set("martialStatus", this.state.martialStatus);
+
+    formData.set("birthday", date);
+    formData.set("address", this.state.address);
+    formData.set("telephone", this.state.telephone);
+    formData.set("email", this.state.email);
+    formData.set("password", this.state.password);
+    formData.set(
+      "workingPlan",
+      JSON.stringify(
+        this.state.workingData[this.state.selectedExperience].workingPlan
+      )
+    );
+    formData.set(
+      "experience",
+      this.state.workingData[this.state.selectedExperience].Id
+    );
+    formData.set(
+      "pay",
+      this.state.workingData[this.state.selectedExperience].Pay
+    );
+    formData.set(
+      "factor",
+      this.state.workingData[this.state.selectedExperience].Factor
+    );
+    formData.set(
+      "periode",
+      this.state.workingData[this.state.selectedExperience].Periode
+    );
+
     axios
-      .post(`/${this.props.data.username}/staff/create`, {
-        firstName: this.state.firstName,
-        lastName: this.state.lastName,
-        gender: this.state.gender,
-        martialStatus: this.state.martialStatus,
-        birthday: this.state.birthday,
-        address: this.state.address,
-        telephone: this.state.telephone,
-        email: this.state.email,
-        password: this.state.password,
-        workingPlan: this.state.workingData[this.state.selectedExperience]
-          .workingPlan,
-        experience: this.state.selectedExperience,
-        pay: this.state.workingData[this.state.selectedExperience].Pay,
-        factor: this.state.workingData[this.state.selectedExperience].Factor,
-        periode: this.state.workingData[this.state.selectedExperience].Periode
+      .post(`/${this.props.data.username}/staff/create`, formData, {
+        headers: {
+          "content-type": "multipart/form-data" // do not forget this
+        }
       })
       .then(res => {
         if (res.data.status === true) {
@@ -152,6 +172,18 @@ class StaffCreate extends React.Component {
     const { data } = await axios.post("/business/experience/list");
 
     this.setState({ workingData: data });
+  }
+
+  handleChange(event) {
+    if (this.state.img.length >= 4) return;
+    let images = this.state.img;
+    images.push({
+      url: URL.createObjectURL(event.target.files[0]),
+      file: event.target.files[0]
+    });
+    this.setState({
+      img: images
+    });
   }
 
   compareTime(str1, str2) {
@@ -414,9 +446,42 @@ class StaffCreate extends React.Component {
     }
     return (
       <div className="col-12 grid-margin">
+        <div className="col-sm-12 col-md-12 grid-margin stretch-card">
+          <div className="card">
+            <div className="card-body">
+              <h4 className="text-center display-4 ml-4">Staff Define</h4>
+            </div>
+          </div>
+        </div>
         <div className="card grid-margin">
           <div className="card-body">
-            <h4 className="card-title">Staff Define</h4>
+            <div className="text-center w-25 mx-auto">
+              {this.state.img.length > 0 &&
+                this.state.img.map(val => (
+                  <img
+                    src={val.url}
+                    style={{ width: "100px", height: "100px" }}
+                    className="img-thumbnail mx-auto"
+                  />
+                ))}
+              {this.state.img.length === 0 && (
+                <label for="upload">
+                  <span
+                    className="glyphicon glyphicon-folder-open align-self-center"
+                    aria-hidden="true"
+                  >
+                    <p>Image Add</p>
+                    <i className="icon-circle-plus icon-lg text-success"></i>
+                  </span>
+                  <input
+                    type="file"
+                    id="upload"
+                    style={{ display: "none" }}
+                    onChange={this.handleChange}
+                  />
+                </label>
+              )}
+            </div>
             <form className="form-sample">
               <p className="card-description"></p>
               <div className="row">
@@ -478,13 +543,10 @@ class StaffCreate extends React.Component {
                       Date of Birth
                     </label>
                     <div className="col-sm-9">
-                      <input
-                        className="form-control"
-                        placeholder="dd/mm/yyyy"
+                      <DatePicker
                         value={this.state.birthday}
-                        onChange={e =>
-                          this.setState({ birthday: e.target.value })
-                        }
+                        calendarClassName="form-control"
+                        onChange={e => this.setState({ birthday: e })}
                       />
                     </div>
                   </div>
@@ -545,13 +607,10 @@ class StaffCreate extends React.Component {
                   <div className="form-group row">
                     <label className="col-sm-3 col-form-label">GSM</label>
                     <div className="col-sm-9">
-                      <input
-                        type="text"
+                      <Input
                         className="form-control"
                         value={this.state.telephone}
-                        onChange={e =>
-                          this.setState({ telephone: e.target.value })
-                        }
+                        onChange={e => this.setState({ telephone: e })}
                       />
                     </div>
                   </div>
@@ -609,11 +668,6 @@ class StaffCreate extends React.Component {
                 <form className="form-sample" onSubmit={this.handleSubmit}>
                   <div className="row">
                     <div className="col-md-6">
-                      {this.state.alert.pay.status === true && (
-                        <p className="col-sm-6 mx-auto text-danger">
-                          {this.state.alert.pay.text}
-                        </p>
-                      )}
                       <div className="form-group row">
                         <label className="col-sm-3 col-form-label">Pay</label>
                         <div className="col-sm-9">

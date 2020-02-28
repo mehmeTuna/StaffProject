@@ -72,6 +72,10 @@ class BusinessController extends Controller
                 'text' => 'is logut'
             ]);
         }
+
+        return response()->json([
+            'status' => false
+        ]);
     }
 
     
@@ -80,13 +84,12 @@ class BusinessController extends Controller
         $validator = Validator::make($request->all(), [
             "businessName" => "required|min:3|max:255",
             "telephone" => "required|max:40",
-            'email' => 'email',
+            'email' => 'email|required|unique:business,Email',
             "password" => "required|max:100",
             ]);
 
         if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response ()->json ($errors->all());
+           return redirect('/');
         }
 
         $business = Business::create([

@@ -30,7 +30,7 @@ function StaffDetail(data, staffPayment) {
           <div className="card">
             <div className="card-body">
               <div className="d-flex justify-content-between mb-3">
-                <h4 className="card-title">Odeme Islemi</h4>
+                <h5 className="card-title">Odeme Islemi</h5>
               </div>
               <div
                 id="chart-legends-market-trend"
@@ -84,17 +84,16 @@ function StaffDetail(data, staffPayment) {
             <div className="card-body">
               {data.logHistory.length == 0 ? (
                 <React.Fragment>
-                  <div className="card-title text-center m-2">
-                    {" "}
-                    Giris Cikis Islemleri{" "}
-                  </div>
-                  <div className="text-center display-4">
+                  <p className="text-center text-dark">Giris Cikis Islemleri</p>
+                  <p className="text-center">
                     Kullanici herhangi bir islemde bulunmadi
-                  </div>
+                  </p>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  <h4 className="card-title">Giris Cikis Islemleri Gecmisi</h4>
+                  <p className="text-center mb-2">
+                    Giris Cikis Islemleri Gecmisi
+                  </p>
                   <div className="row">
                     <div className="col-sm-12">
                       <div className="d-flex justify-content-between mt-2 text-dark mb-2">
@@ -150,17 +149,14 @@ function StaffDetail(data, staffPayment) {
             <div className="card-body">
               {data.paymentHistory.length === 0 ? (
                 <React.Fragment>
-                  <div className="card-title text-center m-2">
-                    {" "}
-                    Odeme Gecmisi{" "}
-                  </div>
-                  <div className="text-center display-4">
+                  <p className="text-center text-dark">Odeme Gecmisi</p>
+                  <p className="text-center m-2">
                     Herhangi bir odeme gecmisiniz bulunmuyor
-                  </div>
+                  </p>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  <h4 className="card-title mb-3">Odeme Gecmisi</h4>
+                  <p className="card-title mb-2">Odeme Gecmisi</p>
                   <div className="row">
                     <div className="col-sm-12">
                       <div className="text-dark">
@@ -233,7 +229,7 @@ class StaffRender extends React.Component {
   }
 
   async getUserDetail(refresh) {
-    console.log("refresh", refresh);
+    console.log(this.state.user.Experience.Identifier);
     if (refresh === false && this.state.logList !== "") {
       this.setState({ logList: "" });
       return;
@@ -255,7 +251,6 @@ class StaffRender extends React.Component {
       pay: value
     });
     this.getUserDetail(true);
-    console.log("odeme basarili");
   }
 
   staffPayment() {
@@ -280,11 +275,23 @@ class StaffRender extends React.Component {
         <div className="card">
           <div className="card-body">
             <div className="col-sm-12 mb-4 mb-xl-0 d-flex justify-content-between legend-label">
-              <div>
-                <h4 className="font-weight-bold text-dark d-flex align-items-center">{`${this.state.user.FirstName} ${this.state.user.LastName}`}</h4>
-                <h6 className="font-weight-bold text-dark d-flex align-items-center">
-                  {`${this.state.user.Experience}`}
-                </h6>
+              <div className="d-flex">
+                <div>
+                  <img
+                    src={this.state.user.Image}
+                    style={{ width: "100px", height: "100px" }}
+                    className="mx-auto"
+                  />
+                </div>
+                <div>
+                  <h5 className="font-weight-bold text-dark ml-2 mb-1">{`${this.state.user.FirstName} ${this.state.user.LastName}`}</h5>
+                  <h6 className="font-weight-bold text-muted ml-2 mb-1">
+                    {this.state.user.Experience}
+                  </h6>
+                  <h6 className="font-weight-bold text-muted ml-2 mb-1">
+                    {this.state.user.Email}
+                  </h6>
+                </div>
               </div>
               <div className="">
                 <button
@@ -302,41 +309,31 @@ class StaffRender extends React.Component {
                   <div className="col-sm-12 grid-margin ">
                     <div className="card">
                       <div className="card-body">
-                        <div className="text-dark">
-                          {" "}
-                          Email:{" "}
-                          <span className="text-muted">
-                            {this.state.user.Email}
-                          </span>{" "}
-                        </div>
-                        <div className="text-dark">
-                          {" "}
+                        <p className="text-dark">{this.state.user.Factor}</p>
+                        <p className="text-dark">
                           Adress:{" "}
                           <span className="text-muted">
                             {this.state.user.Adress}
-                          </span>{" "}
-                        </div>
-                        <div className="text-dark">
-                          {" "}
+                          </span>
+                        </p>
+                        <p className="text-dark">
                           GSM:{" "}
                           <span className="text-muted">
                             {this.state.user.Gsm}
-                          </span>{" "}
-                        </div>
-                        <div className="text-dark">
-                          {" "}
+                          </span>
+                        </p>
+                        <p className="text-dark">
                           Gender:{" "}
                           <span className="text-muted">
                             {this.state.user.Gender}
-                          </span>{" "}
-                        </div>
-                        <div className="text-dark">
-                          {" "}
+                          </span>
+                        </p>
+                        <p className="text-dark">
                           Martial Status:{" "}
                           <span className="text-muted">
                             {this.state.user.MartialStatus}
-                          </span>{" "}
-                        </div>
+                          </span>
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -351,52 +348,52 @@ class StaffRender extends React.Component {
                     <div className="card-title">Plan</div>
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.monday.length !== 0 && (
-                        <h1 className="display-4">
+                        <h5>
                           Monday{" "}
                           {dayPlanList(this.state.user.workingPlan.monday)}
-                        </h1>
+                        </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.tuesday.length !== 0 && (
-                        <h1 className="display-4">
+                        <h5>
                           Tuesday{" "}
                           {dayPlanList(this.state.user.workingPlan.tuesday)}
-                        </h1>
+                        </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.wednesday.length !== 0 && (
-                        <h1 className="display-4">
+                        <h5>
                           Wednesday{" "}
                           {dayPlanList(this.state.user.workingPlan.wednesday)}
-                        </h1>
+                        </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.thursday.length !== 0 && (
-                        <h1 className="display-4">
+                        <h5>
                           Thursday{" "}
                           {dayPlanList(this.state.user.workingPlan.thursday)}
-                        </h1>
+                        </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.friday.length !== 0 && (
-                        <h1 className="display-4">
+                        <h5>
                           Friday{" "}
                           {dayPlanList(this.state.user.workingPlan.friday)}
-                        </h1>
+                        </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.saturday.length !== 0 && (
-                        <h1 className="display-4">
+                        <h5>
                           Saturday{" "}
                           {dayPlanList(this.state.user.workingPlan.saturday)}
-                        </h1>
+                        </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.sunday.length !== 0 && (
-                        <h1 className="display-4">
+                        <h5>
                           Sunday{" "}
                           {dayPlanList(this.state.user.workingPlan.sunday)}
-                        </h1>
+                        </h5>
                       )}
                   </div>
                 </div>
@@ -454,10 +451,10 @@ class StaffList extends React.Component {
             <div className="card">
               <div className="card-body text-center">
                 <div className="card-title">
-                  <h4 className="font-weight-bold text-dark">
+                  <h5 className="font-weight-bold text-dark">
                     Herhangi bir tanimli staff bulunamadi yeni bir tane
                     tanimlamak istermisiniz
-                  </h4>
+                  </h5>
                 </div>
                 <div className="row display-3">
                   <Link
@@ -481,7 +478,7 @@ class StaffList extends React.Component {
         ) : (
           <React.Fragment>
             <div className="col-sm-12 mb-4 mb-xl-0">
-              <h4 className="font-weight-bold text-dark">Staff List</h4>
+              <h5 className="font-weight-bold text-dark">Staff List</h5>
             </div>
             <div className="col-12 mt-3">
               {this.state.staff.map(val => (

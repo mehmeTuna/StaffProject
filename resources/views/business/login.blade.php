@@ -6,7 +6,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="csrf-token" content="{{ csrf_token() }}">
-  <title>Business Admin Login Pagr</title>
+  <title>Business Admin Login Page</title>
   <!-- base:css -->
   <link rel="stylesheet" href="/public/vendors/mdi/css/materialdesignicons.min.css">
   <link rel="stylesheet" href="/public/vendors/feather/feather.css">

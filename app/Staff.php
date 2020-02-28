@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
-    protected $visible = ['Id', "FirstName", "LastName", "Birthday", 'Balance', "Image", 'Factor', 'Periode', 'Pay', "Adress", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap", 'workingPlan', 'Experience' ,'operationtime'];
-    protected $fillable = ['Id', "FirstName", "LastName", "Birthday", 'Balance', "Image", 'Factor', 'Periode', 'Pay', "Adress", "Password", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap", 'workingPlan', 'Experience' ,'operationtime'];
+    protected $visible = ['Id', "FirstName", "LastName", "Birthday", 'Balance', "Image", 'Factor', 'Periode', 'Pay', "Adress", 'salary', "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap", 'workingPlan', 'Experience' ,'operationtime'];
+    protected $fillable = ['Id', "FirstName", "LastName", "Birthday", 'Balance', "Image", 'Factor', 'Periode', 'Pay', "Adress", 'salary', "Password", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap", 'workingPlan', 'Experience' ,'operationtime'];
     protected $table = "staff";
     protected $primaryKey = "Id";
     protected $dateFormat = 'U';

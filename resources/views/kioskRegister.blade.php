@@ -46,14 +46,13 @@
 
 
 
-
 <section class="pb_cover_v3 overflow-hidden cover-bg-indigo cover-bg-opacity text-left pb_gradient_v1 pb_slant-light" id="section-home">
     <div class="container">
         <div class="row align-items-center justify-content-center">
             <div class="col-md-6">
                 <h2 class="heading mb-3">Kiosk Tanimlama</h2>
                 <div class="sub-heading">
-                    <p class="mb-4">Yonetim panelinden urettiginiz kodu girin ve bu cihazi kiosk olarak tanimlayin</p>
+                    <p class="mb-4"> </p>
                     <p class="mb-5"><a class="btn btn-success btn-lg pb_btn-pill smoothscroll" href="#section-pricing"><span class="pb_font-14 text-uppercase pb_letter-spacing-1">See Pricing</span></a></p>
                 </div>
             </div>
@@ -62,14 +61,8 @@
             <div class="col-md-5 relative align-self-center">
 
                 <form action="/kiosk/ekle" method="post" class="bg-white rounded pb_form_v1">
-                    {{csrf_field ()}}
-                    <h2 class="mb-4 mt-0 text-center">Code</h2>
-                    <div class="form-group">
-                        <input type="text" class="form-control pb_height-50 reverse" name="code" placeholder="Code">
-                    </div>
-                    <div class="form-group">
-                        <input type="submit" class="btn btn-primary btn-lg btn-block pb_btn-pill  btn-shadow-blue" value="Register">
-                    </div>
+                    <h4 class="mb-4 mt-0 text-center">CODE </h4>
+                    <h2 class="mb-4 mt-0 text-center">{{$code}}</h2>
                 </form>
             </div>
         </div>
@@ -540,6 +533,30 @@
 <div id="pb_loader" class="show fullscreen"><svg class="circular" width="48px" height="48px"><circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee"/><circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10" stroke="#1d82ff"/></svg></div>
 
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+
+<script>
+    function kioskRegister() {
+
+        let code = document.getElementById('kioskCode');
+        if(code.value.length >= 3){
+            Swal.fire({
+                title: 'Yonetim panelinden kaydediniz',
+                html: `<img class='my-auto mt-16' src='/public/loading.gif' />`,
+                showCloseButton: false,
+                showCancelButton: false,
+                focusConfirm: false,
+                showConfirmButton: false,
+                allowOutsideClick: false
+            });
+        }
+    }
+
+    async function sendData(code) {
+        const {data} = axios.post('/kiosk/code/');
+    }
+</script>
 
 <script src="/public/front/assets/js/jquery.min.js"></script>
 <script src="/public/front/assets/js/popper.min.js"></script>

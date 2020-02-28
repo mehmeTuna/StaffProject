@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kiosk extends Model
 {
-    protected $visible = ["Identifier", "RemoteAddress", "Comment", 'Business', 'Active'];
-    protected $fillable = ["Identifier", "RemoteAddress", "Comment", 'Business', 'Active'];
+    protected $visible = ['Id', 'active', "Identifier", "RemoteAddress", "Comment", 'Business', 'Active'];
+    protected $fillable = ['Id', 'active', "Identifier", "RemoteAddress", "Comment", 'Business', 'Active'];
     protected $table = "kiosk";
     protected $primaryKey = "Id";
     public $timestamps = true ;

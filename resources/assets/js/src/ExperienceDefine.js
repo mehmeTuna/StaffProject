@@ -70,19 +70,23 @@ class ExperienceDefine extends React.Component {
 
     this.deleteTime = this.deleteTime.bind(this);
 
-    this.paymnetControl = this.paymentControl.bind(this);
-
     this.compareTime = this.compareTime.bind(this);
     this.paymentFormatpaymentFormat = this.paymentFormat.bind(this);
 
     this.changeStartTime = this.changeStartTime.bind(this);
     this.changeEndTime = this.changeEndTime.bind(this);
+
+    this.handleChange = this.handleChange.bind(this);
   }
 
   async componentDidMount() {
     const { data } = await axios.post("/business/location/minWage");
 
     this.setState({ isMinWage: data });
+  }
+
+  handleChange(e) {
+    this.setState({ [e.target.name]: e.target.value });
   }
 
   compareTime(str1, str2) {
@@ -312,25 +316,6 @@ class ExperienceDefine extends React.Component {
       });
   }
 
-  paymentControl(val) {
-    let min = this.state.isMinWage[0].Value;
-
-    this.state.isMinWage.forEach((val, key) =>
-      val.Value < min ? (min = val.Value) : ""
-    );
-
-    if (val < min) {
-      let alert = this.state.alert;
-      alert.pay.status = true;
-      alert.pay.text = `minimum ${min} tutar giriniz`;
-      this.setState({ alert: alert });
-    } else {
-      let alert = this.state.alert;
-      alert.pay.status = false;
-      this.setState({ alert: alert });
-    }
-  }
-
   render() {
     if (this.state.redirect) {
       return <Redirect to={this.state.redirect} />;
@@ -352,10 +337,9 @@ class ExperienceDefine extends React.Component {
                         <input
                           type="text"
                           className="form-control"
+                          name="name"
                           value={this.state.name}
-                          onChange={event =>
-                            this.setState({ name: event.target.value })
-                          }
+                          onChange={this.handleChange}
                         />
                       </div>
                     </div>
@@ -375,7 +359,6 @@ class ExperienceDefine extends React.Component {
                           placeholder="Pay"
                           value={this.state.pay}
                           onChange={e => this.paymentFormat(e.target.value)}
-                          onBlur={e => this.paymentControl(e.target.value)}
                         />
                       </div>
                     </div>
@@ -387,10 +370,9 @@ class ExperienceDefine extends React.Component {
                       <label className="col-sm-3 col-form-label">Factor</label>
                       <div className="col-sm-9">
                         <select
+                          name="factor"
                           value={this.state.factor}
-                          onChange={event =>
-                            this.setState({ factor: event.target.value })
-                          }
+                          onChange={this.handleChange}
                           className="form-control"
                         >
                           <option value="hour">Hour</option>
@@ -406,10 +388,9 @@ class ExperienceDefine extends React.Component {
                       <div className="col-sm-9">
                         <input
                           className="form-control"
+                          name="periode"
                           value={this.state.periode}
-                          onChange={event =>
-                            this.setState({ periode: event.target.value })
-                          }
+                          onChange={this.handleChange}
                         />
                       </div>
                     </div>
