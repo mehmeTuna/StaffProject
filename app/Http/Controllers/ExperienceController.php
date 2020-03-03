@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Experience;
+use App\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -60,5 +61,45 @@ class ExperienceController extends Controller
             'text' => 'kayit basarili'
         ]);
 
+    }
+
+    public function listData()
+    {
+        $experience = Experience::where('Business', session('businessId'))->where('active', 1)->get();
+
+        $result = $experience->map(function ($val) {
+            $data = (object)[];
+
+            $data->experience = $val;
+
+            //added paginator after
+            $allStaff = Staff::where('Experience', $val->Id)->where('active', 1)->limit(25)->get();
+
+            $data->staffList = $allStaff->map(function ($val) {
+                $data = (object)[];
+
+                $data->username = $val->FirstName . ' ' . $val->LastName;
+                $data->img = $val->Image;
+                $data->balance = $val->Balance;
+
+                return $data;
+            });
+
+            return $data;
+        });
+
+        return response()
+            ->json($result);
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->id;
+
+        $experience = Experience::where('Id', $id)->update([
+            'active' => 0
+        ]);
+
+        return $this->respondSuccess() ;
     }
 }

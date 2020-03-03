@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class BusinessAdmin extends Model
 {
-    protected $visible= ['Id'];
+    protected $visible = ['Id'];
     protected $table = 'businessadmin';
     protected $primaryKey = 'Id';
     public $timestamps = true;
@@ -30,7 +30,7 @@ class BusinessAdmin extends Model
     /**
      *
      *
-     * @param  string  $value
+     * @param string $value
      * @return void
      */
     public function setDataAttribute($value)
@@ -41,7 +41,7 @@ class BusinessAdmin extends Model
     /**
      *
      *
-     * @param  string  $value
+     * @param string $value
      * @return void
      */
     public function setOptionsAttribute($value)
@@ -54,6 +54,6 @@ class BusinessAdmin extends Model
      */
     public function business()
     {
-        $this->hasOne('App\Business','Id','AdminId' );
+        $this->hasOne('App\Business', 'Id', 'AdminId');
     }
 }

@@ -49,9 +49,11 @@ Route::middleware(['business'])->group(function(){
 
     Route::prefix('business')->group(function (){
         //data controller
-        Route::post("staff/list", 'ResponseDataController@staffList');
+        Route::post("staff/list", 'StaffController@list');
+        Route::post("staff/delete", 'StaffController@delete');
         Route::post("experience/list", 'ResponseDataController@experienceList');
-        Route::post("experience/list/data", 'ResponseDataController@experienceListData');
+        Route::post("experience/delete", 'ExperienceController@delete');
+        Route::post("experience/list/data", 'ExperienceController@listData');
         Route::post("kiosk/list", 'ResponseDataController@kioskList');
         Route::post("kiosk/delete", 'ResponseDataController@kioskDelete');
         Route::post("location/minWage", 'ResponseDataController@getBusinessLocationMinWage');
@@ -61,6 +63,7 @@ Route::middleware(['business'])->group(function(){
     Route::prefix('/{businessUsername}')->group(function(){
 
         Route::get('/', 'BusinessController@home');
+        Route::post("data/home", 'BusinessController@homeData');
 
         Route::prefix('/staff')->group(function(){
             Route::get('/list', 'BusinessController@home');

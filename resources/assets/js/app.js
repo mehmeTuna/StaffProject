@@ -3,14 +3,24 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
 require("./bootstrap");
 
 window.React = require("react");
 
-import App from "./src/App.js";
 import ReactDOM from "react-dom";
+import App from "./Admin/components/App";
+import configureStore from "./Admin/redux/configureStore";
+import { Provider } from "react-redux";
 
-if (document.getElementById("root")) {
-  ReactDOM.render(<App />, document.getElementById("root"));
-}
+const store = configureStore(undefined);
+
+const render = Component => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <Component />
+    </Provider>,
+    document.getElementById("root")
+  );
+};
+
+render(App);

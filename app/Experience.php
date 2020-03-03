@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Experience extends Model
 {
-    protected $visible = ['Id', "Class", "Identifier", "Business", "OwnerClass", "Charge", "Color", "WorkClass", "workingPlan", "Periode", "Factor", "Pay"];
-    protected $fillable= ['Id', "Class", "Identifier", "Business", "OwnerClass", "Charge", "Color", "WorkClass", "workingPlan", "Periode", "Factor", "Pay"];
+    protected $visible = ['Id', 'active', "Class", "Identifier", "Business", "OwnerClass", "Charge", "Color", "WorkClass", "workingPlan", "Periode", "Factor", "Pay"];
+    protected $fillable= ['Id', 'active', "Class", "Identifier", "Business", "OwnerClass", "Charge", "Color", "WorkClass", "workingPlan", "Periode", "Factor", "Pay"];
     protected $table = "experience";
     protected $primaryKey = "Id";
     public $timestamps = true ;

@@ -15,24 +15,21 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
+
 class StaffController extends Controller
 {
     public function checkModel($model)
     {
-        return count($model) > 0 ? true : false ;
+        return count($model) > 0 ? true : false;
     }
 
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function register(Request $request)
     {
 
-        $businessId = session ("businessId");
-        $img = [ 0 => null];
+        $businessId = session("businessId");
+        $img = [0 => null];
 
-        $validator = Validator::make($request->all (), [
+        $validator = Validator::make($request->all(), [
             'firstName' => 'bail|required|min:3|max:100',
             'lastName' => 'bail|required|min:3|max:100',
             'gender' => 'bail|required|min:3|max:100',
@@ -46,87 +43,83 @@ class StaffController extends Controller
 
         if ($validator->fails()) {
             $errors = $validator->errors();
-            return response ()->json (['status' => false , 'errors' => $errors->all()]);
+            return response()->json(['status' => false, 'errors' => $errors->all()]);
         }
 
         if ($request->hasFile('img0')) {
             $image = $request->file('img0');
-            $name = time(). rand(1, 100).'.'.$image->getClientOriginalExtension();
+            $name = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
             $destinationPath = public_path('/images');
             $image->move($destinationPath, $name);
-            $img[0] = '/public/images/'.$name ;
+            $img[0] = '/public/images/' . $name;
         }
 
-        $staffWorkingPlan = json_decode($request->workingPlan, true) ;
-        $calculatedTime = 0 ;
+        $staffWorkingPlan = json_decode($request->workingPlan, true);
+        $calculatedTime = 0;
 
         $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
-            foreach ($days as $day)
-            {
-                if( isset($staffWorkingPlan[$day]) && count($staffWorkingPlan[$day]))
-                {
-                    foreach ($staffWorkingPlan[$day] as $result)
-                    {
-                        $startTime = Carbon::parse($result['start']);
-                        $finishTime = Carbon::parse($result['end']);
+        foreach ($days as $day) {
+            if (isset($staffWorkingPlan[$day]) && count($staffWorkingPlan[$day])) {
+                foreach ($staffWorkingPlan[$day] as $result) {
+                    $startTime = Carbon::parse($result['start']);
+                    $finishTime = Carbon::parse($result['end']);
 
-                        $totalDuration = $finishTime->diffInSeconds($startTime);
-                        $calculatedTime += $totalDuration ;
-                    }
+                    $totalDuration = $finishTime->diffInSeconds($startTime);
+                    $calculatedTime += $totalDuration;
                 }
             }
+        }
 
-            $factorValue = ['hour', 'week', 'month'];
-            $factor = array_key_exists($request->factor, $factorValue) ? $request->factor : 'hour';
-            $salary = 0 ;
+        $factorValue = ['hour', 'week', 'month'];
+        $factor = array_key_exists($request->factor, $factorValue) ? $request->factor : 'hour';
+        $salary = 0;
 
-            switch ($factor)
-            {
-                case 'hour':
-                    $pay = $request->pay / $request->periode ;
-                    $salary = round($pay, 2);
-                    break;
-                case 'week' :
-                    $pay = round(($calculatedTime / 3300), 2) * $request->periode ;
-                    $pay = $request->pay / $pay ;
-                    $salary = round($pay, 2);
-                    break;
-                case 'month':
-                    $calculatedTime = $calculatedTime * 4 ;
-                    $pay = round(($calculatedTime / 3300), 2) * $request->periode ;
-                    $pay = $request->pay / $pay ;
-                    $salary = round($pay, 2);
-                    break;
-            }
+        switch ($factor) {
+            case 'hour':
+                $pay = $request->pay / $request->periode;
+                $salary = round($pay, 2);
+                break;
+            case 'week' :
+                $pay = round(($calculatedTime / 3300), 2) * $request->periode;
+                $pay = $request->pay / $pay;
+                $salary = round($pay, 2);
+                break;
+            case 'month':
+                $calculatedTime = $calculatedTime * 4;
+                $pay = round(($calculatedTime / 3300), 2) * $request->periode;
+                $pay = $request->pay / $pay;
+                $salary = round($pay, 2);
+                break;
+        }
 
 
         $career = Career::create([
-          'BeginTime' => time(),
-          'WorkClass' => 1,//TODO: bu kisim frontend e working plan kismi hazir olduktan sonra eklenecek simdilik varsayilan 1,
-          'Staff' => null,
-          'Experience' => $request->experience,
-          'Recompense' => 1
+            'BeginTime' => time(),
+            'WorkClass' => 1,//TODO: bu kisim frontend e working plan kismi hazir olduktan sonra eklenecek simdilik varsayilan 1,
+            'Staff' => null,
+            'Experience' => $request->experience,
+            'Recompense' => 1
         ]);
 
         $staff = Staff::create([
-          "FirstName" => $request->firstName,
-          "LastName" => $request->lastName,
-          "Birthday" => $request->birthday,
-          'Password' => bcrypt($request->password),
-          "Image" => $img[0],
-          "Adress" => $request->address,
-          "Telephone" => $request->telephone,
-          "Gsm" => $request->telephone,
-          "Email" => $request->email,
-          "Gender" => $request->gender,
-          "MartialStatus" => $request->martialStatus,
-          "Business" => $businessId,
-          "Employment" => 1,
-          "Career" => $career->Id,
-          "TimeSheetMap" => 1,
-           'workingPlan' => $staffWorkingPlan,
-           'Experience' => $request->experience,
+            "FirstName" => $request->firstName,
+            "LastName" => $request->lastName,
+            "Birthday" => $request->birthday,
+            'Password' => bcrypt($request->password),
+            "Image" => $img[0],
+            "Adress" => $request->address,
+            "Telephone" => $request->telephone,
+            "Gsm" => $request->telephone,
+            "Email" => $request->email,
+            "Gender" => $request->gender,
+            "MartialStatus" => $request->martialStatus,
+            "Business" => $businessId,
+            "Employment" => 1,
+            "Career" => $career->Id,
+            "TimeSheetMap" => 1,
+            'workingPlan' => $staffWorkingPlan,
+            'Experience' => $request->experience,
             'Factor' => $request->factor,
             'Pay' => $request->pay,
             'Periode' => $request->periode,
@@ -135,22 +128,53 @@ class StaffController extends Controller
         ]);
 
         $employment = Employment::create([
-          'Manager' => $businessId,
-          'Business' => $businessId,
-          'OperationTime' => time(),
-          'Status' => 'Recruitment',
-          'Staff' => $staff->Id,
+            'Manager' => $businessId,
+            'Business' => $businessId,
+            'OperationTime' => time(),
+            'Status' => 'Recruitment',
+            'Staff' => $staff->Id,
         ]);
 
         $career->update([
-          'Staff' => $staff->Id,
+            'Staff' => $staff->Id,
         ]);
 
-        return response ()->json([
+        return response()->json([
             'status' => true,
             'text' => 'kayit basarili'
         ]);
 
+    }
+
+    public function delete(Request $request)
+    {
+        $id = $request->id ;
+
+        $staff = Staff::where('Id', $id)->update([
+            'active' => 0
+        ]);
+
+        return $this->respondSuccess();
+    }
+
+    public function list()
+    {
+        $staff = Staff::where('Business', session('businessId'))->where('active', 1)->get();
+        $factorText = [
+            'hour' => 'hourly',
+            'week' => 'weekly',
+            'month' => 'monthly'
+        ];
+        $staff = $staff->map(function ($user) use ($factorText) {
+            $data = $user;
+
+            $experience = Experience::where('Id', $user->Experience)->get();
+            $data->Experience = $experience[0]->Identifier;
+            $data->Factor = $experience[0]->Periode > 1 ? $experience[0]->Periode . ' ' : ' ' . $factorText[$experience[0]->Factor] . ' ' . $experience[0]->Pay;
+            return $user;
+        });
+        return response()
+            ->json($staff);
     }
 
     public function staffHomePage()
@@ -162,9 +186,8 @@ class StaffController extends Controller
     {
         $kiosk = Kioskqrcode::where('code', $code)->get();
 
-        if($this->checkModel($kiosk) )
-        {
-            $kioskIp= $kiosk[0]->ip;
+        if ($this->checkModel($kiosk)) {
+            $kioskIp = $kiosk[0]->ip;
             $updatedKiosk = Kioskqrcode::where('id', $kiosk[0]->id)->update([
                 'active' => 0
             ]);
@@ -175,13 +198,13 @@ class StaffController extends Controller
 
             return view('staff.login');
 
-        }else {
+        } else {
             //gecersiz code ise uyari sayfasi goster
             return view('404');
         }
     }
 
-    public function  staticStaffLoginPage()
+    public function staticStaffLoginPage()
     {
         session()->put('staffLogin', true); //logini kiosk loginden ayirmak icin
         return view('staff.login');
@@ -190,20 +213,17 @@ class StaffController extends Controller
     public function staffLogin(Request $request)
     {
         $request->username = isset($request->username) ? trim($request->username) : '';
-        $request->password = isset($request->password) ? trim($request->password) : '' ;
+        $request->password = isset($request->password) ? trim($request->password) : '';
 
-        if(!session()->has('staffLogin'))
-        {
-            if( !session()->has('registerTime') )
-            {
+        if (!session()->has('staffLogin')) {
+            if (!session()->has('registerTime')) {
                 return response()->json([
                     'status' => false,
                     'text' => 'Qr ve giris cikis islemi sadece tek seferliktir',
                 ]);
             }
 
-            if( !(session()->get('registerTime') + 300 >= time()) )
-            {
+            if (!(session()->get('registerTime') + 300 >= time())) {
                 return response()->json([
                     'status' => false,
                     'text' => 'Oturum acma suresini astiniz',
@@ -216,32 +236,28 @@ class StaffController extends Controller
             'password' => 'required|min:3|max:100'
         ]);
 
-        if ($validator->fails())
-        {
+        if ($validator->fails()) {
             $errors = $validator->errors();
-            return response ()->json ($errors->all());
+            return response()->json($errors->all());
         }
 
         $staff = Staff::where('Email', $request->username)->get();
 
-        if(!$this->checkModel($staff))
-        {
+        if (!$this->checkModel($staff)) {
             return response()->json([
                 'status' => false,
                 'text' => 'Kullanici adi ve parola hatali'
             ]);
         }
 
-        if (!Hash::check($request->password, $staff[0]->Password))
-        {
+        if (!Hash::check($request->password, $staff[0]->Password)) {
             return response()->json([
                 'status' => false,
                 'text' => 'Parola Hatali',
             ]);
         }
 
-        if(session()->has('staffLogin'))
-        {
+        if (session()->has('staffLogin')) {
 
             session()->put('staff', $staff[0]->Id);
             return response()->json([
@@ -252,13 +268,11 @@ class StaffController extends Controller
 
         $kiosk = Kiosk::where('RemoteAddress', session()->get('kioskIp'))->get();
 
-        if($staff[0]->Business == $kiosk[0]->Business)
-        {
+        if ($staff[0]->Business == $kiosk[0]->Business) {
 
             $tio = Tio::where('Staff', $staff[0]->Id)->orderBy('created_at', 'desc')->limit(1)->get();
 
-            if(!isset($tio[0]))
-            {
+            if (!isset($tio[0])) {
                 //staff daha once herhangi giris cikis islemi yapmamaissa
                 $newTio = Tio::create([
                     'Staff' => $staff[0]->Id,
@@ -266,7 +280,7 @@ class StaffController extends Controller
                     'Traffic' => 'Enter',
                     'Business' => $staff[0]->Business
                 ]);
-            }else{
+            } else {
                 //staff daha once giris cikis islemi yapmissa
                 $newTio = Tio::create([
                     'Staff' => $staff[0]->Id,
@@ -276,16 +290,15 @@ class StaffController extends Controller
                 ]);
 
                 //user cikis islemi yaptiginda hesaplamaya dahil edilecek fiyati
-                if($tio[0]->Traffic == 'Enter')
-                {
-                    $difference =  time() - $tio[0]->created_at->timestamp;
+                if ($tio[0]->Traffic == 'Enter') {
+                    $difference = time() - $tio[0]->created_at->timestamp;
                     $multiplier = $staff[0]->salary * ($difference / 3300);
 
                     Tio::where('Id', $tio[0]->Id)->update(['Active' => 0]);
                     Tio::where('Id', $newTio->Id)->update(['Active' => 0]);
 
-                    $oldBalance = $staff[0]->Balance ;
-                    $newBalance = round(($oldBalance + $multiplier ), 2) ;
+                    $oldBalance = $staff[0]->Balance;
+                    $newBalance = round(($oldBalance + $multiplier), 2);
                     Staff::where('Id', $staff[0]->Id)->update(['Balance' => $newBalance]);
                 }
             }
@@ -308,55 +321,54 @@ class StaffController extends Controller
 
     public function staffMe()
     {
-        if(!session()->has('staff'))
-        {
+        if (!session()->has('staff')) {
             return response()->json([
-                'status' => false ,
+                'status' => false,
                 'text' => 'before login please'
             ]);
         }
 
         $staff = Staff::where('Id', session('staff'))->get();
 
-        $logHistory= Tio::where('Staff',session('staff'))->orderBy('created_at', 'desc')->limit(10)->get();
-        $logCount= Tio::where('Staff', session('staff'))->orderBy('created_at', 'desc')->count();
+        $logHistory = Tio::where('Staff', session('staff'))->orderBy('created_at', 'desc')->limit(10)->get();
+        $logCount = Tio::where('Staff', session('staff'))->orderBy('created_at', 'desc')->count();
 
-        $paymentHistory = PaymentHistory::where('active', 1)->where('staff',session('staff'))->orderBy('created_at', 'desc')->limit(10)->get();
-        $paymentHistoryTotalCalculatedPrice = PaymentHistory::where('staff',session('staff'))->sum('pay');
+        $paymentHistory = PaymentHistory::where('active', 1)->where('staff', session('staff'))->orderBy('created_at', 'desc')->limit(10)->get();
+        $paymentHistoryTotalCalculatedPrice = PaymentHistory::where('staff', session('staff'))->sum('pay');
 
-        $result = $staff->map(function($user) use ($paymentHistory, $paymentHistoryTotalCalculatedPrice, $logCount, $logHistory) {
+        $result = $staff->map(function ($user) use ($paymentHistory, $paymentHistoryTotalCalculatedPrice, $logCount, $logHistory) {
             $data = (object)[];
-            $data->status = true ;
+            $data->status = true;
             $data->user = (object)[];
-            $data->user->img = $user->Image ;
-            $data->user->username = $user->FirstName.' '. $user->LastName ;
+            $data->user->img = $user->Image;
+            $data->user->username = $user->FirstName . ' ' . $user->LastName;
             $experience = Experience::where('Id', $user->Experience)->get();
             $data->user->experience = $experience[0]->Identifier;
             $data->user->email = $user->Email;
-            $data->user->factor = $user->Factor ;
-            $data->user->adress = $user->Adress ;
-            $data->user->phone = $user->Telephone ;
-            $data->user->Gender = $user->Gender ;
-            $data->user->martialStatus = $user->MartialStatus ;
-            $data->user->workingPlan = $user->workingPlan ;
+            $data->user->factor = $user->Factor;
+            $data->user->adress = $user->Adress;
+            $data->user->phone = $user->Telephone;
+            $data->user->Gender = $user->Gender;
+            $data->user->martialStatus = $user->MartialStatus;
+            $data->user->workingPlan = $user->workingPlan;
             $data->logHistory = (object)[];
 
-            $data->logHistory->balance = $user->Balance ;
+            $data->logHistory->balance = $user->Balance;
             $data->logHistory->type = 'log';
-            $data->logHistory->logHistory = $logHistory->map(function($data){
+            $data->logHistory->logHistory = $logHistory->map(function ($data) {
                 $result = (object)[];
                 $result->time = $data->Hour;
                 $result->traffic = $data->Traffic;
-                return $result ;
-            });
-            $data->logHistory->logCount = $logCount ;
-            $data->logHistory->total = $paymentHistoryTotalCalculatedPrice ;
-            $data->logHistory->paymentHistory = $paymentHistory->map(function($data){
-                $result = (object)[];
-                $result->pay = $data->pay ;
                 return $result;
-            }) ;
-            return $data ;
+            });
+            $data->logHistory->logCount = $logCount;
+            $data->logHistory->total = $paymentHistoryTotalCalculatedPrice;
+            $data->logHistory->paymentHistory = $paymentHistory->map(function ($data) {
+                $result = (object)[];
+                $result->pay = $data->pay;
+                return $result;
+            });
+            return $data;
         });
 
         return response()->json($result);
@@ -364,16 +376,22 @@ class StaffController extends Controller
 
     public function staffLogout()
     {
-        if(!session()->has('staff'))
-        {
+        if (!session()->has('staff')) {
             return response()->json([
-                'status' => false ,
+                'status' => false,
                 'text' => 'before login please'
             ]);
         }
 
         return response()->json([
             'status' => true
+        ]);
+    }
+
+    public function index()
+    {
+        return $this->respondSuccess([
+            'name' => 'demo'
         ]);
     }
 }

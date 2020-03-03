@@ -7,13 +7,13 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Business extends Model
 {
-    protected $visible= ['Id','Email', "Password", 'Longitute', 'Latitude', 'Options', 'Data', 'created_at', 'updated_at', 'Country', 'ExperienceClass', 'Lang'];
-    protected $fillable= ['Email', "Password", 'Username', 'Address', 'BusinessName', 'Phone', 'ExperienceClass', 'Country', 'Lang'];
+    protected $visible = ['Id', 'Email', "Password", 'Longitute', 'Latitude', 'Options', 'Data', 'created_at', 'updated_at', 'Country', 'ExperienceClass', 'Lang'];
+    protected $fillable = ['Email', "Password", 'Username', 'Address', 'BusinessName', 'Phone', 'ExperienceClass', 'Country', 'Lang'];
     protected $table = 'business';
     protected $primaryKey = 'Id';
     public $timestamps = true;
 
-     /**
+    /**
      * The attributes that should be cast to native types.
      *
      * @var array
@@ -25,10 +25,9 @@ class Business extends Model
     ];
 
 
-
-    public function minWage() 
+    public function minWage()
     {
-       return  $this->hasMany ("App\MinWage", "Country", "Country");
+        return $this->hasMany("App\MinWage", "Country", "Country");
     }
 
     /**
@@ -36,38 +35,39 @@ class Business extends Model
      */
     public function admin()
     {
-       return  $this->hasOne('App\BusinessAdmin','Id','AdminId' );
+        return $this->hasOne('App\BusinessAdmin', 'Id', 'AdminId');
     }
 
     public function signature()
     {
-        return $this->hasOne ("App\Signature", "Business", "Id");
+        return $this->hasOne("App\Signature", "Business", "Id");
     }
 
     public function experience()
     {
-        return $this->hasOne ("App\Experience", "Business", "Id");
+        return $this->hasOne("App\Experience", "Business", "Id");
     }
 
     public function relay()
     {
-        return $this->hasOne ("App\Relay", "Business", "Id");
+        return $this->hasOne("App\Relay", "Business", "Id");
     }
-    public function kiosk ()
+
+    public function kiosk()
     {
-        return $this->hasOne ("App\Kiosk", "Business", "Id");
+        return $this->hasOne("App\Kiosk", "Business", "Id");
     }
 
     public function staff()
     {
-        return $this->hasMany ("App\Staff", "Business", "Id");
+        return $this->hasMany("App\Staff", "Business", "Id");
     }
 
 
     /**
      *
      *
-     * @param  string  $value
+     * @param string $value
      * @return void
      */
     public function setExperienceClassAttribute($value)
@@ -81,10 +81,10 @@ class Business extends Model
         return $query->where('active', '=', 1);
     }
 
-     /**
-     * 
+    /**
      *
-     * @param  string  $value
+     *
+     * @param string $value
      * @return void
      */
     public function setDataAttribute($value)
@@ -92,10 +92,10 @@ class Business extends Model
         $this->attributes['Data'] = json_encode($value);
     }
 
-     /**
-     * 
+    /**
      *
-     * @param  string  $value
+     *
+     * @param string $value
      * @return void
      */
     public function setOptionsAttribute($value)
