@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use function foo\func;
 
 class BusinessController extends Controller
 {
@@ -42,7 +43,7 @@ class BusinessController extends Controller
             ]);
         }
 
-        $business = Business::where('Email', $request->username)->get();
+        $business = Business::where('Email', $request->username)->active()->get();
 
         if (!isset($business[0])) {
             return response()->json([
@@ -106,6 +107,8 @@ class BusinessController extends Controller
             "Lang" => "TR_tr",
         ]);
 
+
+
         session()->put("businessId", $business->Id);
         return redirect("/{$business->Username}/");
     }
@@ -124,17 +127,16 @@ class BusinessController extends Controller
             return view('business.register');
 
         $id = session()->get("businessId");
-        $business = Business::where("id", $id)->get();
+        $business = Business::find( $id);
 
-        $staffCount = Staff::where("Business", $id)->count();
-        $experienceCount = Experience::where("Business", $id)->count();
-
+        $staffCount = $business->staff->count();
+        $experienceCount = $business->experience->count();
 
         return response()->json([
-            "email" => $business[0]->Email,
-            "username" => $business[0]->Username,
-            "img" => $business[0]->Image,
-            "name" => $business[0]->BusinessName,
+            "email" => $business->Email,
+            "username" => $business->Username,
+            "img" => $business->Image,
+            "name" => $business->BusinessName,
             "staff" => $staffCount,
             "experience" => $experienceCount
         ]);
@@ -142,40 +144,61 @@ class BusinessController extends Controller
 
     public function homeData()
     {
-        $businessId = session('businessId');
-        $result = (object)[];
+        $result['status'] = true;
 
-        if(Cache::has('homeData')){
-            return response()->json(array(
-                'status' => true,
-                'data' => Cache::get('homeData')
-            ));
-        }
+        /*
+           if(Cache::has('homeData')){
+                return response()->json(array(
+                    'status' => true,
+                    'data' => Cache::get('homeData')
+                ));
+            }
+         */
 
+        $businessId = session()->get("businessId");
+        $business = Business::find( $businessId);
+
+        //total
+        $result['staffCount'] = $business->staff->count();
+        $result['kioskCount'] = $business->experience->count();
         $tio = Tio::where('Business', $businessId)->where('Traffic', 'Enter')->limit(5)->orderBy('created_at', 'desc')->get();
 
-        $result->onlineStaff = $tio->map(function ($data) {
+        $result['onlineStaff'] = $tio->map(function ($data) {
             $result = (object)[];
-            $staff = Staff::where('Id', $data->Staff)->get();
-            $result->name = $staff[0]->FirstName . ' ' . $staff[0]->LastName;
-            $result->time = $data->created_at ;
-            return $result;
+            $castTio = Tio::where('Staff', $data->Staff)->where('Traffic', 'Leave')->where('created_at', '>', $data->created_at)->get();
+
+            if(count($castTio) > 0 )
+            {
+                $staff = Staff::where('Id', $data->Staff)->get();
+                $result->name = $staff[0]->FirstName . ' ' . $staff[0]->LastName;
+                $result->time = $data->created_at->toDateTimeString() ;
+                return $result;
+            }
         });
+
+        if( isset($result['onlineStaff'][0]) && $result['onlineStaff'][0] == null){
+            $result['onlineStaff'] = [];
+        }
+
 
         $kiosk = Kioskqrcode::where('active', 1)->where('time', time() - 900)->get();
 
-        $result->onlineKiosk = $kiosk->map(function ($data) {
+        $result['onlineKiosk'] = $kiosk->map(function ($data) {
             $result = (object)[];
             $kiosk = Kiosk::where('RemoteAddress', $data->ip)->get();
             $result->name = $kiosk[0]->Identifier;
             return $result;
         });
 
-        $staff = Staff::where('Business', $businessId)->where('active', 1)->select('Id')->get();
+        $staff = $business->staff;
+
+        $staff = $staff->map(function ($val){
+            return $val->Id;
+        });
 
         $paymentHistory = PaymentHistory::whereIn('staff', $staff)->get();
 
-        $result->lastPayment = $paymentHistory->map(function ($data) {
+        $result['lastPayment'] = $paymentHistory->map(function ($data) {
             $result = (object)[];
             $staff = Staff::where('Id', $data->staff)->get();
             $result->name = $staff[0]->FirstName . ' ' . $staff[0]->LastName;
@@ -184,30 +207,28 @@ class BusinessController extends Controller
         });
 
         $tio = Tio::where('Business', $businessId)->limit(5)->orderBy('created_at', 'desc')->get();
-        $result->lastLog = $tio->map(function ($data) {
+        $result['lastLog'] = $tio->map(function ($data) {
             $result = (object)[];
 
             $staff = Staff::where('Id', $data->Staff)->get();
 
             $result->name = $staff[0]->FirstName . ' ' . $staff[0]->LastName;
-            $result->time = $data->created_at;
+            $result->time = $data->created_at->toDateTimeString();
             return $result;
         });
 
         $staff = Staff::where('Business', $businessId)->where('active', 1)->where('Balance', '>', 0)->limit(5)->orderBy('created_at', 'desc')->get();
 
-        $result->paymentHistory = $staff->map(function ($data) {
+        $result['paymentHistory'] = $staff->map(function ($data) {
             $result = (object)[];
 
             $result->name = $data->FirstName . ' ' . $data->LastName;
             $result->balance = $data->Balance;
+            return $result;
         });
 
        // Cache::put('homeData', $result, Carbon::now()->addSeconds(30));
 
-        return response()->json([
-            'status' => true,
-            'data' => $result
-        ]);
+        return response()->json($result);
     }
 }

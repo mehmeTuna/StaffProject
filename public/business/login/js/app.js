@@ -52100,7 +52100,7 @@ function (_React$Component) {
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\Mehmet\Desktop\firma\StaffProject-master\resources\assets\js\business\login\app.js */"./resources/assets/js/business/login/app.js");
+module.exports = __webpack_require__(/*! C:\Users\Mehmet\Desktop\firma\staff_mart_7_yedek\resources\assets\js\business\login\app.js */"./resources/assets/js/business/login/app.js");
 
 
 /***/ })

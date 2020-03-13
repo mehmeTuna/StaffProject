@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Business extends Model
 {
-    protected $visible = ['Id', 'Email', "Password", 'Longitute', 'Latitude', 'Options', 'Data', 'created_at', 'updated_at', 'Country', 'ExperienceClass', 'Lang'];
+    protected $visible = ['Id', 'Email', "Password", 'Longitute', 'Latitude', 'BusinessName', 'Options', 'Data', 'created_at', 'updated_at', 'Country', 'ExperienceClass', 'Lang'];
     protected $fillable = ['Email', "Password", 'Username', 'Address', 'BusinessName', 'Phone', 'ExperienceClass', 'Country', 'Lang'];
     protected $table = 'business';
     protected $primaryKey = 'Id';
@@ -24,45 +24,26 @@ class Business extends Model
         'ExperienceClass' => 'object'
     ];
 
-
-    public function minWage()
+    //query add where closure active = 1
+    public function scopeActive($query)
     {
-        return $this->hasMany("App\MinWage", "Country", "Country");
-    }
-
-    /**
-     * Get admin record associated with the Business
-     */
-    public function admin()
-    {
-        return $this->hasOne('App\BusinessAdmin', 'Id', 'AdminId');
-    }
-
-    public function signature()
-    {
-        return $this->hasOne("App\Signature", "Business", "Id");
-    }
-
-    public function experience()
-    {
-        return $this->hasOne("App\Experience", "Business", "Id");
-    }
-
-    public function relay()
-    {
-        return $this->hasOne("App\Relay", "Business", "Id");
-    }
-
-    public function kiosk()
-    {
-        return $this->hasOne("App\Kiosk", "Business", "Id");
+        return $query->where('active', 1);
     }
 
     public function staff()
     {
-        return $this->hasMany("App\Staff", "Business", "Id");
+        return $this->hasMany('App\Staff', 'Business', 'Id')->where('active', 1);
     }
 
+    public function experience()
+    {
+        return $this->hasMany('App\Experience', 'Business', 'Id')->where('active', 1);
+    }
+
+    public function kiosk()
+    {
+        return $this->hasMany('App\Kiosk', 'Business', 'Id')->where('active', 1);
+    }
 
     /**
      *
@@ -73,12 +54,6 @@ class Business extends Model
     public function setExperienceClassAttribute($value)
     {
         $this->attributes['ExperienceClass'] = json_encode($value);
-    }
-
-    //ex: $category = Category::active()->get(); aktif olan kategori
-    public function scopeActive($query)
-    {
-        return $query->where('active', '=', 1);
     }
 
     /**

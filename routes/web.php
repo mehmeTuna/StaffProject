@@ -11,6 +11,17 @@
 |
 */
 
+//*************************************TEST***********************************//
+
+Route::get('demo', function(){
+    $bb = \App\Business::find(2) ;
+        dd($bb->kiosk);
+});
+
+
+
+//*************************************END_TEST***********************************//
+
 //herhangi bir url eslesme olmaz ise bu sayfa goruntulenecek
 Route::any('/', 'WelcomeController@index');
 
@@ -49,7 +60,8 @@ Route::middleware(['business'])->group(function(){
 
     Route::prefix('business')->group(function (){
         //data controller
-        Route::post("staff/list", 'StaffController@list');
+        Route::post('search', 'ResponseDataController@businessPageSearch');
+        Route::post("staff/list", 'StaffController@staffList');
         Route::post("staff/delete", 'StaffController@delete');
         Route::post("experience/list", 'ResponseDataController@experienceList');
         Route::post("experience/delete", 'ExperienceController@delete');
@@ -63,6 +75,8 @@ Route::middleware(['business'])->group(function(){
     Route::prefix('/{businessUsername}')->group(function(){
 
         Route::get('/', 'BusinessController@home');
+
+        Route::get('profile', 'BusinessController@home');
         Route::post("data/home", 'BusinessController@homeData');
 
         Route::prefix('/staff')->group(function(){

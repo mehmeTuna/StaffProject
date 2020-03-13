@@ -33,11 +33,12 @@
         <div class="collapse navbar-collapse" id="probootstrap-navbar">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item"><a class="nav-link" href="#section-home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/kiosk">Kiosk Register / Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/staff/login">Staff</a></li>
                 <li class="nav-item"><a class="nav-link" href="#section-features">Features</a></li>
                 <li class="nav-item"><a class="nav-link" href="#section-reviews">Reviews</a></li>
                 <li class="nav-item"><a class="nav-link" href="#section-pricing">Pricing</a></li>
-                <li class="nav-item"><a class="nav-link" href="#section-faq">FAQ</a></li>
-                <li class="nav-item cta-btn ml-xl-2 ml-lg-2 ml-md-0 ml-sm-0 ml-0"><a class="nav-link" href="#" target="_blank"><span class="pb_rounded-4 px-4">Get Started</span></a></li>
+                <li class="nav-item cta-btn ml-xl-2 ml-lg-2 ml-md-0 ml-sm-0 ml-0"><a class="nav-link" href="/login" ><span class="pb_rounded-4 px-4">Login</span></a></li>
             </ul>
         </div>
     </div>

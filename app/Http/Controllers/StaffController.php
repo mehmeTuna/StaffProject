@@ -93,15 +93,6 @@ class StaffController extends Controller
                 break;
         }
 
-
-        $career = Career::create([
-            'BeginTime' => time(),
-            'WorkClass' => 1,//TODO: bu kisim frontend e working plan kismi hazir olduktan sonra eklenecek simdilik varsayilan 1,
-            'Staff' => null,
-            'Experience' => $request->experience,
-            'Recompense' => 1
-        ]);
-
         $staff = Staff::create([
             "FirstName" => $request->firstName,
             "LastName" => $request->lastName,
@@ -116,7 +107,6 @@ class StaffController extends Controller
             "MartialStatus" => $request->martialStatus,
             "Business" => $businessId,
             "Employment" => 1,
-            "Career" => $career->Id,
             "TimeSheetMap" => 1,
             'workingPlan' => $staffWorkingPlan,
             'Experience' => $request->experience,
@@ -125,18 +115,6 @@ class StaffController extends Controller
             'Periode' => $request->periode,
             'operationtime' => $calculatedTime,
             'salary' => $salary
-        ]);
-
-        $employment = Employment::create([
-            'Manager' => $businessId,
-            'Business' => $businessId,
-            'OperationTime' => time(),
-            'Status' => 'Recruitment',
-            'Staff' => $staff->Id,
-        ]);
-
-        $career->update([
-            'Staff' => $staff->Id,
         ]);
 
         return response()->json([
@@ -157,7 +135,7 @@ class StaffController extends Controller
         return $this->respondSuccess();
     }
 
-    public function list()
+    public function staffList(Request $request)
     {
         $staff = Staff::where('Business', session('businessId'))->where('active', 1)->get();
         $factorText = [
