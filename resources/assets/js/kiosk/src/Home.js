@@ -1,50 +1,50 @@
-import React from "react";
-import Axios from "axios";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import { resetServerContext } from "react-beautiful-dnd";
+import React from 'react'
+import Axios from 'axios'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import { resetServerContext } from 'react-beautiful-dnd'
 
-const sweet = withReactContent(Swal);
+const sweet = withReactContent(Swal)
 
 export default class Home extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       data: [],
       loading: false,
-      qrUrl: ""
-    };
+      qrUrl: ''
+    }
 
-    this.renderImg = this.renderImg.bind(this);
-    this.reload = this.reload.bind(this);
+    this.renderImg = this.renderImg.bind(this)
+    this.reload = this.reload.bind(this)
   }
 
   async componentDidMount() {
-    this.setState({ loading: true });
-    const { data } = await Axios.post("/kiosk/me");
+    this.setState({ loading: true })
+    const { data } = await Axios.post('/kiosk/me')
 
     if (data.status === true) {
-      this.setState({ data: data.data });
+      this.setState({ data: data.data })
     }
 
-    this.setState({ loading: false });
+    this.setState({ loading: false })
 
-    window.setInterval(this.renderImg, 120000);
+    window.setInterval(this.renderImg, 120000)
 
-    console.log(data);
+    console.log(data)
   }
 
   renderImg() {
-    this.setState({ loading: true });
+    this.setState({ loading: true })
 
-    var timer = setTimeout(() => this.setState({ loading: false }), 2000);
+    var timer = setTimeout(() => this.setState({ loading: false }), 2000)
     //clearTimeout(timer);
-    console.log("refresh img");
+    console.log('refresh img')
   }
 
   reload() {
-    window.location.reload();
+    window.location.reload()
   }
 
   render() {
@@ -80,6 +80,6 @@ export default class Home extends React.Component {
           </div>
         </div>
       </React.Fragment>
-    );
+    )
   }
 }

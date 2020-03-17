@@ -15,7 +15,7 @@ class Checkin extends Migration
     {
         Schema::create('Checkin', function (Blueprint $table) {
             $table->comment = 'Personel Giriş/Çıkış kayıtları.';
-            $table->increments('Id'); 
+            $table->increments('id'); 
             $table->bigInteger('Manager')->default(0)->comment('Notu tutan yetkili');
             $table->bigInteger('Business')->default(0)->comment('Hangi işletme...');
             $table->tinyInteger('Periode')->default(1);

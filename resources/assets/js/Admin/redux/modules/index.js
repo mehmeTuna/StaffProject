@@ -1,7 +1,7 @@
-import { combineReducers } from "redux";
+import { combineReducers } from 'redux'
 
-import staffReducer from "../reducers/StaffReducer";
+import staffReducer from '../reducers/StaffReducer'
 
 export default combineReducers({
   staffReducer
-});
+})

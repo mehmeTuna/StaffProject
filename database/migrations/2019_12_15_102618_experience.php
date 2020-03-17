@@ -15,14 +15,17 @@ class Experience extends Migration
     {
         Schema::create('Experience', function (Blueprint $table) {
             $table->comment = 'Tanımlanmış görevler.';
-            $table->increments('Id'); 
-            $table->tinyInteger('WorkClass')->default(1)->comment('0=Free-Time, 1=Planned-Time, 2=Full-Time	');
-            $table->bigInteger('Color')->default(0)->comment('Renk belirtmek için');
-            $table->bigInteger('Charge')->default(0);
-            $table->bigInteger('OwnerClass')->default(0);
-            $table->bigInteger('Business')->default(0)->comment('Hangi işletme');
-            $table->char('Identifier', 50)->default(null);
-            $table->enum('Class', ['Unspecified', 'Staff', 'Manager', 'Boss', 'Operator', 'Other']);
+            $table->increments('id');
+            $table->boolean('active')->default(1);
+            $table->tinyInteger('workClass')->default(1)->comment('0=Free-Time, 1=Planned-Time, 2=Full-Time	');
+            $table->text('workingPlan')->comment('calisma plani');
+            $table->float('pay', 6,2)->comment('ucret');
+            $table->char('factor', 20)->comment('tipi');
+            $table->integer('periode')->comment('periode');
+            $table->char('color', 200)->default(0)->comment('Renk belirtmek için');
+            $table->bigInteger('business')->default(0)->comment('Hangi işletme');
+            $table->char('identifier', 50)->default(null);
+            $table->enum('class', ['Unspecified', 'Staff', 'Manager', 'Boss', 'Operator', 'Other']);
             $table->timestamps();
         });
     }

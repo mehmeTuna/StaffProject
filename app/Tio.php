@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Tio extends Model
 {
-    protected $visible = ["Id", 'Staff', "TimeSheet", "Link", 'Active', 'Business', "Comment", "ToleransStyle", "Tolerance", "Hour", "Traffic", 'KioskId', 'KioskIp', 'created_at'];
-    protected $fillable = ["Id", 'Staff', "TimeSheet", "Link", 'Active', 'Business', "Comment", "ToleransStyle", "Tolerance", "Hour", "Traffic", 'KioskId', 'KioskIp', 'created_at'];
+    protected $visible = ['id', 'staff', 'business', 'kioskId', 'link', 'comment', 'tolerance', 'traffic'];
+    protected $fillable = ['id', 'staff', 'business', 'kioskId', 'link', 'comment', 'tolerance', 'traffic'];
     protected $table = "tio";
-    protected $primaryKey = "Id";
+    protected $primaryKey = "id";
     protected $dateFormat = 'U';
 
 }

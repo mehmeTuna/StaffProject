@@ -15,7 +15,7 @@ class Minwage extends Migration
     {
         Schema::create('Minwage', function (Blueprint $table) {
             $table->comment = 'Yıllara göre asgari ücret tablosu.';
-            $table->increments('Id'); 
+            $table->increments('id'); 
             $table->float('Value', 4,2)->default(null);
             $table->bigInteger('AgeTop')->default(null);
             $table->bigInteger('AgeBottom')->default(null);

@@ -3,21 +3,41 @@
 namespace App\Http\Controllers;
 
 use App\Experience;
+use App\Http\Requests\StaffPayment;
+use App\Http\Requests\StoreStaffLogin;
 use App\Kiosk;
 use App\Kioskqrcode;
 use App\PaymentHistory;
 use App\Staff;
-use App\Career;
-use App\Employment;
 use App\Tio;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-
 class StaffController extends Controller
 {
+
+    public function payment(StaffPayment $request)
+    {
+        $user = $request->userId;
+        $pay = (int) $request->pay;
+
+        $staff = Staff::active($user)->first();
+
+        $staff->Balance = ($pay > $staff->Balance) ? 0 : $staff->Balance - $pay;
+
+        if ($staff->Balance != 0 && $pay != 0) {
+            $paymentHistory = PaymentHistory::create([
+                'type' => 'payment',
+                'staff' => $user,
+                'pay' => $pay, //TODO: odeme ekleme kismi hatali (odenen tutar bakiyeden fazla bakiye kadarini ekleycek tutari degil)
+            ]);
+        }
+        $staff->save();
+
+        return $this->respondSuccess(['text' => 'successful']);
+    }
     public function checkModel($model)
     {
         return count($model) > 0 ? true : false;
@@ -80,7 +100,7 @@ class StaffController extends Controller
                 $pay = $request->pay / $request->periode;
                 $salary = round($pay, 2);
                 break;
-            case 'week' :
+            case 'week':
                 $pay = round(($calculatedTime / 3300), 2) * $request->periode;
                 $pay = $request->pay / $pay;
                 $salary = round($pay, 2);
@@ -97,7 +117,7 @@ class StaffController extends Controller
             "FirstName" => $request->firstName,
             "LastName" => $request->lastName,
             "Birthday" => $request->birthday,
-            'Password' => bcrypt($request->password),
+            'password' => bcrypt($request->password),
             "Image" => $img[0],
             "Adress" => $request->address,
             "Telephone" => $request->telephone,
@@ -114,22 +134,22 @@ class StaffController extends Controller
             'Pay' => $request->pay,
             'Periode' => $request->periode,
             'operationtime' => $calculatedTime,
-            'salary' => $salary
+            'salary' => $salary,
         ]);
 
         return response()->json([
             'status' => true,
-            'text' => 'kayit basarili'
+            'text' => 'kayit basarili',
         ]);
 
     }
 
     public function delete(Request $request)
     {
-        $id = $request->id ;
+        $id = $request->id;
 
-        $staff = Staff::where('Id', $id)->update([
-            'active' => 0
+        $staff = Staff::where('id', $id)->update([
+            'active' => 0,
         ]);
 
         return $this->respondSuccess();
@@ -141,12 +161,12 @@ class StaffController extends Controller
         $factorText = [
             'hour' => 'hourly',
             'week' => 'weekly',
-            'month' => 'monthly'
+            'month' => 'monthly',
         ];
         $staff = $staff->map(function ($user) use ($factorText) {
             $data = $user;
 
-            $experience = Experience::where('Id', $user->Experience)->get();
+            $experience = Experience::where('id', $user->Experience)->get();
             $data->Experience = $experience[0]->Identifier;
             $data->Factor = $experience[0]->Periode > 1 ? $experience[0]->Periode . ' ' : ' ' . $factorText[$experience[0]->Factor] . ' ' . $experience[0]->Pay;
             return $user;
@@ -167,12 +187,11 @@ class StaffController extends Controller
         if ($this->checkModel($kiosk)) {
             $kioskIp = $kiosk[0]->ip;
             $updatedKiosk = Kioskqrcode::where('id', $kiosk[0]->id)->update([
-                'active' => 0
+                'active' => 0,
             ]);
 
             session()->put('registerTime', time());
             session()->put('kioskIp', $kiosk[0]->ip);
-
 
             return view('staff.login');
 
@@ -188,11 +207,8 @@ class StaffController extends Controller
         return view('staff.login');
     }
 
-    public function staffLogin(Request $request)
+    public function staffLogin(StoreStaffLogin $request)
     {
-        $request->username = isset($request->username) ? trim($request->username) : '';
-        $request->password = isset($request->password) ? trim($request->password) : '';
-
         if (!session()->has('staffLogin')) {
             if (!session()->has('registerTime')) {
                 return response()->json([
@@ -209,26 +225,17 @@ class StaffController extends Controller
             }
         }
 
-        $validator = Validator::make($request->all(), [
-            'username' => 'required|email',
-            'password' => 'required|min:3|max:100'
-        ]);
 
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response()->json($errors->all());
-        }
+        $staff = Staff::where('email', $request->username)->active()->first();
 
-        $staff = Staff::where('Email', $request->username)->get();
-
-        if (!$this->checkModel($staff)) {
+        if (!$staff == null) {
             return response()->json([
                 'status' => false,
-                'text' => 'Kullanici adi ve parola hatali'
+                'text' => 'Kullanici adi ve parola hatali',
             ]);
         }
 
-        if (!Hash::check($request->password, $staff[0]->Password)) {
+        if (!Hash::check($request->password, $staff->password)) {
             return response()->json([
                 'status' => false,
                 'text' => 'Parola Hatali',
@@ -237,51 +244,52 @@ class StaffController extends Controller
 
         if (session()->has('staffLogin')) {
 
-            session()->put('staff', $staff[0]->Id);
+            session()->put('staff', $staff->id);
             return response()->json([
                 'status' => true,
                 'text' => ':)',
             ]);
         }
 
-        $kiosk = Kiosk::where('RemoteAddress', session()->get('kioskIp'))->get();
+        $kiosk = $staff->kiosk->where('remoteAddress', session()->get('kioskIp'));
 
-        if ($staff[0]->Business == $kiosk[0]->Business) {
 
-            $tio = Tio::where('Staff', $staff[0]->Id)->orderBy('created_at', 'desc')->limit(1)->get();
+        if ($kiosk != null) {
 
-            if (!isset($tio[0])) {
+            $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
+
+            if ($tio != null) {
                 //staff daha once herhangi giris cikis islemi yapmamaissa
                 $newTio = Tio::create([
-                    'Staff' => $staff[0]->Id,
-                    'KioskIp' => session()->get('kioskIp'),
-                    'Traffic' => 'Enter',
-                    'Business' => $staff[0]->Business
+                    'staff' => $staff->id,
+                    'kioskId' => session()->get('kioskIp'),
+                    'traffic' => 'Enter',
+                    'business' => $staff->business,
                 ]);
             } else {
                 //staff daha once giris cikis islemi yapmissa
                 $newTio = Tio::create([
-                    'Staff' => $staff[0]->Id,
-                    'KioskIp' => session()->get('kioskIp'),
-                    'Traffic' => $tio[0]->Traffic == 'Enter' ? 'Leave' : 'Enter',
-                    'Business' => $staff[0]->Business
+                    'staff' => $staff->id,
+                    'kioskId' => session()->get('kioskIp'),
+                    'traffic' => $tio->traffic == 'Enter' ? 'Leave' : 'Enter',
+                    'business' => $staff->business,
                 ]);
 
                 //user cikis islemi yaptiginda hesaplamaya dahil edilecek fiyati
-                if ($tio[0]->Traffic == 'Enter') {
-                    $difference = time() - $tio[0]->created_at->timestamp;
+                if ($tio->traffic == 'Enter') {
+                    $difference = time() - $tio->created_at->timestamp;
                     $multiplier = $staff[0]->salary * ($difference / 3300);
 
-                    Tio::where('Id', $tio[0]->Id)->update(['Active' => 0]);
-                    Tio::where('Id', $newTio->Id)->update(['Active' => 0]);
+                    Tio::where('id', $tio->id)->update(['active' => 0]);
+                    Tio::where('id', $newTio->id)->update(['active' => 0]);
 
-                    $oldBalance = $staff[0]->Balance;
+                    $oldBalance = $staff->balance;
                     $newBalance = round(($oldBalance + $multiplier), 2);
-                    Staff::where('Id', $staff[0]->Id)->update(['Balance' => $newBalance]);
+                    Staff::where('id', $staff->id)->update(['balance' => $newBalance]);
                 }
             }
 
-            session()->put('staff', $staff[0]->Id);
+            session()->put('staff', $staff->id);
             session()->forget('kioskIp');
             session()->forget('registerTime');
 
@@ -297,16 +305,16 @@ class StaffController extends Controller
         ]);
     }
 
-    public function staffMe()
+    public function me()
     {
         if (!session()->has('staff')) {
             return response()->json([
                 'status' => false,
-                'text' => 'before login please'
+                'text' => 'before login please',
             ]);
         }
 
-        $staff = Staff::where('Id', session('staff'))->get();
+        $staff = Staff::where('id', session('staff'))->get();
 
         $logHistory = Tio::where('Staff', session('staff'))->orderBy('created_at', 'desc')->limit(10)->get();
         $logCount = Tio::where('Staff', session('staff'))->orderBy('created_at', 'desc')->count();
@@ -315,12 +323,12 @@ class StaffController extends Controller
         $paymentHistoryTotalCalculatedPrice = PaymentHistory::where('staff', session('staff'))->sum('pay');
 
         $result = $staff->map(function ($user) use ($paymentHistory, $paymentHistoryTotalCalculatedPrice, $logCount, $logHistory) {
-            $data = (object)[];
+            $data = (object) [];
             $data->status = true;
-            $data->user = (object)[];
+            $data->user = (object) [];
             $data->user->img = $user->Image;
             $data->user->username = $user->FirstName . ' ' . $user->LastName;
-            $experience = Experience::where('Id', $user->Experience)->get();
+            $experience = Experience::where('id', $user->Experience)->get();
             $data->user->experience = $experience[0]->Identifier;
             $data->user->email = $user->Email;
             $data->user->factor = $user->Factor;
@@ -329,12 +337,12 @@ class StaffController extends Controller
             $data->user->Gender = $user->Gender;
             $data->user->martialStatus = $user->MartialStatus;
             $data->user->workingPlan = $user->workingPlan;
-            $data->logHistory = (object)[];
+            $data->logHistory = (object) [];
 
             $data->logHistory->balance = $user->Balance;
             $data->logHistory->type = 'log';
             $data->logHistory->logHistory = $logHistory->map(function ($data) {
-                $result = (object)[];
+                $result = (object) [];
                 $result->time = $data->Hour;
                 $result->traffic = $data->Traffic;
                 return $result;
@@ -342,7 +350,7 @@ class StaffController extends Controller
             $data->logHistory->logCount = $logCount;
             $data->logHistory->total = $paymentHistoryTotalCalculatedPrice;
             $data->logHistory->paymentHistory = $paymentHistory->map(function ($data) {
-                $result = (object)[];
+                $result = (object) [];
                 $result->pay = $data->pay;
                 return $result;
             });
@@ -357,19 +365,19 @@ class StaffController extends Controller
         if (!session()->has('staff')) {
             return response()->json([
                 'status' => false,
-                'text' => 'before login please'
+                'text' => 'before login please',
             ]);
         }
 
         return response()->json([
-            'status' => true
+            'status' => true,
         ]);
     }
 
     public function index()
     {
         return $this->respondSuccess([
-            'name' => 'demo'
+            'name' => 'demo',
         ]);
     }
 }

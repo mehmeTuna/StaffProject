@@ -1,16 +1,16 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
-import Swal from "sweetalert2";
-import axios from "axios";
-import withReactContent from "sweetalert2-react-content";
-import TimeField from "react-simple-timefield";
-import DatePicker from "react-date-picker";
-import Input from "react-phone-number-input/input";
+import React from 'react'
+import { Redirect } from 'react-router-dom'
+import Swal from 'sweetalert2'
+import axios from 'axios'
+import withReactContent from 'sweetalert2-react-content'
+import TimeField from 'react-simple-timefield'
+import DatePicker from 'react-date-picker'
+import Input from 'react-phone-number-input/input'
 
-const sweet = withReactContent(Swal);
+const sweet = withReactContent(Swal)
 
 function PlanList(props) {
-  if (typeof props.data !== "object") return;
+  if (typeof props.data !== 'object') return
 
   return props.data.map((value, key) => (
     <button
@@ -26,7 +26,7 @@ function PlanList(props) {
         <i className="icon-cross" />
       </span>
     </button>
-  ));
+  ))
 }
 
 function ExperinceSelect(data) {
@@ -34,252 +34,252 @@ function ExperinceSelect(data) {
     <option key={key} value={key}>
       {value.Identifier}
     </option>
-  ));
+  ))
 }
 
 class StaffCreate extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       img: [],
-      firstName: "",
-      lastName: "",
-      gender: "unspecified",
-      martialStatus: "unspecified",
+      firstName: '',
+      lastName: '',
+      gender: 'unspecified',
+      martialStatus: 'unspecified',
       birthday: new Date(new Date().setFullYear(new Date().getFullYear() - 20)),
-      address: "",
-      telephone: "",
-      email: "",
-      password: "",
-      workingTimeConditions: "",
-      workingConditions: "",
-      selectedStartTime: "08:30",
-      selectedEndTime: "17:00",
+      address: '',
+      telephone: '',
+      email: '',
+      password: '',
+      workingTimeConditions: '',
+      workingConditions: '',
+      selectedStartTime: '08:30',
+      selectedEndTime: '17:00',
       showDate: false,
-      pay: "",
-      factor: "",
-      periode: "1",
+      pay: '',
+      factor: '',
+      periode: '1',
       workingData: [],
-      selectedExperience: "",
+      selectedExperience: '',
       alert: false,
       redirect: null
-    };
+    }
 
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
 
-    this.customClock = this.customClock.bind(this);
+    this.customClock = this.customClock.bind(this)
 
-    this.changeStartTime = this.changeStartTime.bind(this);
-    this.changeEndTime = this.changeEndTime.bind(this);
+    this.changeStartTime = this.changeStartTime.bind(this)
+    this.changeEndTime = this.changeEndTime.bind(this)
 
-    this.dataSet = this.dataSet.bind(this);
+    this.dataSet = this.dataSet.bind(this)
 
-    this.deleteTime = this.deleteTime.bind(this);
+    this.deleteTime = this.deleteTime.bind(this)
 
-    this.paymnetControl = this.paymentControl.bind(this);
+    this.paymnetControl = this.paymentControl.bind(this)
 
-    this.compareTime = this.compareTime.bind(this);
-    this.updateWorkingDataPay = this.updateWorkingDataPay.bind(this);
-    this.updateWorkingDataFactor = this.updateWorkingDataFactor.bind(this);
-    this.updateWorkingDataPeriode = this.updateWorkingDataPeriode.bind(this);
+    this.compareTime = this.compareTime.bind(this)
+    this.updateWorkingDataPay = this.updateWorkingDataPay.bind(this)
+    this.updateWorkingDataFactor = this.updateWorkingDataFactor.bind(this)
+    this.updateWorkingDataPeriode = this.updateWorkingDataPeriode.bind(this)
   }
 
   handleSubmit() {
-    if (this.state.selectedExperience === "") {
+    if (this.state.selectedExperience === '') {
       sweet.fire({
-        title: "Experince Secin",
+        title: 'Experince Secin',
         timer: 1500
-      });
-      return;
+      })
+      return
     }
 
     if (this.state.img.length === 0) {
       sweet.fire({
-        title: "Resim Secin",
+        title: 'Resim Secin',
         timer: 1500
-      });
-      return;
+      })
+      return
     }
 
-    let formData = new FormData();
+    let formData = new FormData()
 
     if (this.state.img.length > 0) {
       for (let a = 0; a < this.state.img.length; a++) {
-        formData.set("img" + a, this.state.img[a].file);
+        formData.set('img' + a, this.state.img[a].file)
       }
     }
 
-    let customDate = new Date(this.state.birthday);
+    let customDate = new Date(this.state.birthday)
 
-    let date = JSON.stringify(customDate);
-    date = date.slice(1, 11);
+    let date = JSON.stringify(customDate)
+    date = date.slice(1, 11)
 
-    formData.set("firstName", this.state.firstName);
-    formData.set("lastName", this.state.lastName);
-    formData.set("gender", this.state.gender);
-    formData.set("martialStatus", this.state.martialStatus);
+    formData.set('firstName', this.state.firstName)
+    formData.set('lastName', this.state.lastName)
+    formData.set('gender', this.state.gender)
+    formData.set('martialStatus', this.state.martialStatus)
 
-    formData.set("birthday", date);
-    formData.set("address", this.state.address);
-    formData.set("telephone", this.state.telephone);
-    formData.set("email", this.state.email);
-    formData.set("password", this.state.password);
+    formData.set('birthday', date)
+    formData.set('address', this.state.address)
+    formData.set('telephone', this.state.telephone)
+    formData.set('email', this.state.email)
+    formData.set('password', this.state.password)
     formData.set(
-      "workingPlan",
+      'workingPlan',
       JSON.stringify(
         this.state.workingData[this.state.selectedExperience].workingPlan
       )
-    );
+    )
     formData.set(
-      "experience",
+      'experience',
       this.state.workingData[this.state.selectedExperience].Id
-    );
+    )
     formData.set(
-      "pay",
+      'pay',
       this.state.workingData[this.state.selectedExperience].Pay
-    );
+    )
     formData.set(
-      "factor",
+      'factor',
       this.state.workingData[this.state.selectedExperience].Factor
-    );
+    )
     formData.set(
-      "periode",
+      'periode',
       this.state.workingData[this.state.selectedExperience].Periode
-    );
+    )
 
     axios
       .post(`/${this.props.data.username}/staff/create`, formData, {
         headers: {
-          "content-type": "multipart/form-data" // do not forget this
+          'content-type': 'multipart/form-data' // do not forget this
         }
       })
       .then(res => {
         if (res.data.status === true) {
-          sweet.fire("Created").then(() =>
+          sweet.fire('Created').then(() =>
             this.setState({
               redirect: `/${this.props.data.username}/staff/list`
             })
-          );
+          )
         } else {
-          sweet.fire("Gerekli alanlari doldurunuz");
+          sweet.fire('Gerekli alanlari doldurunuz')
         }
-      });
+      })
   }
 
   async componentDidMount() {
-    const { data } = await axios.post("/business/experience/list");
+    const { data } = await axios.post('/business/experience/list')
 
-    this.setState({ workingData: data });
+    this.setState({ workingData: data })
   }
 
   handleChange(event) {
-    if (this.state.img.length >= 4) return;
-    let images = this.state.img;
+    if (this.state.img.length >= 4) return
+    let images = this.state.img
     images.push({
       url: URL.createObjectURL(event.target.files[0]),
       file: event.target.files[0]
-    });
+    })
     this.setState({
       img: images
-    });
+    })
   }
 
   compareTime(str1, str2) {
     if (str1 === str2) {
-      return 0;
+      return 0
     }
-    let time1 = str1.split(":");
-    let time2 = str2.split(":");
+    let time1 = str1.split(':')
+    let time2 = str2.split(':')
 
     if (time1[0][0] == 0) {
-      time1 = time1[0][1];
+      time1 = time1[0][1]
     }
 
     if (time2[0][0] == 0) {
-      time2 = time2[0][1];
+      time2 = time2[0][1]
     }
 
     if (eval(time1[0]) > eval(time2[0])) {
-      return 1;
+      return 1
     } else if (
       eval(time1[0]) === eval(time2[0]) &&
       eval(time1[1]) > eval(time2[1])
     ) {
-      return 1;
+      return 1
     } else {
-      return -1;
+      return -1
     }
   }
 
   deleteTime(key, day) {
     switch (day) {
-      case "monday":
-        let dataMonday = this.state.workingData;
+      case 'monday':
+        let dataMonday = this.state.workingData
         dataMonday[this.state.selectedExperience].workingPlan.monday.splice(
           key,
           1
-        );
-        this.setState({ workingData: dataMonday });
-        console.log(this.state.workingData);
-        break;
-      case "tuesday":
-        let dataTuesday = this.state.workingData;
+        )
+        this.setState({ workingData: dataMonday })
+        console.log(this.state.workingData)
+        break
+      case 'tuesday':
+        let dataTuesday = this.state.workingData
         dataTuesday[this.state.selectedExperience].workingPlan.tuesday.splice(
           key,
           1
-        );
-        this.setState({ workingData: dataTuesday });
-        break;
-      case "wednesday":
-        let dataWednesday = this.state.workingData;
+        )
+        this.setState({ workingData: dataTuesday })
+        break
+      case 'wednesday':
+        let dataWednesday = this.state.workingData
         dataWednesday[
           this.state.selectedExperience
-        ].workingPlan.wednesday.splice(key, 1);
-        this.setState({ workingData: dataWednesday });
-        break;
-      case "thursday":
-        let dataThursday = this.state.workingData;
+        ].workingPlan.wednesday.splice(key, 1)
+        this.setState({ workingData: dataWednesday })
+        break
+      case 'thursday':
+        let dataThursday = this.state.workingData
         dataThursday[this.state.selectedExperience].workingPlan.thursday.splice(
           key,
           1
-        );
-        this.setState({ workingData: dataThursday });
-        break;
-      case "friday":
-        let dataFriday = this.state.workingData;
+        )
+        this.setState({ workingData: dataThursday })
+        break
+      case 'friday':
+        let dataFriday = this.state.workingData
         dataFriday[this.state.selectedExperience].workingPlan.friday.splice(
           key,
           1
-        );
-        this.setState({ workingData: dataFriday });
-        break;
-      case "saturday":
-        let dataSaturday = this.state.workingData;
+        )
+        this.setState({ workingData: dataFriday })
+        break
+      case 'saturday':
+        let dataSaturday = this.state.workingData
         dataSaturday[this.state.selectedExperience].workingPlan.saturday.splice(
           key,
           1
-        );
-        this.setState({ workingData: dataSaturday });
-        break;
-      case "sunday":
-        let dataSunday = this.state.workingData;
+        )
+        this.setState({ workingData: dataSaturday })
+        break
+      case 'sunday':
+        let dataSunday = this.state.workingData
         dataSunday[this.state.selectedExperience].workingPlan.sunday.splice(
           key,
           1
-        );
-        this.setState({ workingData: dataSunday });
-        break;
+        )
+        this.setState({ workingData: dataSunday })
+        break
     }
   }
 
   dataSet() {
     if (
-      this.state.selectedStartTime === "" ||
-      this.state.selectedEndTime === ""
+      this.state.selectedStartTime === '' ||
+      this.state.selectedEndTime === ''
     )
-      return;
+      return
 
     if (
       this.compareTime(
@@ -289,94 +289,94 @@ class StaffCreate extends React.Component {
     ) {
       sweet
         .fire({
-          position: "top-end",
-          icon: "info",
-          title: "Cikis saati giris saatinden once olamaz",
+          position: 'top-end',
+          icon: 'info',
+          title: 'Cikis saati giris saatinden once olamaz',
           showConfirmButton: false,
           timer: 1500
         })
-        .then(() => console.log("then"));
-      return;
+        .then(() => console.log('then'))
+      return
     }
 
     switch (this.state.selectedDay) {
-      case "monday":
-        let dataMonday = this.state.workingData;
+      case 'monday':
+        let dataMonday = this.state.workingData
         dataMonday[this.state.selectedExperience].workingPlan.monday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ workingData: dataMonday });
-        break;
-      case "tuesday":
-        let dataTuesday = this.state.workingData;
+        })
+        this.setState({ workingData: dataMonday })
+        break
+      case 'tuesday':
+        let dataTuesday = this.state.workingData
         dataTuesday[this.state.selectedExperience].workingPlan.tuesday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ workingData: dataTuesday });
-        break;
-      case "wednesday":
-        let dataWednesday = this.state.workingData;
+        })
+        this.setState({ workingData: dataTuesday })
+        break
+      case 'wednesday':
+        let dataWednesday = this.state.workingData
         dataWednesday[this.state.selectedExperience].workingPlan.wednesday.push(
           {
             start: this.state.selectedStartTime,
             end: this.state.selectedEndTime
           }
-        );
-        this.setState({ workingData: dataWednesday });
-        break;
-      case "thursday":
-        let dataThursday = this.state.workingData;
+        )
+        this.setState({ workingData: dataWednesday })
+        break
+      case 'thursday':
+        let dataThursday = this.state.workingData
         dataThursday[this.state.selectedExperience].workingPlan.thursday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ workingData: dataThursday });
-        break;
-      case "friday":
-        let dataFriday = this.state.workingData;
+        })
+        this.setState({ workingData: dataThursday })
+        break
+      case 'friday':
+        let dataFriday = this.state.workingData
         dataFriday[this.state.selectedExperience].workingPlan.friday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ workingData: dataFriday });
-        break;
-      case "saturday":
-        let dataSaturday = this.state.workingData;
+        })
+        this.setState({ workingData: dataFriday })
+        break
+      case 'saturday':
+        let dataSaturday = this.state.workingData
         dataSaturday[this.state.selectedExperience].workingPlan.saturday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ workingData: dataSaturday });
-        break;
-      case "sunday":
-        let dataSunday = this.state.workingData;
+        })
+        this.setState({ workingData: dataSaturday })
+        break
+      case 'sunday':
+        let dataSunday = this.state.workingData
         dataSunday[this.state.selectedExperience].workingPlan.sunday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ workingData: dataSunday });
-        break;
+        })
+        this.setState({ workingData: dataSunday })
+        break
       default:
-        console.log("dataSet foksiyion kismi default");
-        break;
+        console.log('dataSet foksiyion kismi default')
+        break
     }
   }
 
   changeStartTime(time) {
-    this.setState({ selectedStartTime: time.target.value });
+    this.setState({ selectedStartTime: time.target.value })
   }
 
   changeEndTime(time) {
-    this.setState({ selectedEndTime: time.target.value });
+    this.setState({ selectedEndTime: time.target.value })
   }
 
   customClock(data) {
-    this.setState({ selectedDay: data });
+    this.setState({ selectedDay: data })
     sweet
       .fire({
-        title: "Saat Belirtiniz",
+        title: 'Saat Belirtiniz',
         html: (
           <div className="row">
             <div className="col-8 mb-2 mx-auto">
@@ -399,50 +399,50 @@ class StaffCreate extends React.Component {
         )
       })
       .then(result => {
-        if (result.value === true) this.dataSet();
-      });
+        if (result.value === true) this.dataSet()
+      })
   }
 
   paymentControl(val) {
-    let min = this.state.isMinWage[0].Value;
+    let min = this.state.isMinWage[0].Value
 
     this.state.isMinWage.forEach((val, key) =>
-      val.Value < min ? (min = val.Value) : ""
-    );
+      val.Value < min ? (min = val.Value) : ''
+    )
 
     if (val < min) {
-      let alert = this.state.alert;
-      alert.pay.status = true;
-      alert.pay.text = `minimum ${min} tutar giriniz`;
-      this.setState({ alert: alert });
+      let alert = this.state.alert
+      alert.pay.status = true
+      alert.pay.text = `minimum ${min} tutar giriniz`
+      this.setState({ alert: alert })
     } else {
-      let alert = this.state.alert;
-      alert.pay.status = false;
-      this.setState({ alert: alert });
+      let alert = this.state.alert
+      alert.pay.status = false
+      this.setState({ alert: alert })
     }
   }
 
   updateWorkingDataPay(val) {
-    let data = this.state.workingData;
-    data[this.state.selectedExperience].Pay = val;
-    this.setState({ workingData: data });
+    let data = this.state.workingData
+    data[this.state.selectedExperience].Pay = val
+    this.setState({ workingData: data })
   }
 
   updateWorkingDataPeriode(val) {
-    let data = this.state.workingData;
-    data[this.state.selectedExperience].Periode = val;
-    this.setState({ workingData: data });
+    let data = this.state.workingData
+    data[this.state.selectedExperience].Periode = val
+    this.setState({ workingData: data })
   }
 
   updateWorkingDataFactor(val) {
-    let data = this.state.workingData;
-    data[this.state.selectedExperience].Factor = val;
-    this.setState({ workingData: data });
+    let data = this.state.workingData
+    data[this.state.selectedExperience].Factor = val
+    this.setState({ workingData: data })
   }
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />;
+      return <Redirect to={this.state.redirect} />
     }
     return (
       <div className="col-12 grid-margin">
@@ -460,7 +460,7 @@ class StaffCreate extends React.Component {
                 this.state.img.map(val => (
                   <img
                     src={val.url}
-                    style={{ width: "100px", height: "100px" }}
+                    style={{ width: '100px', height: '100px' }}
                     className="img-thumbnail mx-auto"
                   />
                 ))}
@@ -476,7 +476,7 @@ class StaffCreate extends React.Component {
                   <input
                     type="file"
                     id="upload"
-                    style={{ display: "none" }}
+                    style={{ display: 'none' }}
                     onChange={this.handleChange}
                   />
                 </label>
@@ -643,7 +643,7 @@ class StaffCreate extends React.Component {
             </form>
           </div>
         </div>
-        {this.state.selectedExperience !== "" && (
+        {this.state.selectedExperience !== '' && (
           <div className="col-12 grid-margin">
             <div className="card">
               <div className="card-body">
@@ -724,7 +724,7 @@ class StaffCreate extends React.Component {
             </div>
           </div>
         )}
-        {this.state.selectedExperience !== "" && (
+        {this.state.selectedExperience !== '' && (
           <div className="row flex-grow col-md-12 grid-margin stretch-card">
             <div className="col-md-12 grid-margin stretch-card">
               <div className="card">
@@ -750,7 +750,7 @@ class StaffCreate extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("monday")}
+                        onClick={() => this.customClock('monday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -777,7 +777,7 @@ class StaffCreate extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("tuesday")}
+                        onClick={() => this.customClock('tuesday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -804,7 +804,7 @@ class StaffCreate extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("wednesday")}
+                        onClick={() => this.customClock('wednesday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -831,7 +831,7 @@ class StaffCreate extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("thursday")}
+                        onClick={() => this.customClock('thursday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -858,7 +858,7 @@ class StaffCreate extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("friday")}
+                        onClick={() => this.customClock('friday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -885,7 +885,7 @@ class StaffCreate extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("saturday")}
+                        onClick={() => this.customClock('saturday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -912,7 +912,7 @@ class StaffCreate extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("sunday")}
+                        onClick={() => this.customClock('sunday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -945,8 +945,8 @@ class StaffCreate extends React.Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default StaffCreate;
+export default StaffCreate

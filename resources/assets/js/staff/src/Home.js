@@ -1,5 +1,5 @@
-import React from "react";
-import Axios from "axios";
+import React from 'react'
+import Axios from 'axios'
 
 function dayPlanList(data) {
   return data.map((value, key) => (
@@ -12,28 +12,28 @@ function dayPlanList(data) {
         {value.start} - {value.end}
       </span>
     </button>
-  ));
+  ))
 }
 
 export default class Home extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       user: [],
       userData: []
-    };
+    }
   }
 
   async componentDidMount() {
-    const { data } = await Axios.post("/staff/me");
+    const { data } = await Axios.post('/staff/me')
 
     if (data[0].status === true) {
-      this.setState({ user: data[0].user });
-      this.setState({ userData: data[0].logHistory });
+      this.setState({ user: data[0].user })
+      this.setState({ userData: data[0].logHistory })
     }
 
-    console.log(data[0].logHistory);
+    console.log(data[0].logHistory)
   }
 
   render() {
@@ -47,7 +47,7 @@ export default class Home extends React.Component {
                   <div>
                     <img
                       src={this.state.user.img}
-                      style={{ width: "100px", height: "100px" }}
+                      style={{ width: '100px', height: '100px' }}
                       className="mx-auto"
                     />
                   </div>
@@ -71,25 +71,25 @@ export default class Home extends React.Component {
                         <div className="card-body">
                           <p className="text-dark">{this.state.user.factor}</p>
                           <p className="text-dark">
-                            Adress:{" "}
+                            Adress:{' '}
                             <span className="text-muted">
                               {this.state.user.adress}
                             </span>
                           </p>
                           <p className="text-dark">
-                            GSM:{" "}
+                            GSM:{' '}
                             <span className="text-muted">
                               {this.state.user.phone}
                             </span>
                           </p>
                           <p className="text-dark">
-                            Gender:{" "}
+                            Gender:{' '}
                             <span className="text-muted">
                               {this.state.user.gender}
                             </span>
                           </p>
                           <p className="text-dark">
-                            Martial Status:{" "}
+                            Martial Status:{' '}
                             <span className="text-muted">
                               {this.state.user.martialStatus}
                             </span>
@@ -111,49 +111,49 @@ export default class Home extends React.Component {
                       {this.state.user.workingPlan !== undefined &&
                         this.state.user.workingPlan.monday.length !== 0 && (
                           <h5>
-                            Monday{" "}
+                            Monday{' '}
                             {dayPlanList(this.state.user.workingPlan.monday)}
                           </h5>
                         )}
                       {this.state.user.workingPlan !== undefined &&
                         this.state.user.workingPlan.tuesday.length !== 0 && (
                           <h5>
-                            Tuesday{" "}
+                            Tuesday{' '}
                             {dayPlanList(this.state.user.workingPlan.tuesday)}
                           </h5>
                         )}
                       {this.state.user.workingPlan !== undefined &&
                         this.state.user.workingPlan.wednesday.length !== 0 && (
                           <h5>
-                            Wednesday{" "}
+                            Wednesday{' '}
                             {dayPlanList(this.state.user.workingPlan.wednesday)}
                           </h5>
                         )}
                       {this.state.user.workingPlan !== undefined &&
                         this.state.user.workingPlan.thursday.length !== 0 && (
                           <h5>
-                            Thursday{" "}
+                            Thursday{' '}
                             {dayPlanList(this.state.user.workingPlan.thursday)}
                           </h5>
                         )}
                       {this.state.user.workingPlan !== undefined &&
                         this.state.user.workingPlan.friday.length !== 0 && (
                           <h5>
-                            Friday{" "}
+                            Friday{' '}
                             {dayPlanList(this.state.user.workingPlan.friday)}
                           </h5>
                         )}
                       {this.state.user.workingPlan !== undefined &&
                         this.state.user.workingPlan.saturday.length !== 0 && (
                           <h5>
-                            Saturday{" "}
+                            Saturday{' '}
                             {dayPlanList(this.state.user.workingPlan.saturday)}
                           </h5>
                         )}
                       {this.state.user.workingPlan !== undefined &&
                         this.state.user.workingPlan.sunday.length !== 0 && (
                           <h5>
-                            Sunday{" "}
+                            Sunday{' '}
                             {dayPlanList(this.state.user.workingPlan.sunday)}
                           </h5>
                         )}
@@ -242,9 +242,9 @@ export default class Home extends React.Component {
                                     <div>{val.time}</div>
                                     <div
                                       className={
-                                        val.traffic === "Enter"
-                                          ? "badge badge-success"
-                                          : "badge badge-danger"
+                                        val.traffic === 'Enter'
+                                          ? 'badge badge-success'
+                                          : 'badge badge-danger'
                                       }
                                     >
                                       {val.traffic}
@@ -306,6 +306,6 @@ export default class Home extends React.Component {
           </div>
         </div>
       </React.Fragment>
-    );
+    )
   }
 }

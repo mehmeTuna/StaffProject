@@ -1,64 +1,64 @@
-import React, { useState } from "react";
-import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
-import withReactContent from "sweetalert2-react-content";
+import React, { useState } from 'react'
+import Swal from 'sweetalert2'
+import { Link } from 'react-router-dom'
+import withReactContent from 'sweetalert2-react-content'
 
-import { connect } from "react-redux";
-import { staffGetItems } from "../redux/reducers/StaffReducer";
+import { connect } from 'react-redux'
+import { staffGetItems } from '../redux/reducers/StaffReducer'
 
-import { Loading } from "./components/app";
-import { getStaffData, getDeleteStaff } from "./../api/staff";
-import Staff from "./components/Staff/Staff";
+import { Loading } from './components/app'
+import { getStaffData, getDeleteStaff } from './../api/staff'
+import Staff from './components/Staff/Staff'
 
-const sweet = withReactContent(Swal);
+const sweet = withReactContent(Swal)
 
 class StaffList extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       Loading: false,
       experience: [],
       staff: []
-    };
+    }
 
-    this.deleteStaff = this.deleteStaff.bind(this);
-    this.delete = this.delete.bind(this);
+    this.deleteStaff = this.deleteStaff.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
   async componentDidMount() {
-    this.setState({ Loading: true });
-    const data = await getStaffData();
+    this.setState({ Loading: true })
+    const data = await getStaffData()
 
-    this.setState({ Loading: false, staff: data });
+    this.setState({ Loading: false, staff: data })
   }
 
   deleteStaff({ id, username }) {
     sweet
       .fire({
-        title: `${username} silmek istediğinize eminmisiniz ?`,
-        icon: "warning",
+        title: `${username} are you sure you want to delete ?`,
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Sil"
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Delete'
       })
       .then(result => {
         if (result.value) {
-          this.delete({ id, username });
+          this.delete({ id, username })
         }
-      });
+      })
   }
 
   async delete({ id, username }) {
-    this.setState({ staff: this.state.filter(e => e.Id != id) });
-    const data = await getDeleteStaff(id);
+    this.setState({ staff: this.state.filter(e => e.Id != id) })
+    const data = await getDeleteStaff(id)
 
     if (data.status === true) {
       sweet.fire({
-        title: `${username} silindi`,
+        title: `${username} deleted`,
         timer: 1500
-      });
+      })
     }
   }
 
@@ -79,7 +79,7 @@ class StaffList extends React.Component {
                 </div>
                 <div className="row display-3">
                   <Link
-                    to={"/" + `${this.props.data.username + "/staff/create"}`}
+                    to={'/' + `${this.props.data.username + '/staff/create'}`}
                     className="nav-link mx-auto"
                   >
                     <button
@@ -109,20 +109,20 @@ class StaffList extends React.Component {
           </React.Fragment>
         )}
       </React.Fragment>
-    );
+    )
   }
 }
 
 function mapStateToProps(state) {
   return {
     state: state
-  };
+  }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
     onGetStaff: () => dispatch(staffGetItems())
-  };
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StaffList);
+export default connect(mapStateToProps, mapDispatchToProps)(StaffList)

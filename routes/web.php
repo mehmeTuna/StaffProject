@@ -11,16 +11,6 @@
 |
 */
 
-//*************************************TEST***********************************//
-
-Route::get('demo', function(){
-    $bb = \App\Business::find(2) ;
-        dd($bb->kiosk);
-});
-
-
-
-//*************************************END_TEST***********************************//
 
 //herhangi bir url eslesme olmaz ise bu sayfa goruntulenecek
 Route::any('/', 'WelcomeController@index');
@@ -31,8 +21,6 @@ Route::get('kiosk', 'KioskController@kioskRegisterPage');
 Route::get('login', 'BusinessController@loginPage');
 Route::get('staff/home', 'StaffController@staffHomePage');
 Route::get('staff/login', 'StaffController@staticStaffLoginPage');
-Route::post('staff/me', 'StaffController@staffMe');
-Route::post('staff/logout', 'StaffController@staffLogout');
 Route::post('kiosk/staff/login', 'StaffController@staffLogin');
 
 Route::prefix('kiosk')->group(function () {
@@ -42,11 +30,18 @@ Route::prefix('kiosk')->group(function () {
     Route::get('generate', 'KioskController@controllerQr');
 });
 
+Route::middleware(['staff'])->group(function(){
+    Route::prefix('staff')->group(function(){
+        Route::post('me', 'StaffController@me');
+        Route::post('logout', 'StaffController@staffLogout');
+    });
+});
+
 Route::prefix('business')->group(function(){
   Route::post('loginData', 'BusinessController@login');
   Route::post('logout', 'BusinessController@logout');
   Route::post('register', 'BusinessController@register'); //isletme kayit icin post edilecek yer
-  Route::post('data', 'BusinessController@businessData');
+
 
   //kiosk islemleri bu kisim istekleri  sadece  kiosk requestleri icin dir
   Route::post('kiosk/code/generate', 'KioskController@generateId');
@@ -60,14 +55,21 @@ Route::middleware(['business'])->group(function(){
 
     Route::prefix('business')->group(function (){
         //data controller
+        Route::post('data', 'BusinessController@businessData');
+        Route::post('update', 'BusinessController@update');
         Route::post('search', 'ResponseDataController@businessPageSearch');
+
         Route::post("staff/list", 'StaffController@staffList');
+        Route::post('staff/pay', 'StaffController@payment');
         Route::post("staff/delete", 'StaffController@delete');
+
         Route::post("experience/list", 'ResponseDataController@experienceList');
         Route::post("experience/delete", 'ExperienceController@delete');
         Route::post("experience/list/data", 'ExperienceController@listData');
+
         Route::post("kiosk/list", 'ResponseDataController@kioskList');
         Route::post("kiosk/delete", 'ResponseDataController@kioskDelete');
+
         Route::post("location/minWage", 'ResponseDataController@getBusinessLocationMinWage');
     });
 
@@ -102,6 +104,5 @@ Route::middleware(['business'])->group(function(){
     });
 
     Route::post('user/data', 'ResponseDataController@staffData');
-    Route::post('user/balance/payment', 'ResponseDataController@staffPaymentHistoryUpdate');
     Route::post('business/statistics', 'ResponseDataController@statistics');
 });

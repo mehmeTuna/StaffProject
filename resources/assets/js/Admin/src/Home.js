@@ -1,9 +1,9 @@
-import React from "react";
-import axios from "axios";
+import React from 'react'
+import axios from 'axios'
 
 export default class Home extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       onlineStaff: [],
       onlineKiosk: [],
@@ -13,16 +13,16 @@ export default class Home extends React.Component {
       staffCount: 0,
       alert: [],
       business: []
-    };
+    }
 
-    this.getDataBusiness = this.getDataBusiness.bind(this);
+    this.getDataBusiness = this.getDataBusiness.bind(this)
   }
 
   async componentDidMount() {
-    await this.getDataBusiness();
+    await this.getDataBusiness()
     const { data } = await axios.post(
-      "/" + `${this.state.business.username + "/data/home"}`
-    );
+      '/' + `${this.state.business.username + '/data/home'}`
+    )
     if (data.status === true) {
       this.setState({
         onlineStaff: data.onlineStaff,
@@ -32,14 +32,14 @@ export default class Home extends React.Component {
         paymentHistory: data.paymentHistory,
         staffCount: data.staffCount,
         kioskCount: data.kioskCount
-      });
+      })
     }
   }
 
   async getDataBusiness() {
-    const { data } = await axios.post("/business/data");
+    const { data } = await axios.post('/business/data')
 
-    this.setState({ business: data });
+    this.setState({ business: data })
   }
 
   render() {
@@ -68,7 +68,7 @@ export default class Home extends React.Component {
                               <div>
                                 <span className="font-weight-bold">
                                   {this.state.onlineStaff.length}
-                                </span>{" "}
+                                </span>{' '}
                                 online
                               </div>
                               <div>Total: {this.state.staffCount}</div>
@@ -125,7 +125,7 @@ export default class Home extends React.Component {
                               <div>
                                 <span className="font-weight-bold">
                                   {this.state.onlineKiosk.length}
-                                </span>{" "}
+                                </span>{' '}
                                 online
                               </div>
                               <div>Total: {this.state.kioskCount}</div>
@@ -352,7 +352,7 @@ export default class Home extends React.Component {
                       <div className="col-sm-12">
                         <div className="d-flex justify-content-between mt-2 text-dark mb-2">
                           <div>
-                            <span className="font-weight-bold">4453</span>{" "}
+                            <span className="font-weight-bold">4453</span>{' '}
                             online
                           </div>
                           <div>Total: 0</div>
@@ -361,7 +361,7 @@ export default class Home extends React.Component {
                           <div
                             className="progress-bar bg-success"
                             role="progressbar"
-                            style={{ width: "50%" }}
+                            style={{ width: '50%' }}
                             aria-valuenow="50"
                             aria-valuemin="0"
                             aria-valuemax="100"
@@ -390,6 +390,6 @@ export default class Home extends React.Component {
           </div>
         </div>
       </React.Fragment>
-    );
+    )
   }
 }

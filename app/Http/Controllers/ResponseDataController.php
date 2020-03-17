@@ -72,7 +72,7 @@ class ResponseDataController extends Controller
         $staff = $staff->map(function ($user) use ($factorText) {
             $data = $user;
 
-            $experience = Experience::where('Id', $user->Experience)->get();
+            $experience = Experience::where('id', $user->Experience)->get();
             $data->Experience = $experience[0]->Identifier;
             $data->Factor = $experience[0]->Periode > 1 ? $experience[0]->Periode . ' ' : ' ' . $factorText[$experience[0]->Factor] . ' ' . $experience[0]->Pay;
             return $user;
@@ -88,7 +88,7 @@ class ResponseDataController extends Controller
         $userId = $request->userId;
         $type = $request->type;
 
-        $staffBalance = Staff::where('Id', $userId)->get();
+        $staffBalance = Staff::where('id', $userId)->get();
 
         $logHistory = Tio::where('Staff', $userId)->orderBy('created_at', 'desc')->limit(10)->get();
         $logCount = Tio::where('Staff', $userId)->orderBy('created_at', 'desc')->count();
@@ -109,67 +109,33 @@ class ResponseDataController extends Controller
         ]);
     }
 
-    public function staffPaymentHistoryUpdate(Request $request)
-    {
-        $user = $request->userId;
-        $pay = $request->pay;
-
-        if ($pay == '' || $pay <= 0) {
-            return response()->json([
-                'status' => false,
-                'text' => 'Odeme yapmak icin gecerli deger giriniz'
-            ]);
-        }
-
-        $staff = Staff::where('Id', $user)->get();
-
-        $newBalance = $staff[0]->Balance - $pay;
-        $newBalance = ($newBalance < 0) ? 0 : $newBalance;
-        Staff::where('Id', $user)->update(['Balance' => $newBalance]);
-
-        if ($newBalance > 0) {
-            $paymentHistory = PaymentHistory::create([
-                'type' => 'payment',
-                'staff' => $user,
-                'pay' => $pay,
-            ]);
-        }
-
-        return response()->json([
-            'status' => true,
-            'text' => 'Odeme basarili'
-        ]);
-    }
-
     public function kioskList()
     {
-
-        $response = Kiosk::where('Business', session('businessId'))->where('active', 1)->get();
+        $response = Kiosk::where('business', session('businessId'))->where('active', 1)->get();
 
         $result = $response->map(function ($val) {
             $data = (object)[];
-            $data->id = $val->Id;
-            $data->name = $val->Identifier;
-            $data->ip = $val->RemoteAddress;
-            $data->comment = $val->Comment;
+            $data->id = $val->id;
+            $data->name = $val->identifier;
+            $data->ip = $val->remoteAddress;
+            $data->comment = $val->comment;
 
-            $business = Business::where('Id', session('businessId'))->get();
-            $data->businessName = $business[0]->Username;
+            $business = Business::where('id', session('businessId'))->get();
+            $data->businessName = $business[0]->username;
 
-            $logHistory = Tio::where('Business', $val->Business)->where('KioskId', $data->id)->limit(10)->orderBy('created_at', 'desc')->get();
-            $logHistoryCount = Tio::where('Business', $val->Business)->where('KioskId', $data->id)->count();
+            $logHistory = Tio::where('business', $val->business)->where('kioskId', $data->id)->limit(10)->orderBy('created_at', 'desc')->get();
+            $logHistoryCount = Tio::where('business', $val->business)->where('kioskId', $data->id)->count();
 
             $data->logHistory = $logHistory->map(function ($val) use ($logHistoryCount) {
                 $data = (object)[];
                 $data->count = $logHistoryCount;
-                $user = Staff::where('Id', $val->Staff)->get();
-                $data->username = $user[0]->Firstname . ' ' . $user[0]->LastName;
+                $user = Staff::where('id', $val->staff)->get();
+                $data->username = $user[0]->firstname . ' ' . $user[0]->lastName;
                 $data->plan = $user[0]->workingPlan;
                 $data->date = $val->created_at->toDateTimeString();
-                $data->status = $val->Traffic;
+                $data->status = $val->traffic;
                 return $data;
             });
-
             return $data;
         });
 
@@ -180,7 +146,7 @@ class ResponseDataController extends Controller
     public function kioskDelete(Request $request)
     {
         $id = $request->id;
-        $kiosk = Kiosk::where('Id', $id)->where('Business', session('businessId'))->update([
+        $kiosk = Kiosk::where('id', $id)->where('business', session('businessId'))->update([
             'active' => 0
         ]);
 
@@ -206,8 +172,8 @@ class ResponseDataController extends Controller
 
     public function businessPageSearch(Request $request)
     {
-        $queryText = $request->q ;
-        if(strlen($queryText) <= 3)
+        $queryText = $request->q;
+        if (strlen($queryText) <= 3)
             return response()->json([
                 'status' => false
             ]);
@@ -223,9 +189,9 @@ class ResponseDataController extends Controller
             'month' => 'monthly'
         ];
 
-        $result['staff'] = $staffResult->map( function ($user) use ($factorText) {
+        $result['staff'] = $staffResult->map(function ($user) use ($factorText) {
             $data = $user;
-            $experience = Experience::where('Id', $user->Experience)->get();
+            $experience = Experience::where('id', $user->Experience)->get();
             $data->Experience = $experience[0]->Identifier;
             $data->Factor = $experience[0]->Periode > 1 ? $experience[0]->Periode . ' ' : ' ' . $factorText[$experience[0]->Factor] . ' ' . $experience[0]->Pay;
             return $user;
@@ -253,9 +219,9 @@ class ResponseDataController extends Controller
         });
 
         return response()->json([
-            'status' => true ,
+            'status' => true,
             'length' => count($result['staff']) + count($result['experience']),
-             'data' => $result
+            'data' => $result
         ]);
     }
 

@@ -1,27 +1,33 @@
-import React, { useEffect } from "react";
-import { getStaffDetail } from "./../../../api/staff";
-import Loading from "./../atoms/loading";
+import React, { useEffect } from 'react'
+
+import PaymentHistory from './component/paymentHistory'
+
+import { getStaffDetail } from './../../../api/staff'
+import Loading from './../atoms/loading'
+import PaymentDialog from './paymentDialog'
 
 const StaffDetail = props => {
-  const [data, setData] = React.useState([]);
-  const [loading, setLoading] = React.useState([]);
+  const [data, setData] = React.useState([])
+  const [loading, setLoading] = React.useState([])
+  const [isOpenDialog, setDialogOpen] = React.useState(false)
 
   useEffect(() => {
-    setLoading(true);
+    setLoading(true)
     const fetchData = async () => {
-      const data = await getStaffDetail(props.id);
+      const data = await getStaffDetail(props.id)
       if (data.status) {
-        setData(data);
-        setLoading(false);
+        setData(data)
+        setLoading(false)
       }
-    };
-    fetchData();
-  }, []);
+    }
+    fetchData()
+  }, [])
 
   return loading ? (
     <Loading />
   ) : (
     <React.Fragment>
+      {isOpenDialog && <PaymentDialog id={props.id} isOpen={setDialogOpen} />}
       <div className="row">
         <div className="col-xl-4 grid-margin stretch-card">
           <div className="card">
@@ -34,7 +40,7 @@ const StaffDetail = props => {
                 className="chart-legends mt-1"
               >
                 <div className="row">
-                  <div className="col-6 ">
+                  <div className="col-6">
                     <div className="row">
                       <div className="col-sm-12 ml-sm-0 mr-sm-0 pr-md-0">
                         <h5 className="font-weight-bold text-dark">
@@ -44,13 +50,14 @@ const StaffDetail = props => {
                     </div>
                     <div className="row align-items-center">
                       <div className="col-12">
-                        <p className="text-muted m-0">Toplam Odeme</p>
+                        <p className="text-muted m-0">Total payment</p>
                       </div>
                     </div>
                     <div className="row text-center">
                       <button
                         type="button"
                         className="m-2 btn btn-success btn-icon-text font-weight-bold"
+                        onClick={() => setDialogOpen(true)}
                       >
                         Odeme Yap
                       </button>
@@ -107,9 +114,9 @@ const StaffDetail = props => {
                             <div>{val.Hour}</div>
                             <div
                               className={
-                                val.Traffic === "Enter"
-                                  ? "badge badge-success"
-                                  : "badge badge-danger"
+                                val.Traffic === 'Enter'
+                                  ? 'badge badge-success'
+                                  : 'badge badge-danger'
                               }
                             >
                               {val.Traffic}
@@ -122,85 +129,23 @@ const StaffDetail = props => {
                 </React.Fragment>
               )}
             </div>
-            {data.logHistory.length !== 0 && (
-              <nav aria-label="row Page navigation example">
-                <ul className="col-sm-12 pagination justify-content-center mt-4">
-                  <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            )}
           </div>
         </div>
         <div className="col-xl-4 grid-margin stretch-card mx-auto">
-          <div className="card">
-            <div className="card-body">
-              {data.paymentHistory.length === 0 ? (
-                <React.Fragment>
-                  <p className="text-center text-dark">Odeme Gecmisi</p>
-                  <p className="text-center m-2">
-                    Herhangi bir odeme gecmisiniz bulunmuyor
-                  </p>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <p className="card-title mb-2">Odeme Gecmisi</p>
-                  <div className="row">
-                    <div className="col-sm-12">
-                      <div className="text-dark">
-                        {data.paymentHistory.map(val => (
-                          <div className="d-flex pb-3 border-bottom justify-content-between">
-                            <div className="mr-3">
-                              <i className="mdi mdi-signal-cellular-outline icon-md"></i>
-                            </div>
-                            <div className="font-weight-bold mr-sm-4 mt-2">
-                              <div>Ödeme</div>
-                              <div className="text-muted font-weight-normal mt-1">
-                                {val.created_at}
-                              </div>
-                            </div>
-                            <div>
-                              <h6 className="font-weight-bold text-info ml-sm-2">
-                                {val.pay} ₺
-                              </h6>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </React.Fragment>
-              )}
-            </div>
-            {data.paymentHistory.length !== 0 && (
-              <nav aria-label="row Page navigation example">
-                <ul className="col-sm-12 pagination justify-content-center mt-4">
-                  <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Previous">
-                      <span aria-hidden="true">&laquo;</span>
-                    </a>
-                  </li>
-                  <li className="page-item">
-                    <a className="page-link" href="#" aria-label="Next">
-                      <span aria-hidden="true">&raquo;</span>
-                    </a>
-                  </li>
-                </ul>
-              </nav>
-            )}
-          </div>
+          {data.paymentHistory.length === 0 ? (
+            <React.Fragment>
+              <p className="text-center text-dark">Odeme Gecmisi</p>
+              <p className="text-center m-2">
+                Herhangi bir odeme gecmisiniz bulunmuyor
+              </p>
+            </React.Fragment>
+          ) : (
+            <PaymentHistory data={data.paymentHistory} />
+          )}
         </div>
-      </div>{" "}
+      </div>
     </React.Fragment>
-  );
-};
+  )
+}
 
-export default StaffDetail;
+export default StaffDetail

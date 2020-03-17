@@ -1,18 +1,18 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import axios from "axios";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import axios from 'axios'
 
-import Navbar from "./Navbar";
-import Sidebar from "./Sidebar";
-import Footer from "./Footer";
+import Navbar from './Navbar'
+import Sidebar from './Sidebar'
+import Footer from './Footer'
 
-import Home from "./Home";
+import Home from './Home'
 
 export default class App extends React.Component {
   constructor(props) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {}
   }
 
   componentDidMount() {}
@@ -39,6 +39,6 @@ export default class App extends React.Component {
           <Footer />
         </div>
       </Router>
-    );
+    )
   }
 }

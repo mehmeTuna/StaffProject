@@ -15,13 +15,12 @@ class Employment extends Migration
     {
         Schema::create('Employment', function (Blueprint $table) {
             $table->comment = 'İşe alınma - işten çıkarılma kayıtları.';
-            $table->increments('Id'); 
-            $table->bigInteger('Manager')->default(0)->comment('İşe alım/İşten çıkarma işlemini kim yaptı.	');
-            $table->bigInteger('Business')->default(0)->comment('Hangi işletme...');
-            $table->char('Comment', 255)->default(null)->comment('İşlem hakkında notlar');
-            $table->dateTime('OperationTime')->default(null)->comment('Ne zaman?');
-            $table->enum('Status', ['Recruitment', 'Dismiss'])->default(null)->comment('Durum: İşe alma/işten çıkarma');
-            $table->bigInteger('Staff')->default(0)->comment('Hangi çalışan');
+            $table->increments('id');
+            $table->bigInteger('business')->default(0)->comment('Hangi işletme...');
+            $table->bigInteger('staff')->default(0)->comment('Hangi çalışan');
+            $table->boolean('active')->default(1);
+            $table->char('comment', 255)->default(null)->comment('İşlem hakkında notlar');
+            $table->enum('status', ['Recruitment', 'Dismiss'])->default(null)->comment('Durum: İşe alma/işten çıkarma');
             $table->timestamps();
         });
     }

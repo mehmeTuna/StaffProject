@@ -3,48 +3,31 @@
 namespace App\Http\Controllers;
 
 use App\Experience;
+use App\Http\Requests\ExperienceRegisterRequest;
 use App\Staff;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
 class ExperienceController extends Controller
 {
-    public function register(Request $request)
+    public function register(ExperienceRegisterRequest $request)
     {
-
         $businessId = session ("businessId");
 
-        $validator = Validator::make($request->all (), [
-            'experienceName' => 'bail|required|min:3|max:100',
-            'experiencePay' => 'bail|required|numeric',
-            'experienceFactor' => 'bail|required',
-            'experiencePeriode' => 'bail|required|numeric',
-            'workingPlan' => 'bail|required',
-        ]);
-
-        if ($validator->fails()) {
-            $errors = $validator->errors();
-            return response ()->json ($errors->all());
-        }
-
-
-        $workClass = ['freeTime', 'plannedTime', 'fullTime'];//TODO: db den al ona kontrol et sonraki adimda
+        $workClass = ['freeTime', 'plannedTime', 'fullTime'];//TODO: db den al onu kontrol et sonraki adimda
         if(!in_array ($request->workingPlan, $workClass))
             return response()->json (['status' => false, 'workingPlan' => 'not defined']);
-
 
         $workPlan = array_keys($workClass, $request->workingPlan); //db ye sayisal olarak eklenecek
 
         $experience = Experience::create([
-            "WorkClass" =>  $workPlan[0],
-            "Color" => null,
-            'OwnerClass' => 0,
-            'Business' => $businessId,
-            'Identifier' =>  $request->experienceName,
-            'Class' => 1 , //TODO: business tablosundan kontrol edilip eklenecek,
-            'Periode' => $request->experiencePeriode,
-            'Factor' => $request->experienceFactor,
-            'Pay' => $request->experiencePay,
+            "workClass" =>  $workPlan[0],
+            'business' => $businessId,
+            'identifier' =>  $request->experienceName,
+            'class' => 1 , //TODO: business tablosundan kontrol edilip eklenecek,
+            'periode' => $request->experiencePeriode,
+            'factor' => $request->experienceFactor,
+            'pay' => $request->experiencePay,
             'workingPlan' => [
                 'monday' => $request->monday,
                 'tuesday' => $request->tuesday,
@@ -58,36 +41,31 @@ class ExperienceController extends Controller
 
         return response ()->json([
             'status' => true,
-            'text' => 'kayit basarili'
+            'text' => 'success'
         ]);
-
     }
 
     public function listData()
     {
-        $experience = Experience::where('Business', session('businessId'))->where('active', 1)->get();
+        $experience = Experience::where('business', session('businessId'))->where('active', 1)->get();
 
         $result = $experience->map(function ($val) {
             $data = (object)[];
 
             $data->experience = $val;
-
             //added paginator after
-            $allStaff = Staff::where('Experience', $val->Id)->where('active', 1)->limit(25)->get();
+            $allStaff = Staff::where('experience', $val->id)->where('active', 1)->limit(25)->get();
 
             $data->staffList = $allStaff->map(function ($val) {
                 $data = (object)[];
 
-                $data->username = $val->FirstName . ' ' . $val->LastName;
-                $data->img = $val->Image;
-                $data->balance = $val->Balance;
-
+                $data->username = $val->firstName . ' ' . $val->lastName;
+                $data->img = $val->image;
+                $data->balance = $val->balance;
                 return $data;
             });
-
             return $data;
         });
-
         return response()
             ->json($result);
     }
@@ -96,7 +74,7 @@ class ExperienceController extends Controller
     {
         $id = $request->id;
 
-        $experience = Experience::where('Id', $id)->update([
+        $experience = Experience::where('id', $id)->update([
             'active' => 0
         ]);
 

@@ -7,11 +7,15 @@ use Illuminate\Database\Eloquent\Model;
 class Career extends Model
 {
 
-    protected $visible = ["BeginTime", "EndTime", "WorkClass", "Staff", "Experience", "Recompense"];
-    protected $fillable = ["BeginTime", "EndTime", "WorkClass", "Staff", "Experience", "Recompense"];
+    protected $visible = ['id', 'businessId', 'experience', 'staff', 'active', 'workClass', 'beginTime', 'endTime', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'businessId', 'experience', 'staff', 'active', 'workClass', 'beginTime', 'endTime', 'created_at', 'updated_at'];
     protected $table = "career";
-    protected $primaryKey = "Id";
-    public $timestamps = true ;
+    protected $primaryKey = "id";
+    public $timestamps = true;
 
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
+    }
 
 }

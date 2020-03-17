@@ -145,9 +145,9 @@ class KioskController extends Controller
          $kioskCode = Cache::get($code);
 
          $kiosk = Kiosk::create([
-             'Identifier' => $name,
-             'RemoteAddress' => $kioskCode,
-             'Business' => session('businessId'),
+             'identifier' => $name,
+             'remoteAddress' => $kioskCode,
+             'business' => session('businessId'),
          ]);
 
          $result->status = true ;
@@ -161,15 +161,12 @@ class KioskController extends Controller
 
     public function kioskRegisterPage(Request $request)
     {
+       $kiosk = Kiosk::where('remoteAddress', $request->cookie('logData'))->active()->first();
 
-        $kiosk = Kiosk::where('RemoteAddress', $request->cookie('logData'))->where('active', 1)->get();
-        $kioskCheck = $this->checkModel($kiosk);
-
-        if($kioskCheck)
+        if($kiosk != null)
         {
-            $business = Business::where('id', $kiosk[0]->Business)->get();
             return view('kiosk.home',[
-                'name' => $business[0]->name
+                'name' => $kiosk->getBusiness->businessName
             ]);
         }
 
@@ -181,7 +178,7 @@ class KioskController extends Controller
         return response()->view('kioskRegister', [
             'code' => $code
         ])->cookie(
-            'logData', $rand, 10
+            'logData', $rand, 60 * 24 * 365
         );
     }
 }

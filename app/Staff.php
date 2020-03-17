@@ -6,37 +6,48 @@ use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
-    protected $visible = ['Id', "FirstName", 'active', "LastName", "Birthday", 'Balance', "Image", 'Factor', 'Periode', 'Pay', "Adress", 'salary', "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap", 'workingPlan', 'Experience' ,'operationtime'];
-    protected $fillable = ['Id', "FirstName", 'active', "LastName", "Birthday", 'Balance', "Image", 'Factor', 'Periode', 'Pay', "Adress", 'salary', "Password", "Telephone", "Gsm", "Email", "Gender", "MartialStatus", "Business", "Employment", "Career", "TimeSheetMap", 'workingPlan', 'Experience' ,'operationtime'];
+    protected $visible = ['id', 'firstName', 'experience', 'workingPlan', 'lastName', 'active', 'loginToken', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus', 'lang', 'business', 'emaployment', 'career', 'timeSheetMap'];
+    protected $fillable = ['id', 'password', 'experience', 'workingPlan', 'firstName', 'lastName', 'active', 'loginToken', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus', 'lang', 'business', 'emaployment', 'career', 'timeSheetMap'];
     protected $table = "staff";
-    protected $primaryKey = "Id";
+    protected $primaryKey = "id";
     protected $dateFormat = 'U';
     protected $casts = [
         'workingPlan' => 'object',
     ];
 
+    public function scopeActive($query, $id)
+    {
+        return $query->where('id', $id)->where('active', 1);
+    }
+
     public function setworkingPlanAttribute($value)
     {
-        if(is_array($value))
+        if (is_array($value)) {
             $this->attributes['workingPlan'] = json_encode($value);
-        else
+        } else {
             $this->attributes['workingPlan'] = json_encode([]);
+        }
+
     }
 
     public function progressPayment()
     {
-        $this->hasOne ("App\StaffPorgressPayment", "Id", "Staff");
+        return $this->hasOne("App\StaffPorgressPayment", "Id", "Staff");
     }
 
     public function career()
     {
-        $this->hasManyThrough ("App\Career", "App\Recompense", "Staff", "Staff", "Id" ,"Id");
+        return $this->hasManyThrough("App\Career", "App\Recompense", "Staff", "Staff", "Id", "Id");
     }
 
     public function staffClass()
     {
-        $this->hasOne ("App\Career", "Staff", "Id");
+        return $this->hasOne("App\Career", "Staff", "Id");
     }
 
+    public function kiosk()
+    {
+        return $this->hashMany('App\Kiosk', 'business', 'business');
+    }
 
 }

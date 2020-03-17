@@ -15,7 +15,7 @@ class Charge extends Migration
     {
         Schema::create('Charge', function (Blueprint $table) {
             $table->comment = 'İş tanımına göre, ücret ve periyot tanımları.';
-            $table->increments('Id'); 
+            $table->increments('id'); 
             $table->bigInteger('Manager')->default(0)->comment('Kim ayarladı?');
             $table->bigInteger('Business')->default(0)->comment('Hangi işletme...');
             $table->dateTime('AdjustTime')->default(null)->comment('Ne zaman ayarlandı?');

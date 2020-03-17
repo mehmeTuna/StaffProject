@@ -1,9 +1,8 @@
 <?php
 
+use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
-
-use Faker\Factory as Faker;
 
 class BusinessTableSeeder extends Seeder
 {
@@ -15,18 +14,18 @@ class BusinessTableSeeder extends Seeder
     public function run()
     {
 
-        $faker = Faker::create ();
+        $faker = Faker::create();
 
         DB::table('business')->insert([
-            'Email' => $faker->email,
+            'email' => $faker->email,
             'WebPage' => $faker->safeEmailDomain,
-            'Image' => $faker->imageUrl( 640, 480),
-            'Longitute' => $faker->longitude( -180, 180),
-            'Latitude' => $faker->latitude( -90, 90),
+            'Image' => $faker->imageUrl(640, 480),
+            'longitute' => $faker->longitude(-180, 180),
+            'latitude' => $faker->latitude(-90, 90),
             'Address' => $faker->streetAddress,
             'CompanyName' => $faker->company,
-            'Options' => json_encode ([]),
-            'Data' => json_encode ([]),
+            'options' => json_encode([]),
+            'data' => json_encode([]),
         ]);
     }
 }

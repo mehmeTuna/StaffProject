@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class Employment extends Model
 {
-    protected $visible = ['Manager', 'Business', 'Comment', 'OperationTime', 'Status', 'Staff'];
-    protected $fillable = ['Manager', 'Business', 'Comment', 'OperationTime', 'Status', 'Staff'];
+    protected $visible = ['id', 'business', 'staff', 'active', 'comment', 'status', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'business', 'staff', 'active', 'comment', 'status', 'created_at', 'updated_at'];
     protected $table = "employment";
-    protected $primaryKey = "Id";
-    public $timestamps = true ;
+    protected $primaryKey = "id";
+    public $timestamps = true;
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
+    }
 }

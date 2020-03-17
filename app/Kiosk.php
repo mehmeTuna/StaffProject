@@ -6,15 +6,24 @@ use Illuminate\Database\Eloquent\Model;
 
 class Kiosk extends Model
 {
-    protected $visible = ['Id', 'active', "Identifier", "RemoteAddress", "Comment", 'Business', 'Active'];
-    protected $fillable = ['Id', 'active', "Identifier", "RemoteAddress", "Comment", 'Business', 'Active'];
+    protected $visible = ['id', 'active', "identifier", "remoteAddress", "comment", 'business', 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'active', "identifier", "remoteAddress", "comment", 'business', 'created_at', 'updated_at'];
     protected $table = "kiosk";
-    protected $primaryKey = "Id";
-    public $timestamps = true ;
+    protected $primaryKey = "id";
+    protected $attributes = [
+        'comment' => ''
+    ];
 
-    public function business()
+    public $timestamps = true;
+
+    public function getBusiness()
     {
-        return $this->hasOne ("App\Business", "Id", "Business");
+        return $this->hasOne("App\Business", "id", "business")->where('active', 1);
+    }
+
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
     }
 
 }

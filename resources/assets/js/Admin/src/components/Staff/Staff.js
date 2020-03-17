@@ -1,6 +1,17 @@
-import React from "react";
+import React from 'react'
 
-import StaffDetail from "./StaffDetail";
+import { Button } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import DeleteIcon from '@material-ui/icons/Delete'
+import DetailsIcon from '@material-ui/icons/Details'
+
+import StaffDetail from './StaffDetail'
+
+const useStyles = makeStyles(theme => ({
+  button: {
+    margin: theme.spacing(1)
+  }
+}))
 
 function dayPlanList(data) {
   return data.map((value, key) => (
@@ -13,7 +24,7 @@ function dayPlanList(data) {
         {value.start} - {value.end}
       </span>
     </button>
-  ));
+  ))
 }
 
 const Staff = props => {
@@ -32,25 +43,26 @@ const Staff = props => {
     Gender,
     MartialStatus,
     workingPlan
-  } = props.data;
+  } = props.data
 
-  const [showData, setShowData] = React.useState(false);
-  const fullName = `${FirstName} ${LastName}`;
+  const classes = useStyles()
+  const [showData, setShowData] = React.useState(false)
+  const fullName = `${FirstName} ${LastName}`
 
   return (
     <div className="col-lg-12 grid-margin stretch-card">
       <div className="card">
-        <div className="card-body">
-          <div className="col-sm-12 mb-4 mb-xl-0 d-flex justify-content-between legend-label">
-            <div className="d-flex">
+        <div className="m-2">
+          <div className="col-sm-12 mb-4 mb-xl-0 d-flex flex-sm-row flex-md-row flex-lg-row justify-content-between legend-label">
+            <div className="d-flex flex-column flex-md-row flex-lg-row">
               <div>
                 <img
                   src={Image}
-                  style={{ width: "100px", height: "100px" }}
+                  style={{ width: '100px', height: '100px' }}
                   className="mx-auto"
                 />
               </div>
-              <div>
+              <div className="mt-2">
                 <h5 className="font-weight-bold text-dark ml-2 mb-1">
                   {fullName}
                 </h5>
@@ -62,21 +74,29 @@ const Staff = props => {
                 </h6>
               </div>
             </div>
-            <div className="">
-              <button
-                type="button"
-                onClick={() => props.delete({ id: Id, username: fullName })}
-                className="m-2 btn btn-success btn-icon-text font-weight-bold"
-              >
-                Delete
-              </button>
-              <button
-                type="button"
-                onClick={() => setShowData(!showData)}
-                className="m-2 btn btn-success btn-icon-text font-weight-bold"
-              >
-                {showData === true ? "Hide Details" : "Details"}
-              </button>
+            <div className="d-flex flex-column flex-sm-row justify-content-start">
+              <div>
+                <Button
+                  variant="contained"
+                  style={{ background: '#75B72B', color: 'white' }}
+                  className={classes.button}
+                  startIcon={<DetailsIcon />}
+                  onClick={() => setShowData(!showData)}
+                >
+                  {showData === true ? 'Hide Details' : 'Details'}
+                </Button>
+              </div>
+              <div>
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  className={classes.button}
+                  startIcon={<DeleteIcon />}
+                  onClick={() => props.delete({ id: Id, username: fullName })}
+                >
+                  Delete
+                </Button>
+              </div>
             </div>
           </div>
           <div className="row mt-3">
@@ -96,7 +116,7 @@ const Staff = props => {
                         Gender: <span className="text-muted">{Gender}</span>
                       </p>
                       <p className="text-dark">
-                        Martial Status:{" "}
+                        Martial Status:{' '}
                         <span className="text-muted">{MartialStatus}</span>
                       </p>
                     </div>
@@ -143,11 +163,11 @@ const Staff = props => {
               </div>
             </div>
           </div>
-          {showData === true && <StaffDetail id={Id} />}
+          {showData === true && <StaffDetail key={Id} id={Id} />}
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Staff;
+export default Staff

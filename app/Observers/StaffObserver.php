@@ -30,6 +30,7 @@ class StaffObserver
             'Recompense' => 1
         ]);
 
+        //TODO: bus kisim creating icine tasinacak
         $staff->update([
             'Career' => $career->Id
         ]);

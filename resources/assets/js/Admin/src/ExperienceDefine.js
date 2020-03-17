@@ -1,15 +1,15 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import axios from "axios";
-import TimeField from "react-simple-timefield";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import { Redirect } from "react-router-dom";
+import React from 'react'
+import ReactDOM from 'react-dom'
+import axios from 'axios'
+import TimeField from 'react-simple-timefield'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import { Redirect } from 'react-router-dom'
 
-const sweet = withReactContent(Swal);
+const sweet = withReactContent(Swal)
 
 function PlanList(props) {
-  if (typeof props.data !== "object") return;
+  if (typeof props.data !== 'object') return
 
   const response = props.data.map((value, key) => (
     <button
@@ -25,26 +25,26 @@ function PlanList(props) {
         <i className="icon-cross"></i>
       </span>
     </button>
-  ));
+  ))
 
-  return response;
+  return response
 }
 
 class ExperienceDefine extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      selectedStartTime: "08:30",
-      selectedEndTime: "17:00",
+      selectedStartTime: '08:30',
+      selectedEndTime: '17:00',
       showDate: false,
       isMinWage: [],
-      lang: "",
-      name: "",
-      pay: "",
-      factor: "hour",
-      periode: "1",
-      workingPlan: "",
+      lang: '',
+      name: '',
+      pay: '',
+      factor: 'hour',
+      periode: '1',
+      workingPlan: '',
       monday: [],
       tuesday: [],
       wednesday: [],
@@ -52,74 +52,74 @@ class ExperienceDefine extends React.Component {
       friday: [],
       saturday: [],
       sunday: [],
-      selectedDay: "",
+      selectedDay: '',
       alert: {
         pay: {
           status: false,
-          text: "minimum tutar giriniz"
+          text: 'minimum tutar giriniz'
         }
       },
       redirect: null
-    };
+    }
 
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this)
 
-    this.customClock = this.customClock.bind(this);
+    this.customClock = this.customClock.bind(this)
 
-    this.dataSet = this.dataSet.bind(this);
+    this.dataSet = this.dataSet.bind(this)
 
-    this.deleteTime = this.deleteTime.bind(this);
+    this.deleteTime = this.deleteTime.bind(this)
 
-    this.compareTime = this.compareTime.bind(this);
-    this.paymentFormatpaymentFormat = this.paymentFormat.bind(this);
+    this.compareTime = this.compareTime.bind(this)
+    this.paymentFormatpaymentFormat = this.paymentFormat.bind(this)
 
-    this.changeStartTime = this.changeStartTime.bind(this);
-    this.changeEndTime = this.changeEndTime.bind(this);
+    this.changeStartTime = this.changeStartTime.bind(this)
+    this.changeEndTime = this.changeEndTime.bind(this)
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this)
   }
 
   async componentDidMount() {
-    const { data } = await axios.post("/business/location/minWage");
+    const { data } = await axios.post('/business/location/minWage')
 
-    this.setState({ isMinWage: data });
+    this.setState({ isMinWage: data })
   }
 
   handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value });
+    this.setState({ [e.target.name]: e.target.value })
   }
 
   compareTime(str1, str2) {
     if (str1 === str2) {
-      return 0;
+      return 0
     }
-    let time1 = str1.split(":");
-    let time2 = str2.split(":");
+    let time1 = str1.split(':')
+    let time2 = str2.split(':')
 
     if (time1[0][0] == 0) {
-      time1 = time1[0][1];
+      time1 = time1[0][1]
     }
 
     if (time2[0][0] == 0) {
-      time2 = time2[0][1];
+      time2 = time2[0][1]
     }
 
     if (eval(time1[0]) > eval(time2[0])) {
-      return 1;
+      return 1
     } else if (
       eval(time1[0]) === eval(time2[0]) &&
       eval(time1[1]) > eval(time2[1])
     ) {
-      return 1;
+      return 1
     } else {
-      return -1;
+      return -1
     }
   }
 
   paymentFormat(e) {
     this.setState({
       pay: e
-    });
+    })
   }
 
   handleSubmit() {
@@ -139,62 +139,62 @@ class ExperienceDefine extends React.Component {
         sunday: this.state.sunday
       })
       .then(res => {
-        sweet.fire("Created").then(() =>
+        sweet.fire('Created').then(() =>
           this.setState({
             redirect: `/${this.props.data.username}/experience/list`
           })
-        );
-      });
+        )
+      })
   }
 
   deleteTime(key, day) {
     switch (day) {
-      case "monday":
-        let dataMonday = this.state.monday;
-        dataMonday.splice(key, 1);
-        this.setState({ monday: dataMonday });
-        break;
-      case "tuesday":
-        let dataTuesday = this.state.tuesday;
-        dataTuesday.splice(key, 1);
-        this.setState({ tuesday: dataTuesday });
-        break;
-      case "wednesday":
-        let dataWednesday = this.state.wednesday;
-        dataWednesday.splice(key, 1);
-        this.setState({ wednesday: dataWednesday });
-        break;
-      case "thursday":
-        let dataThursday = this.state.thursday;
-        dataThursday.splice(key, 1);
-        this.setState({ Thursday: dataThursday });
-        break;
-      case "friday":
-        let dataFriday = this.state.friday;
-        dataFriday.splice(key, 1);
-        this.setState({ friday: dataFriday });
-        break;
-      case "saturday":
-        let dataSaturday = this.state.saturday;
-        dataSaturday.splice(key, 1);
-        this.setState({ saturday: dataSaturday });
-        break;
-      case "sunday":
-        let dataSunday = this.state.sunday;
-        dataSunday.splice(key, 1);
-        this.setState({ sunday: dataSunday });
-        break;
+      case 'monday':
+        let dataMonday = this.state.monday
+        dataMonday.splice(key, 1)
+        this.setState({ monday: dataMonday })
+        break
+      case 'tuesday':
+        let dataTuesday = this.state.tuesday
+        dataTuesday.splice(key, 1)
+        this.setState({ tuesday: dataTuesday })
+        break
+      case 'wednesday':
+        let dataWednesday = this.state.wednesday
+        dataWednesday.splice(key, 1)
+        this.setState({ wednesday: dataWednesday })
+        break
+      case 'thursday':
+        let dataThursday = this.state.thursday
+        dataThursday.splice(key, 1)
+        this.setState({ Thursday: dataThursday })
+        break
+      case 'friday':
+        let dataFriday = this.state.friday
+        dataFriday.splice(key, 1)
+        this.setState({ friday: dataFriday })
+        break
+      case 'saturday':
+        let dataSaturday = this.state.saturday
+        dataSaturday.splice(key, 1)
+        this.setState({ saturday: dataSaturday })
+        break
+      case 'sunday':
+        let dataSunday = this.state.sunday
+        dataSunday.splice(key, 1)
+        this.setState({ sunday: dataSunday })
+        break
     }
   }
 
   dataSet() {
-    console.log(this.state.selectedStartTime);
-    console.log(this.state.selectedEndTime);
+    console.log(this.state.selectedStartTime)
+    console.log(this.state.selectedEndTime)
     if (
-      this.state.selectedStartTime === "" ||
-      this.state.selectedEndTime === ""
+      this.state.selectedStartTime === '' ||
+      this.state.selectedEndTime === ''
     )
-      return;
+      return
 
     if (
       this.compareTime(
@@ -204,92 +204,92 @@ class ExperienceDefine extends React.Component {
     ) {
       sweet
         .fire({
-          position: "top-end",
-          icon: "info",
-          title: "Cikis saati giris saatinden once olamaz",
+          position: 'top-end',
+          icon: 'info',
+          title: 'Cikis saati giris saatinden once olamaz',
           showConfirmButton: false,
           timer: 1500
         })
-        .then(() => console.log("hatali saat"));
-      return;
+        .then(() => console.log('hatali saat'))
+      return
     }
 
     switch (this.state.selectedDay) {
-      case "monday":
-        let dataMonday = this.state.monday;
+      case 'monday':
+        let dataMonday = this.state.monday
         dataMonday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ monday: dataMonday });
-        break;
-      case "tuesday":
-        let dataTuesday = this.state.tuesday;
+        })
+        this.setState({ monday: dataMonday })
+        break
+      case 'tuesday':
+        let dataTuesday = this.state.tuesday
         dataTuesday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ tuesday: dataTuesday });
-        break;
-      case "wednesday":
-        let dataWednesday = this.state.wednesday;
+        })
+        this.setState({ tuesday: dataTuesday })
+        break
+      case 'wednesday':
+        let dataWednesday = this.state.wednesday
         dataWednesday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ wednesday: dataWednesday });
-        break;
-      case "thursday":
-        let dataThursday = this.state.thursday;
+        })
+        this.setState({ wednesday: dataWednesday })
+        break
+      case 'thursday':
+        let dataThursday = this.state.thursday
         dataThursday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ Thursday: dataThursday });
-        break;
-      case "friday":
-        let dataFriday = this.state.friday;
+        })
+        this.setState({ Thursday: dataThursday })
+        break
+      case 'friday':
+        let dataFriday = this.state.friday
         dataFriday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ friday: dataFriday });
-        break;
-      case "saturday":
-        let dataSaturday = this.state.saturday;
+        })
+        this.setState({ friday: dataFriday })
+        break
+      case 'saturday':
+        let dataSaturday = this.state.saturday
         dataSaturday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ saturday: dataSaturday });
-        break;
-      case "sunday":
-        let dataSunday = this.state.sunday;
+        })
+        this.setState({ saturday: dataSaturday })
+        break
+      case 'sunday':
+        let dataSunday = this.state.sunday
         dataSunday.push({
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
-        });
-        this.setState({ sunday: dataSunday });
-        break;
+        })
+        this.setState({ sunday: dataSunday })
+        break
       default:
-        console.log("dataSet foksiyion kismi default");
-        break;
+        console.log('dataSet foksiyion kismi default')
+        break
     }
   }
 
   changeStartTime(time) {
-    this.setState({ selectedStartTime: time.target.value });
+    this.setState({ selectedStartTime: time.target.value })
   }
 
   changeEndTime(time) {
-    this.setState({ selectedEndTime: time.target.value });
+    this.setState({ selectedEndTime: time.target.value })
   }
 
   customClock(data) {
-    this.setState({ selectedDay: data });
+    this.setState({ selectedDay: data })
     sweet
       .fire({
-        title: "Saat Belirtiniz",
+        title: 'Saat Belirtiniz',
         html: (
           <div className="row">
             <div className="col-8 mb-2 mx-auto">
@@ -312,13 +312,13 @@ class ExperienceDefine extends React.Component {
         )
       })
       .then(result => {
-        if (result.value === true) this.dataSet();
-      });
+        if (result.value === true) this.dataSet()
+      })
   }
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />;
+      return <Redirect to={this.state.redirect} />
     }
     return (
       <React.Fragment>
@@ -405,43 +405,43 @@ class ExperienceDefine extends React.Component {
         <div className="row col-12 grid-margin m-0 p-0">
           <div
             className={
-              this.state.workingPlan === ""
-                ? "col-sm-12 col-md-12 grid-margin stretch-card"
-                : "col-sm-12 col-md-4 grid-margin stretch-card"
+              this.state.workingPlan === ''
+                ? 'col-sm-12 col-md-12 grid-margin stretch-card'
+                : 'col-sm-12 col-md-4 grid-margin stretch-card'
             }
           >
             <div className="card text-center">
               <div className="card-body">Working Plan Select</div>
               <div
                 className="card-body display-4 btn-outline-success btn-fw"
-                onClick={event => this.setState({ workingPlan: "freeTime" })}
+                onClick={event => this.setState({ workingPlan: 'freeTime' })}
               >
-                {this.state.workingPlan === "freeTime" && (
+                {this.state.workingPlan === 'freeTime' && (
                   <i className="icon-check icon-lg text-primary" />
                 )}
                 Free Time
               </div>
               <div
                 className="card-body display-4 btn-outline-success btn-fw"
-                onClick={event => this.setState({ workingPlan: "plannedTime" })}
+                onClick={event => this.setState({ workingPlan: 'plannedTime' })}
               >
-                {this.state.workingPlan === "plannedTime" && (
+                {this.state.workingPlan === 'plannedTime' && (
                   <i className="icon-check icon-lg text-primary" />
                 )}
                 Planned Time
               </div>
               <div
                 className="card-body display-4 btn-outline-success btn-fw"
-                onClick={() => this.setState({ workingPlan: "fullTime" })}
+                onClick={() => this.setState({ workingPlan: 'fullTime' })}
               >
-                {this.state.workingPlan === "fullTime" && (
+                {this.state.workingPlan === 'fullTime' && (
                   <i className="icon-check icon-lg text-primary" />
                 )}
                 Full Time
               </div>
             </div>
           </div>
-          {this.state.workingPlan !== "" && (
+          {this.state.workingPlan !== '' && (
             <div className="col-md-8 grid-margin stretch-card">
               <div className="card">
                 <div className="card-body">
@@ -461,7 +461,7 @@ class ExperienceDefine extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("monday")}
+                        onClick={() => this.customClock('monday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -483,7 +483,7 @@ class ExperienceDefine extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("tuesday")}
+                        onClick={() => this.customClock('tuesday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -505,7 +505,7 @@ class ExperienceDefine extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("wednesday")}
+                        onClick={() => this.customClock('wednesday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -527,7 +527,7 @@ class ExperienceDefine extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("thursday")}
+                        onClick={() => this.customClock('thursday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -549,7 +549,7 @@ class ExperienceDefine extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("friday")}
+                        onClick={() => this.customClock('friday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -571,7 +571,7 @@ class ExperienceDefine extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("saturday")}
+                        onClick={() => this.customClock('saturday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -593,7 +593,7 @@ class ExperienceDefine extends React.Component {
                       <button
                         type="button"
                         className="m-2 btn btn-info font-weight-bold"
-                        onClick={() => this.customClock("sunday")}
+                        onClick={() => this.customClock('sunday')}
                       >
                         <span className="badge">
                           <i className="icon-circle-plus" />
@@ -626,8 +626,8 @@ class ExperienceDefine extends React.Component {
           </div>
         </div>
       </React.Fragment>
-    );
+    )
   }
 }
 
-export default ExperienceDefine;
+export default ExperienceDefine

@@ -6,9 +6,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class MinWage extends Model
 {
-    protected $visible = ['Value', 'Country', 'AgeTop', 'AgeBottom', 'Year'];
-    protected $fillable = ['Value', 'Country', 'AgeTop', 'AgeBottom', 'Year'] ;
+    protected $visible = ['Value', 'country', 'AgeTop', 'AgeBottom', 'Year'];
+    protected $fillable = ['Value', 'country', 'AgeTop', 'AgeBottom', 'Year'];
     protected $table = "minwage";
     protected $primaryKey = "Country";
-    public $timestamps = true ;
+    public $timestamps = true;
 }

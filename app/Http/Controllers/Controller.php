@@ -18,4 +18,14 @@ class Controller extends BaseController
             'data' => $data
         ]);
     }
+
+    public function respondFail($data = [])
+    {
+        return response()->json([
+            'status' => false,
+            'data' => $data
+        ]);
+    }
+
+
 }

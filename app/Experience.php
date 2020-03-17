@@ -6,28 +6,31 @@ use Illuminate\Database\Eloquent\Model;
 
 class Experience extends Model
 {
-    protected $visible = ['Id', 'active', "Class", "Identifier", "Business", "OwnerClass", "Charge", "Color", "WorkClass", "workingPlan", "Periode", "Factor", "Pay"];
-    protected $fillable= ['Id', 'active', "Class", "Identifier", "Business", "OwnerClass", "Charge", "Color", "WorkClass", "workingPlan", "Periode", "Factor", "Pay"];
+    protected $visible = ['id', 'active', "workClass", 'workingPlan', "pay", "factor", "periode", "color", "business", "identifier", "class", 'created_at', 'updated_at'];
+    protected $fillable = ['id', 'active', "workClass", 'workingPlan', "pay", "factor", "periode", "color", "business", "identifier", "class", 'created_at', 'updated_at'];
     protected $table = "experience";
-    protected $primaryKey = "Id";
-    public $timestamps = true ;
+    protected $primaryKey = "id";
     protected $casts = ['workingPlan' => 'object'];
 
+    public $timestamps = true;
 
+    protected $attributes = [
+        'color' => '#75B72B'
+    ];
 
-    public function setworkingPlanAttribute($value)
+    public function setWorkingPlanAttribute($value)
     {
-        if(is_array($value))
+        if (is_array($value)) {
             $this->attributes['workingPlan'] = json_encode($value);
-        else
+        } else {
             $this->attributes['workingPlan'] = json_encode([]);
-    }
+        }
 
+    }
 
     public function business()
     {
-       return $this->hasOne ("App\Business", "Id", "Business");
+        return $this->hasOne("App\Business", "id", "business");
     }
-
 
 }
