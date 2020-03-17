@@ -23,24 +23,23 @@ class StaffObserver
     public function created(Staff $staff)
     {
         $career = Career::create([
-            'BeginTime' => time(),
-            'WorkClass' => 1,//TODO: bu kisim frontend e working plan kismi hazir olduktan sonra eklenecek simdilik varsayilan 1,
-            'Staff' => $staff->Id,
-            'Experience' => $staff->Experience,
-            'Recompense' => 1
+            'endTime' => '',
+            'workClass' => 1,//TODO: bu kisim frontend e working plan kismi hazir olduktan sonra eklenecek simdilik varsayilan 1,
+            'staff' => $staff->id,
+            'experience' => $staff->experience,
         ]);
 
         //TODO: bus kisim creating icine tasinacak
         $staff->update([
-            'Career' => $career->Id
+            'career' => $career->id
         ]);
 
         $employment = Employment::create([
-            'Manager' => $staff->Business,
-            'Business' => $staff->Business,
-            'OperationTime' => time(),
-            'Status' => 'Recruitment',
-            'Staff' => $staff->Id,
+            'manager' => $staff->business,
+            'business' => $staff->business,
+            'operationTime' => time(),
+            'status' => 'Recruitment',
+            'staff' => $staff->id,
         ]);
     }
 }

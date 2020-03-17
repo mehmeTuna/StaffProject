@@ -63,19 +63,13 @@ class ExperienceDefine extends React.Component {
     }
 
     this.handleSubmit = this.handleSubmit.bind(this)
-
     this.customClock = this.customClock.bind(this)
-
     this.dataSet = this.dataSet.bind(this)
-
     this.deleteTime = this.deleteTime.bind(this)
-
     this.compareTime = this.compareTime.bind(this)
-    this.paymentFormatpaymentFormat = this.paymentFormat.bind(this)
-
+    this.paymentFormat = this.paymentFormat.bind(this)
     this.changeStartTime = this.changeStartTime.bind(this)
     this.changeEndTime = this.changeEndTime.bind(this)
-
     this.handleChange = this.handleChange.bind(this)
   }
 

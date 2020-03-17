@@ -51,7 +51,7 @@ class StaffList extends React.Component {
   }
 
   async delete({ id, username }) {
-    this.setState({ staff: this.state.filter(e => e.Id != id) })
+    this.setState({ staff: this.state.filter(e => e.id !== id) })
     const data = await getDeleteStaff(id)
 
     if (data.status === true) {
@@ -73,8 +73,7 @@ class StaffList extends React.Component {
               <div className="card-body text-center">
                 <div className="card-title">
                   <h5 className="font-weight-bold text-dark">
-                    Herhangi bir tanimli staff bulunamadi yeni bir tane
-                    tanimlamak istermisiniz
+                    No new staff was found, no new one do you want to define
                   </h5>
                 </div>
                 <div className="row display-3">

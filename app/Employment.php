@@ -10,6 +10,10 @@ class Employment extends Model
     protected $fillable = ['id', 'business', 'staff', 'active', 'comment', 'status', 'created_at', 'updated_at'];
     protected $table = "employment";
     protected $primaryKey = "id";
+    protected $attributes = [
+        'comment' => ''
+    ];
+
     public $timestamps = true;
 
     public function scopeActive($query)

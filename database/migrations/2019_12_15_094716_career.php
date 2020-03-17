@@ -20,8 +20,7 @@ class Career extends Migration
             $table->bigInteger('staff')->default(0);
             $table->boolean('active')->default(1)->comment('aktif kolon');
             $table->tinyInteger('workClass')->default(0)->comment('0=Serbest çalışma,1=Planlı çalışma, 2=Aylık sabit ücret.');
-            $table->dateTime('beginTime')->default(null)->comment('Bu kariyerin başlangıç zamanı.');
-            $table->dateTime('endTime')->default(null)->comment('Bu kariyerin bitiş zamanı.');
+            $table->char('endTime')->default(null)->comment('Bu kariyerin bitiş zamanı.');
             $table->timestamps();
         });
     }

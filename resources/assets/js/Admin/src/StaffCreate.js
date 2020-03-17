@@ -32,7 +32,7 @@ function PlanList(props) {
 function ExperinceSelect(data) {
   return data.map((value, key) => (
     <option key={key} value={key}>
-      {value.Identifier}
+      {value.identifier}
     </option>
   ))
 }
@@ -78,7 +78,7 @@ class StaffCreate extends React.Component {
 
     this.deleteTime = this.deleteTime.bind(this)
 
-    this.paymnetControl = this.paymentControl.bind(this)
+    this.paymentControl = this.paymentControl.bind(this)
 
     this.compareTime = this.compareTime.bind(this)
     this.updateWorkingDataPay = this.updateWorkingDataPay.bind(this)
@@ -89,7 +89,7 @@ class StaffCreate extends React.Component {
   handleSubmit() {
     if (this.state.selectedExperience === '') {
       sweet.fire({
-        title: 'Experince Secin',
+        title: 'Select Experince',
         timer: 1500
       })
       return
@@ -97,7 +97,7 @@ class StaffCreate extends React.Component {
 
     if (this.state.img.length === 0) {
       sweet.fire({
-        title: 'Resim Secin',
+        title: 'Select Image',
         timer: 1500
       })
       return
@@ -134,19 +134,19 @@ class StaffCreate extends React.Component {
     )
     formData.set(
       'experience',
-      this.state.workingData[this.state.selectedExperience].Id
+      this.state.workingData[this.state.selectedExperience].id
     )
     formData.set(
       'pay',
-      this.state.workingData[this.state.selectedExperience].Pay
+      this.state.workingData[this.state.selectedExperience].pay
     )
     formData.set(
       'factor',
-      this.state.workingData[this.state.selectedExperience].Factor
+      this.state.workingData[this.state.selectedExperience].factor
     )
     formData.set(
       'periode',
-      this.state.workingData[this.state.selectedExperience].Periode
+      this.state.workingData[this.state.selectedExperience].periode
     )
 
     axios
@@ -163,7 +163,7 @@ class StaffCreate extends React.Component {
             })
           )
         } else {
-          sweet.fire('Gerekli alanlari doldurunuz')
+          sweet.fire('Fill in the required fields')
         }
       })
   }
@@ -291,7 +291,7 @@ class StaffCreate extends React.Component {
         .fire({
           position: 'top-end',
           icon: 'info',
-          title: 'Cikis saati giris saatinden once olamaz',
+          title: 'The exit time cannot be before the entry time',
           showConfirmButton: false,
           timer: 1500
         })
@@ -376,11 +376,11 @@ class StaffCreate extends React.Component {
     this.setState({ selectedDay: data })
     sweet
       .fire({
-        title: 'Saat Belirtiniz',
+        title: 'Specify Time',
         html: (
           <div className="row">
             <div className="col-8 mb-2 mx-auto">
-              Giris
+              Login
               <TimeField
                 input={<input type="text" className="form-control" />}
                 value={this.state.selectedStartTime}
@@ -388,7 +388,7 @@ class StaffCreate extends React.Component {
               />
             </div>
             <div className="col-8 mx-auto">
-              Cikis
+              Exit
               <TimeField
                 input={<input type="text" className="form-control" />}
                 value={this.state.selectedEndTime}
@@ -424,19 +424,19 @@ class StaffCreate extends React.Component {
 
   updateWorkingDataPay(val) {
     let data = this.state.workingData
-    data[this.state.selectedExperience].Pay = val
+    data[this.state.selectedExperience].pay = val
     this.setState({ workingData: data })
   }
 
   updateWorkingDataPeriode(val) {
     let data = this.state.workingData
-    data[this.state.selectedExperience].Periode = val
+    data[this.state.selectedExperience].periode = val
     this.setState({ workingData: data })
   }
 
   updateWorkingDataFactor(val) {
     let data = this.state.workingData
-    data[this.state.selectedExperience].Factor = val
+    data[this.state.selectedExperience].factor = val
     this.setState({ workingData: data })
   }
 
@@ -465,13 +465,13 @@ class StaffCreate extends React.Component {
                   />
                 ))}
               {this.state.img.length === 0 && (
-                <label for="upload">
+                <label htmlFor="upload">
                   <span
                     className="glyphicon glyphicon-folder-open align-self-center"
                     aria-hidden="true"
                   >
                     <p>Image Add</p>
-                    <i className="icon-circle-plus icon-lg text-success"></i>
+                    <i className="icon-circle-plus icon-lg text-success" />
                   </span>
                   <input
                     type="file"
@@ -650,7 +650,7 @@ class StaffCreate extends React.Component {
                 <h4 className="text-center display-4 mb-3">
                   {
                     this.state.workingData[this.state.selectedExperience]
-                      .Identifier
+                      .identifier
                   }
                 </h4>
                 <form className="form-sample" onSubmit={this.handleSubmit}>
@@ -667,7 +667,7 @@ class StaffCreate extends React.Component {
                           value={
                             this.state.workingData[
                               this.state.selectedExperience
-                            ].Pay
+                            ].pay
                           }
                           onChange={event =>
                             this.updateWorkingDataPay(event.target.value)
@@ -686,7 +686,7 @@ class StaffCreate extends React.Component {
                           value={
                             this.state.workingData[
                               this.state.selectedExperience
-                            ].Factor
+                            ].factor
                           }
                           onChange={event =>
                             this.updateWorkingDataFactor(event.target.value)
@@ -710,7 +710,7 @@ class StaffCreate extends React.Component {
                           value={
                             this.state.workingData[
                               this.state.selectedExperience
-                            ].Periode
+                            ].periode
                           }
                           onChange={event =>
                             this.updateWorkingDataPeriode(event.target.value)
@@ -730,10 +730,10 @@ class StaffCreate extends React.Component {
               <div className="card">
                 <div className="card-body">
                   <p className="card-description">
-                    Seçilen çalışma şekline bağlı çalışma planı tanımlama
+                    Defining a work plan depending on the chosen working method
                   </p>
                   <div className="row display-3">
-                    <div className="col-3">Pazartesi</div>
+                    <div className="col-3">Monday</div>
                     <div className="col-9">
                       {this.state.workingData[this.state.selectedExperience]
                         .workingPlan.monday.length !== 0 && (
@@ -760,7 +760,7 @@ class StaffCreate extends React.Component {
                     </div>
                   </div>
                   <div className="row display-3">
-                    <div className="col-3">Salı</div>
+                    <div className="col-3">Tuesday</div>
                     <div className="col-9">
                       {this.state.workingData[this.state.selectedExperience]
                         .workingPlan.tuesday.length !== 0 && (
@@ -787,7 +787,7 @@ class StaffCreate extends React.Component {
                     </div>
                   </div>
                   <div className="row display-3">
-                    <div className="col-3">Çarşamba</div>
+                    <div className="col-3">Wednesday</div>
                     <div className="col-9">
                       {this.state.workingData[this.state.selectedExperience]
                         .workingPlan.wednesday.length !== 0 && (
@@ -814,7 +814,7 @@ class StaffCreate extends React.Component {
                     </div>
                   </div>
                   <div className="row display-3">
-                    <div className="col-3">Perşembe</div>
+                    <div className="col-3">Thursday</div>
                     <div className="col-9">
                       {this.state.workingData[this.state.selectedExperience]
                         .workingPlan.thursday.length !== 0 && (
@@ -841,7 +841,7 @@ class StaffCreate extends React.Component {
                     </div>
                   </div>
                   <div className="row display-3">
-                    <div className="col-3">Cuma</div>
+                    <div className="col-3">Friday</div>
                     <div className="col-9">
                       {this.state.workingData[this.state.selectedExperience]
                         .workingPlan.friday.length !== 0 && (
@@ -868,7 +868,7 @@ class StaffCreate extends React.Component {
                     </div>
                   </div>
                   <div className="row display-3">
-                    <div className="col-3">Cumartesi</div>
+                    <div className="col-3">Saturday</div>
                     <div className="col-9">
                       {this.state.workingData[this.state.selectedExperience]
                         .workingPlan.saturday.length !== 0 && (
@@ -895,7 +895,7 @@ class StaffCreate extends React.Component {
                     </div>
                   </div>
                   <div className="row display-3">
-                    <div className="col-3">Pazar</div>
+                    <div className="col-3">Sunday</div>
                     <div className="col-9">
                       {this.state.workingData[this.state.selectedExperience]
                         .workingPlan.sunday.length !== 0 && (

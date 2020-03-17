@@ -29,25 +29,23 @@ function dayPlanList(data) {
 
 const Staff = props => {
   const {
-    Id,
-    Image,
-    FirstName,
-    LastName,
-    Experience,
-    Email,
-    Factor,
-    Periode,
-    Pay,
-    Adress,
-    Gsm,
-    Gender,
-    MartialStatus,
+    id,
+    image,
+    firstName,
+    lastName,
+    experience,
+    email,
+    factor,
+    address,
+    gsm,
+    gender,
+    martialStatus,
     workingPlan
   } = props.data
 
   const classes = useStyles()
   const [showData, setShowData] = React.useState(false)
-  const fullName = `${FirstName} ${LastName}`
+  const fullName = `${firstName} ${lastName}`
 
   return (
     <div className="col-lg-12 grid-margin stretch-card">
@@ -57,7 +55,8 @@ const Staff = props => {
             <div className="d-flex flex-column flex-md-row flex-lg-row">
               <div>
                 <img
-                  src={Image}
+                  src={image}
+                  alt={fullName}
                   style={{ width: '100px', height: '100px' }}
                   className="mx-auto"
                 />
@@ -67,10 +66,10 @@ const Staff = props => {
                   {fullName}
                 </h5>
                 <h6 className="font-weight-bold text-muted ml-2 mb-1">
-                  {Experience}
+                  {experience}
                 </h6>
                 <h6 className="font-weight-bold text-muted ml-2 mb-1">
-                  {Email}
+                  {email}
                 </h6>
               </div>
             </div>
@@ -92,7 +91,7 @@ const Staff = props => {
                   color="secondary"
                   className={classes.button}
                   startIcon={<DeleteIcon />}
-                  onClick={() => props.delete({ id: Id, username: fullName })}
+                  onClick={() => props.delete({ id: id, username: fullName })}
                 >
                   Delete
                 </Button>
@@ -105,19 +104,19 @@ const Staff = props => {
                 <div className="col-sm-12 grid-margin ">
                   <div className="card">
                     <div className="card-body">
-                      <p className="text-dark">{Factor}</p>
+                      <p className="text-dark">{factor}</p>
                       <p className="text-dark">
-                        Adress: <span className="text-muted">{Adress}</span>
+                        Address: <span className="text-muted">{address}</span>
                       </p>
                       <p className="text-dark">
-                        GSM: <span className="text-muted">{Gsm}</span>
+                        GSM: <span className="text-muted">{gsm}</span>
                       </p>
                       <p className="text-dark">
-                        Gender: <span className="text-muted">{Gender}</span>
+                        Gender: <span className="text-muted">{gender}</span>
                       </p>
                       <p className="text-dark">
                         Martial Status:{' '}
-                        <span className="text-muted">{MartialStatus}</span>
+                        <span className="text-muted">{martialStatus}</span>
                       </p>
                     </div>
                   </div>
@@ -128,7 +127,7 @@ const Staff = props => {
               <div className="card">
                 <div className="card-body">
                   {workingPlan === undefined && (
-                    <div className="mx-auto display-4">Tanimli Plan Yok</div>
+                    <div className="mx-auto display-4">No Defined Plan</div>
                   )}
                   <div className="card-title">Plan</div>
                   {workingPlan !== undefined &&
@@ -163,7 +162,7 @@ const Staff = props => {
               </div>
             </div>
           </div>
-          {showData === true && <StaffDetail key={Id} id={Id} />}
+          {showData === true && <StaffDetail key={id} id={id} />}
         </div>
       </div>
     </div>

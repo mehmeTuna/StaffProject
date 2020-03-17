@@ -13,6 +13,7 @@
     "format": "prettier --write \"resources/assets/**/*.+(js|jsx|json|css|md)\""
   },
   "devDependencies": {
+    "babel-eslint": "^10.1.0",
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",

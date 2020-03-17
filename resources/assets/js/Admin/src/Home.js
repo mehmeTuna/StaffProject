@@ -7,7 +7,6 @@ export default class Home extends React.Component {
     this.state = {
       onlineStaff: [],
       onlineKiosk: [],
-      onlineKiosk: [],
       lastLog: [],
       paymentHistory: [],
       staffCount: 0,
@@ -27,7 +26,6 @@ export default class Home extends React.Component {
       this.setState({
         onlineStaff: data.onlineStaff,
         onlineKiosk: data.onlineKiosk,
-        onlineKiosk: data.onlineKiosk,
         lastLog: data.lastLog,
         paymentHistory: data.paymentHistory,
         staffCount: data.staffCount,
@@ -45,13 +43,12 @@ export default class Home extends React.Component {
   render() {
     return (
       <React.Fragment>
-        <div className="container"></div>
         <div className="row w-100">
           <div className="col-sm-12 mb-4 mb-xl-0">
             <div className="row">
               <div className="col-sm-12 mb-4 mb-xl-0">
                 <h4 className="font-weight-bold text-dark">
-                  Merhaba, {this.state.business.username}
+                  Hello, {this.state.business.username}
                 </h4>
               </div>
             </div>

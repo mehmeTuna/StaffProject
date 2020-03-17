@@ -136,7 +136,7 @@ class BusinessController extends Controller
         $business = Business::create([
             "email" => $request["email"],
             "businessName" => $request["businessName"],
-            "phone" => $requloginPageest["telephone"],
+            "phone" => $request["telephone"],
             "password" => Hash::make($request["password"]),
             "country" => "TR_tr",
             "lang" => "TR_tr",

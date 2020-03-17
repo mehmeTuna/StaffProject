@@ -1,7 +1,5 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import axios from 'axios'
-import Cookies from 'js-cookie'
 
 import Navbar from './src/Navbar'
 import Sidebar from './src/Sidebar'

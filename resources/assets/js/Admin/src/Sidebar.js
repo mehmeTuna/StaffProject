@@ -12,16 +12,6 @@ export default class Sidebar extends React.Component {
       experience: false,
       isShowPlan: false
     }
-
-    this.paymentChoose = this.paymentChoose.bind(this)
-  }
-
-  componentDidMount() {
-    console.log(this.props)
-  }
-
-  paymentChoose() {
-    this.setState({ isShowPlan: true })
   }
 
   render() {
@@ -169,7 +159,7 @@ export default class Sidebar extends React.Component {
                 <span className="menu-title">Profile</span>
               </Link>
             </li>
-            <li className="nav-item" onClick={this.paymentChoose}>
+            <li className="nav-item">
               <span className="nav-link" style={{ cursor: 'pointer' }}>
                 <span className="menu-title">Payment Plan</span>
               </span>

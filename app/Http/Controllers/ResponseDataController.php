@@ -61,26 +61,6 @@ class ResponseDataController extends Controller
 
     }
 
-    public function staffList()
-    {
-        $staff = Staff::where('Business', session('businessId'))->get();
-        $factorText = [
-            'hour' => 'hourly',
-            'week' => 'weekly',
-            'month' => 'monthly'
-        ];
-        $staff = $staff->map(function ($user) use ($factorText) {
-            $data = $user;
-
-            $experience = Experience::where('id', $user->Experience)->get();
-            $data->Experience = $experience[0]->Identifier;
-            $data->Factor = $experience[0]->Periode > 1 ? $experience[0]->Periode . ' ' : ' ' . $factorText[$experience[0]->Factor] . ' ' . $experience[0]->Pay;
-            return $user;
-        });
-        return response()
-            ->json($staff);
-    }
-
     public function staffData(Request $request)
     {
         //type == log ise yapilacak
@@ -98,7 +78,7 @@ class ResponseDataController extends Controller
 
         return response()->json([
             'status' => true,
-            'balance' => $staffBalance[0]->Balance,
+            'balance' => $staffBalance[0]->balance,
             'type' => $type,
             'logHistory' => $logHistory,
             'logCount' => $logCount,

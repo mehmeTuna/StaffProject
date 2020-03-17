@@ -21,7 +21,7 @@ function KioskRender(data) {
                 onClick={() => data.deleteKiosk(val.id)}
                 className="m-2 btn btn-success btn-icon-text font-weight-bold"
               >
-                Kiosku Sil
+                Delete Kiosk
               </button>
             </div>
           </div>
@@ -31,7 +31,7 @@ function KioskRender(data) {
                 <div className="card-body">
                   <div className="card-title">
                     {' '}
-                    Remote Adress: <span className="text-muted">
+                    Remote Address: <span className="text-muted">
                       {val.ip}
                     </span>{' '}
                   </div>
@@ -43,8 +43,8 @@ function KioskRender(data) {
                 <div className="card-body">
                   <p className="text-center mb-2">
                     {val.logHistory.length > 0
-                      ? 'Son Islemler'
-                      : 'Herhangi bir islem bulunamadi'}
+                      ? 'Recent Transactions'
+                      : 'No transactions were found'}
                   </p>
                   {val.logHistory.length > 0 && (
                     <div className="row">
@@ -134,7 +134,7 @@ export default class KioskList extends React.Component {
   }
 
   deleteKiosk(id) {
-    sweet.fire('Silmek istediginize eminmisiniz ?').then(result => {
+    sweet.fire('Are you sure you want to delete ?').then(result => {
       if (result.value === true) {
         this.deleteData(id)
       }
@@ -151,8 +151,8 @@ export default class KioskList extends React.Component {
               <div className="card-body text-center">
                 <div className="card-title">
                   <h4 className="font-weight-bold text-dark">
-                    Herhangi bir tanimli kiosk bulunamadi yeni bir tane
-                    tanimlamak istermisiniz
+                    No new kiosk was found, a new one
+                    do you want to define
                   </h4>
                 </div>
                 <div className="row display-3">

@@ -18,6 +18,11 @@ class Experience extends Model
         'color' => '#75B72B'
     ];
 
+    public function scopeActive($query)
+    {
+        return $query->where('active', 1);
+    }
+
     public function setWorkingPlanAttribute($value)
     {
         if (is_array($value)) {

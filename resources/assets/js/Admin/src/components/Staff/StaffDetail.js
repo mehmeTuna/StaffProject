@@ -12,8 +12,8 @@ const StaffDetail = props => {
   const [isOpenDialog, setDialogOpen] = React.useState(false)
 
   useEffect(() => {
-    setLoading(true)
     const fetchData = async () => {
+      setLoading(true)
       const data = await getStaffDetail(props.id)
       if (data.status) {
         setData(data)
@@ -33,7 +33,7 @@ const StaffDetail = props => {
           <div className="card">
             <div className="card-body">
               <div className="d-flex justify-content-between mb-3">
-                <h5 className="card-title">Odeme Islemi</h5>
+                <h5 className="card-title">Payment Process</h5>
               </div>
               <div
                 id="chart-legends-market-trend"
@@ -59,7 +59,7 @@ const StaffDetail = props => {
                         className="m-2 btn btn-success btn-icon-text font-weight-bold"
                         onClick={() => setDialogOpen(true)}
                       >
-                        Odeme Yap
+                        Pay
                       </button>
                     </div>
                   </div>
@@ -73,7 +73,7 @@ const StaffDetail = props => {
                     </div>
                     <div className="row align-items-center">
                       <div className="col-12">
-                        <p className="text-muted m-0">Odenmesi gereken tutar</p>
+                        <p className="text-muted m-0">Amount to be paid</p>
                       </div>
                     </div>
                   </div>
@@ -87,39 +87,39 @@ const StaffDetail = props => {
             <div className="card-body">
               {data.logHistory.length == 0 ? (
                 <React.Fragment>
-                  <p className="text-center text-dark">Giris Cikis Islemleri</p>
+                  <p className="text-center text-dark">
+                    Login Output Processes
+                  </p>
                   <p className="text-center">
-                    Kullanici herhangi bir islemde bulunmadi
+                    The user did not take any action
                   </p>
                 </React.Fragment>
               ) : (
                 <React.Fragment>
-                  <p className="text-center mb-2">
-                    Giris Cikis Islemleri Gecmisi
-                  </p>
+                  <p className="text-center mb-2">Entry-Exit Process History</p>
                   <div className="row">
                     <div className="col-sm-12">
                       <div className="d-flex justify-content-between mt-2 text-dark mb-2">
-                        <div>Toplam: {data.logCount}</div>
+                        <div>Total: {data.logCount}</div>
                       </div>
                     </div>
                     <div className="col-sm-12">
                       <div className="traffic-source-legend">
                         <div className="d-flex justify-content-between mb-1 mt-2">
-                          <div className="font-weight-bold">Zaman</div>
-                          <div className="font-weight-bold">Islem</div>
+                          <div className="font-weight-bold">Time</div>
+                          <div className="font-weight-bold">Operation</div>
                         </div>
                         {data.logHistory.map(val => (
                           <div className="d-flex justify-content-between legend-label">
-                            <div>{val.Hour}</div>
+                            <div>{val.created_at}</div>
                             <div
                               className={
-                                val.Traffic === 'Enter'
+                                val.traffic === 'Enter'
                                   ? 'badge badge-success'
                                   : 'badge badge-danger'
                               }
                             >
-                              {val.Traffic}
+                              {val.traffic}
                             </div>
                           </div>
                         ))}
@@ -133,12 +133,13 @@ const StaffDetail = props => {
         </div>
         <div className="col-xl-4 grid-margin stretch-card mx-auto">
           {data.paymentHistory.length === 0 ? (
-            <React.Fragment>
-              <p className="text-center text-dark">Odeme Gecmisi</p>
-              <p className="text-center m-2">
-                Herhangi bir odeme gecmisiniz bulunmuyor
-              </p>
-            </React.Fragment>
+            <div className="card">
+              <div className="card-body">
+                <p className="text-center m-2">
+                  You do not have any payment dates
+                </p>
+              </div>
+            </div>
           ) : (
             <PaymentHistory data={data.paymentHistory} />
           )}

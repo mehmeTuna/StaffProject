@@ -22,10 +22,13 @@ class Staff extends Migration
             $table->float('balance', 6, 2)->comment('bakiye');
             $table->float('totalPayment', 6, 2)->comment('odenen Toplam ucret');
             $table->float('salary', 6, 2)->comment('ortalama saatlik ucret');
+            $table->char('factor', 20);
+            $table->float('pay', 6, 2)->comment('satlik alacagi ucret');
+            $table->char('periode',20);
             $table->text('workingPlan');
             $table->timestamp('birthday')->default(null)->commnet('Doğum günü');
             $table->char('image', 250)->default(null)->nullable()->commnet('Fotoğrafı');
-            $table->char('adress', 250)->default(null)->nullable()->commnet('Adresi');
+            $table->char('address', 250)->default(null)->nullable()->commnet('Adresi');
             $table->char('password', 250)->default(null)->commnet('Denetim Şifresi');
             $table->char('telephone', 50)->default(null)->commnet('Telefon');
             $table->char('gsm', 50)->default(null)->nullable()->commnet('GSM');

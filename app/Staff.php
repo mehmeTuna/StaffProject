@@ -6,18 +6,22 @@ use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
-    protected $visible = ['id', 'firstName', 'experience', 'workingPlan', 'lastName', 'active', 'loginToken', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus', 'lang', 'business', 'emaployment', 'career', 'timeSheetMap'];
-    protected $fillable = ['id', 'password', 'experience', 'workingPlan', 'firstName', 'lastName', 'active', 'loginToken', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus', 'lang', 'business', 'emaployment', 'career', 'timeSheetMap'];
+    protected $visible = ['id', 'firstName', 'experience', 'factor', 'pay', 'periode', 'workingPlan', 'lastName', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus'];
+    protected $fillable = ['id', 'password', 'experience', 'factor', 'pay', 'periode', 'workingPlan', 'firstName', 'lastName', 'active', 'loginToken', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus', 'lang', 'business', 'emaployment', 'career', 'timeSheetMap'];
     protected $table = "staff";
     protected $primaryKey = "id";
-    protected $dateFormat = 'U';
     protected $casts = [
         'workingPlan' => 'object',
     ];
+    protected $attributes = [
+        'loginToken' => '',
+        'balance' => 0,
+        'totalPayment' => 0
+    ];
 
-    public function scopeActive($query, $id)
+    public function scopeActive($query)
     {
-        return $query->where('id', $id)->where('active', 1);
+        return $query->where('active', 1);
     }
 
     public function setworkingPlanAttribute($value)
