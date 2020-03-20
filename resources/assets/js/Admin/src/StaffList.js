@@ -51,7 +51,7 @@ class StaffList extends React.Component {
   }
 
   async delete({ id, username }) {
-    this.setState({ staff: this.state.filter(e => e.id !== id) })
+    this.setState({ staff: this.state.staff.filter(e => e.id !== id) })
     const data = await getDeleteStaff(id)
 
     if (data.status === true) {

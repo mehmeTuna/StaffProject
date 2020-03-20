@@ -6,7 +6,6 @@ use App\Experience;
 use App\Http\Requests\StaffCreateRequest;
 use App\Http\Requests\StaffPayment;
 use App\Http\Requests\StoreStaffLogin;
-use App\Kiosk;
 use App\Kioskqrcode;
 use App\PaymentHistory;
 use App\Staff;
@@ -227,13 +226,13 @@ class StaffController extends Controller
             ]);
         }
 
-        $kiosk = Kiosk::where('remoteAddress', session()->get('kioskIp'))->active()->first();
+        $kiosk = $staff->kiosk->where('remoteAddress', session()->get('kioskIp'));
 
         if ($kiosk != null) {
 
             $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
 
-            if ($tio == null) {
+            if ($tio != null) {
                 //staff daha once herhangi giris cikis islemi yapmamaissa
                 $newTio = Tio::create([
                     'staff' => $staff->id,
@@ -307,7 +306,7 @@ class StaffController extends Controller
             $data->user->experience = $experience[0]->identifier;
             $data->user->email = $user->email;
             $data->user->factor = $user->factor;
-            $data->user->adress = $user->address;
+            $data->user->adress = $user->adress;
             $data->user->phone = $user->telephone;
             $data->user->Gender = $user->gender;
             $data->user->martialStatus = $user->martialStatus;

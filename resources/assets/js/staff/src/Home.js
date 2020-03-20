@@ -282,9 +282,6 @@ export default class Home extends React.Component {
                                     </div>
                                     <div className="font-weight-bold mr-sm-4 mt-2">
                                       <div>Ödeme</div>
-                                      <div className="text-muted font-weight-normal mt-1">
-                                        {val.created_at}
-                                      </div>
                                     </div>
                                     <div>
                                       <h6 className="font-weight-bold text-info ml-sm-2">
