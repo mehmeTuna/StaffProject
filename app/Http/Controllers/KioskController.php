@@ -29,27 +29,26 @@ class KioskController extends Controller
     public function home()
     {
         return view('kiosk.home', [
-            'name' => 'denem amacli yazildi'
+            'name' => 'Version'
         ]);
     }
 
     public function me(Request $request)
     {
-        //ilk adim kiosk a ait verileri getir
-        //qr icn diger bos fonksiyonu kullan
+        $kiosk = Kiosk::where('remoteAddress', $request->cookie($this->kioskCookieName))
+            ->where('active', 1)
+            ->first();
 
-
-        $kiosk = Kiosk::where('RemoteAddress', $request->cookie('logData'))->where('active', 1)->get();
-
-        if(!isset($kiosk[0]['Business']))
+        if($kiosk == null)
              return response('not found');
-        $business = Business::find($kiosk[0]['Business']);
+
+        $business = Business::find($kiosk->business);
 
         return response()->json([
             'status' => true,
             'isLogin' => false,
             'data' => [
-                'businessName' => $business->BusinessName,
+                'businessName' => $business->businessName,
             ]
         ]);
     }
@@ -61,31 +60,28 @@ class KioskController extends Controller
 
     public function staffLoginPage($code)
     {
-        $kiosk = Kioskqrcode::where('code', $code)->get();
+        $kiosk = Kioskqrcode::where('code', $code)->first();
 
-        if($this->checkModel($kiosk) )
-        {
-            $kioskIp= $kiosk[0]->ip;
-            $updatedKiosk = Kioskqrcode::where('id', $kiosk[0]->id)->update([
-                'active' => 0
-            ]);
-
-            session()->put('registerTime', time());
-            session()->put('kioskIp', $kiosk[0]->ip);
-
-
-            return view('staff.login');
-
-        }else {
+        if($kiosk == null){
             //gecersiz code ise uyari sayfasi goster
             return view('404');
         }
+
+        $updatedKiosk = Kioskqrcode::where('id', $kiosk->id)->update([
+            'active' => 0
+        ]);
+
+        session()->put('registerTime', time());
+        session()->put('kioskIp', $kiosk->remoteAddress);
+
+
+        return view('staff.login');
     }
     
     public function controllerQr(Request $request)
     {
         $randString = '';
-        $ip = $request->cookie('logData');
+        $ip = $request->cookie($this->kioskCookieName);
         $rand = Str::random(20) ;
 
            $randString = 'http://'.$request->getHost().'/kiosk/staff/'.$rand;
@@ -100,36 +96,6 @@ class KioskController extends Controller
         ->generate($randString);
 
         return response($pngImage)->header('Content-type','image/png');
-    }
-
-    public function login(Request $request)
-    {
-        $KioskCode = $request->code;
-
-        $kiosk = Kiosk::where('RemoteAddress', $request->cookie('logData'))->get();
-
-        /*
-        if (!Hash::check($KioskCode, $kiosk[0]->Code))
-        {
-            return response()->json([
-                'status' => false,
-                'text' => 'Code Hatali',
-            ]);
-        }
-        */
-
-        return response()->json([
-            'status' => true,
-            'isLogin' => true,
-            'data' => [
-                'businessName' => 'Mehmet Tuna',
-            ]
-        ]);
-    }
-
-    public function logout()
-    {
-
     }
 
     public function AddNewKiosk(Request $request)
@@ -161,7 +127,9 @@ class KioskController extends Controller
 
     public function kioskRegisterPage(Request $request)
     {
-       $kiosk = Kiosk::where('remoteAddress', $request->cookie('logData'))->active()->first();
+       $kiosk = Kiosk::where('remoteAddress', $request->cookie($this->kioskCookieName))
+           ->active()
+           ->first();
 
         if($kiosk != null)
         {
@@ -178,7 +146,7 @@ class KioskController extends Controller
         return response()->view('kioskRegister', [
             'code' => $code
         ])->cookie(
-            'logData', $rand, 60 * 24 * 365
+            $this->kioskCookieName, $rand, $this->oneYearCookieTime()
         );
     }
 }

@@ -25,7 +25,7 @@ Route::get('staff/login', 'StaffController@staticStaffLoginPage');
 Route::post('kiosk/staff/login', 'StaffController@staffLogin');
 
 Route::prefix('kiosk')->group(function () {
-    Route::get('staff/{code}', 'KioskController@staffLoginPage');
+    Route::get('staff/{code}', 'StaffController@staffLoginPage');
     Route::post('me', 'KioskController@me');
     Route::post('register', 'KioskController@AddNewKiosk');
     Route::get('generate', 'KioskController@controllerQr');

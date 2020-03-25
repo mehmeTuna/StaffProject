@@ -11,6 +11,14 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
+    public $kioskCookieName = '_k';
+    public $staffCookieName = '_s';
+
+    public function oneYearCookieTime()
+    {
+        return time()+31556926 ;
+    }
+
     public function respondSuccess($data = [])
     {
         return response()->json([
