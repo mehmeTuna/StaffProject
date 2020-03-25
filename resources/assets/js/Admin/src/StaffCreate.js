@@ -1,5 +1,5 @@
 import React from 'react'
-import { Redirect } from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import withReactContent from 'sweetalert2-react-content'
@@ -169,9 +169,9 @@ class StaffCreate extends React.Component {
   }
 
   async componentDidMount() {
-    const { data } = await axios.post('/business/experience/list')
+    const {data} = await axios.post('/business/experience/list/1/60')
 
-    this.setState({ workingData: data })
+    this.setState({workingData: data.data})
   }
 
   handleChange(event) {
@@ -221,7 +221,7 @@ class StaffCreate extends React.Component {
           key,
           1
         )
-        this.setState({ workingData: dataMonday })
+        this.setState({workingData: dataMonday})
         console.log(this.state.workingData)
         break
       case 'tuesday':
@@ -230,14 +230,14 @@ class StaffCreate extends React.Component {
           key,
           1
         )
-        this.setState({ workingData: dataTuesday })
+        this.setState({workingData: dataTuesday})
         break
       case 'wednesday':
         let dataWednesday = this.state.workingData
         dataWednesday[
           this.state.selectedExperience
         ].workingPlan.wednesday.splice(key, 1)
-        this.setState({ workingData: dataWednesday })
+        this.setState({workingData: dataWednesday})
         break
       case 'thursday':
         let dataThursday = this.state.workingData
@@ -245,7 +245,7 @@ class StaffCreate extends React.Component {
           key,
           1
         )
-        this.setState({ workingData: dataThursday })
+        this.setState({workingData: dataThursday})
         break
       case 'friday':
         let dataFriday = this.state.workingData
@@ -253,7 +253,7 @@ class StaffCreate extends React.Component {
           key,
           1
         )
-        this.setState({ workingData: dataFriday })
+        this.setState({workingData: dataFriday})
         break
       case 'saturday':
         let dataSaturday = this.state.workingData
@@ -261,7 +261,7 @@ class StaffCreate extends React.Component {
           key,
           1
         )
-        this.setState({ workingData: dataSaturday })
+        this.setState({workingData: dataSaturday})
         break
       case 'sunday':
         let dataSunday = this.state.workingData
@@ -269,7 +269,7 @@ class StaffCreate extends React.Component {
           key,
           1
         )
-        this.setState({ workingData: dataSunday })
+        this.setState({workingData: dataSunday})
         break
     }
   }
@@ -306,7 +306,7 @@ class StaffCreate extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ workingData: dataMonday })
+        this.setState({workingData: dataMonday})
         break
       case 'tuesday':
         let dataTuesday = this.state.workingData
@@ -314,7 +314,7 @@ class StaffCreate extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ workingData: dataTuesday })
+        this.setState({workingData: dataTuesday})
         break
       case 'wednesday':
         let dataWednesday = this.state.workingData
@@ -324,7 +324,7 @@ class StaffCreate extends React.Component {
             end: this.state.selectedEndTime
           }
         )
-        this.setState({ workingData: dataWednesday })
+        this.setState({workingData: dataWednesday})
         break
       case 'thursday':
         let dataThursday = this.state.workingData
@@ -332,7 +332,7 @@ class StaffCreate extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ workingData: dataThursday })
+        this.setState({workingData: dataThursday})
         break
       case 'friday':
         let dataFriday = this.state.workingData
@@ -340,7 +340,7 @@ class StaffCreate extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ workingData: dataFriday })
+        this.setState({workingData: dataFriday})
         break
       case 'saturday':
         let dataSaturday = this.state.workingData
@@ -348,7 +348,7 @@ class StaffCreate extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ workingData: dataSaturday })
+        this.setState({workingData: dataSaturday})
         break
       case 'sunday':
         let dataSunday = this.state.workingData
@@ -356,7 +356,7 @@ class StaffCreate extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ workingData: dataSunday })
+        this.setState({workingData: dataSunday})
         break
       default:
         console.log('dataSet foksiyion kismi default')
@@ -365,15 +365,15 @@ class StaffCreate extends React.Component {
   }
 
   changeStartTime(time) {
-    this.setState({ selectedStartTime: time.target.value })
+    this.setState({selectedStartTime: time.target.value})
   }
 
   changeEndTime(time) {
-    this.setState({ selectedEndTime: time.target.value })
+    this.setState({selectedEndTime: time.target.value})
   }
 
   customClock(data) {
-    this.setState({ selectedDay: data })
+    this.setState({selectedDay: data})
     sweet
       .fire({
         title: 'Specify Time',
@@ -414,30 +414,30 @@ class StaffCreate extends React.Component {
       let alert = this.state.alert
       alert.pay.status = true
       alert.pay.text = `minimum ${min} tutar giriniz`
-      this.setState({ alert: alert })
+      this.setState({alert: alert})
     } else {
       let alert = this.state.alert
       alert.pay.status = false
-      this.setState({ alert: alert })
+      this.setState({alert: alert})
     }
   }
 
   updateWorkingDataPay(val) {
     let data = this.state.workingData
     data[this.state.selectedExperience].pay = val
-    this.setState({ workingData: data })
+    this.setState({workingData: data})
   }
 
   updateWorkingDataPeriode(val) {
     let data = this.state.workingData
     data[this.state.selectedExperience].periode = val
-    this.setState({ workingData: data })
+    this.setState({workingData: data})
   }
 
   updateWorkingDataFactor(val) {
     let data = this.state.workingData
     data[this.state.selectedExperience].factor = val
-    this.setState({ workingData: data })
+    this.setState({workingData: data})
   }
 
   render() {
@@ -460,7 +460,7 @@ class StaffCreate extends React.Component {
                 this.state.img.map(val => (
                   <img
                     src={val.url}
-                    style={{ width: '100px', height: '100px' }}
+                    style={{width: '100px', height: '100px'}}
                     className="img-thumbnail mx-auto"
                   />
                 ))}
@@ -476,7 +476,7 @@ class StaffCreate extends React.Component {
                   <input
                     type="file"
                     id="upload"
-                    style={{ display: 'none' }}
+                    style={{display: 'none'}}
                     onChange={this.handleChange}
                   />
                 </label>
@@ -494,9 +494,7 @@ class StaffCreate extends React.Component {
                       type="text"
                       className="form-control"
                       value={this.state.firstName}
-                      onChange={e =>
-                        this.setState({ firstName: e.target.value })
-                      }
+                      onChange={e => this.setState({firstName: e.target.value})}
                     />
                   </div>
                 </div>
@@ -509,9 +507,7 @@ class StaffCreate extends React.Component {
                       type="text"
                       className="form-control"
                       value={this.state.lastName}
-                      onChange={e =>
-                        this.setState({ lastName: e.target.value })
-                      }
+                      onChange={e => this.setState({lastName: e.target.value})}
                     />
                   </div>
                 </div>
@@ -524,7 +520,7 @@ class StaffCreate extends React.Component {
                   <div className="col-sm-9 d-flex align-items-center">
                     <select
                       value={this.state.gender}
-                      onChange={e => this.setState({ gender: e.target.value })}
+                      onChange={e => this.setState({gender: e.target.value})}
                       className="form-control"
                     >
                       <option value="unspecified">Unspecified</option>
@@ -541,7 +537,7 @@ class StaffCreate extends React.Component {
                     <DatePicker
                       value={this.state.birthday}
                       calendarClassName="form-control"
-                      onChange={e => this.setState({ birthday: e })}
+                      onChange={e => this.setState({birthday: e})}
                     />
                   </div>
                 </div>
@@ -555,7 +551,7 @@ class StaffCreate extends React.Component {
                     <select
                       value={this.state.martialStatus}
                       onChange={e =>
-                        this.setState({ martialStatus: e.target.value })
+                        this.setState({martialStatus: e.target.value})
                       }
                       className="form-control"
                     >
@@ -574,7 +570,7 @@ class StaffCreate extends React.Component {
                       type="text"
                       className="form-control"
                       value={this.state.email}
-                      onChange={e => this.setState({ email: e.target.value })}
+                      onChange={e => this.setState({email: e.target.value})}
                     />
                   </div>
                 </div>
@@ -589,7 +585,7 @@ class StaffCreate extends React.Component {
                       type="text"
                       className="form-control"
                       value={this.state.address}
-                      onChange={e => this.setState({ address: e.target.value })}
+                      onChange={e => this.setState({address: e.target.value})}
                     />
                   </div>
                 </div>
@@ -601,7 +597,7 @@ class StaffCreate extends React.Component {
                     <Input
                       className="form-control"
                       value={this.state.telephone}
-                      onChange={e => this.setState({ telephone: e })}
+                      onChange={e => this.setState({telephone: e})}
                     />
                   </div>
                 </div>
@@ -616,9 +612,7 @@ class StaffCreate extends React.Component {
                       type="text"
                       className="form-control"
                       value={this.state.password}
-                      onChange={e =>
-                        this.setState({ password: e.target.value })
-                      }
+                      onChange={e => this.setState({password: e.target.value})}
                     />
                   </div>
                 </div>
@@ -630,7 +624,7 @@ class StaffCreate extends React.Component {
                     <select
                       value={this.state.selectedExperience}
                       onChange={e =>
-                        this.setState({ selectedExperience: e.target.value })
+                        this.setState({selectedExperience: e.target.value})
                       }
                       className="form-control"
                     >

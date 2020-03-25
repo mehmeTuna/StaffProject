@@ -1,6 +1,9 @@
-import { combineReducers } from 'redux'
-import staffReducer from './StaffReducer'
+import {combineReducers} from 'redux'
 
-export default combineReducers({
-  staffReducer
+import postsReducer from './postsReducer'
+
+const rootReducer = combineReducers({
+  posts: postsReducer
 })
+
+export default rootReducer

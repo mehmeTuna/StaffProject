@@ -13,15 +13,10 @@ export default class Home extends React.Component {
       alert: [],
       business: []
     }
-
-    this.getDataBusiness = this.getDataBusiness.bind(this)
   }
 
   async componentDidMount() {
-    await this.getDataBusiness()
-    const { data } = await axios.post(
-      '/' + `${this.state.business.username + '/data/home'}`
-    )
+    const {data} = await axios.post('/business/data/home')
     if (data.status === true) {
       this.setState({
         onlineStaff: data.onlineStaff,
@@ -34,12 +29,6 @@ export default class Home extends React.Component {
     }
   }
 
-  async getDataBusiness() {
-    const { data } = await axios.post('/business/data')
-
-    this.setState({ business: data })
-  }
-
   render() {
     return (
       <React.Fragment>
@@ -48,7 +37,7 @@ export default class Home extends React.Component {
             <div className="row">
               <div className="col-sm-12 mb-4 mb-xl-0">
                 <h4 className="font-weight-bold text-dark">
-                  Hello, {this.state.business.username}
+                  Hello, {this.props.business.username}
                 </h4>
               </div>
             </div>
@@ -358,7 +347,7 @@ export default class Home extends React.Component {
                           <div
                             className="progress-bar bg-success"
                             role="progressbar"
-                            style={{ width: '50%' }}
+                            style={{width: '50%'}}
                             aria-valuenow="50"
                             aria-valuemin="0"
                             aria-valuemax="100"

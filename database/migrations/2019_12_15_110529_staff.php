@@ -18,6 +18,7 @@ class Staff extends Migration
             $table->char('firstName', 50)->commnet('ad');
             $table->char('lastName', 50)->commnet('Soyad');
             $table->boolean('active')->default(1);
+            $table->boolean('online')->default(0);
             $table->char('loginToken', 200)->commnet('giris tokeni');
             $table->float('balance', 6, 2)->comment('bakiye');
             $table->float('totalPayment', 6, 2)->comment('odenen Toplam ucret');

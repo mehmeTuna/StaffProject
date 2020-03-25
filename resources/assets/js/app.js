@@ -10,7 +10,7 @@ window.React = require('react')
 import ReactDOM from 'react-dom'
 import App from './Admin/App'
 import configureStore from './Admin/redux/configureStore'
-import { Provider } from 'react-redux'
+import {Provider} from 'react-redux'
 
 const store = configureStore(undefined)
 

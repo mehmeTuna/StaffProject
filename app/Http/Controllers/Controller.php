@@ -15,6 +15,7 @@ class Controller extends BaseController
     {
         return response()->json([
             'status' => true,
+            'text' => trans('auth.success'),
             'data' => $data
         ]);
     }
@@ -23,6 +24,16 @@ class Controller extends BaseController
     {
         return response()->json([
             'status' => false,
+            'text' => trans('auth.error'),
+            'data' => $data
+        ]);
+    }
+
+    public function incorrectPassword($data = [])
+    {
+        return response()->json([
+            'status' => false,
+            'text' => trans('auth.incorrectPassword'),
             'data' => $data
         ]);
     }

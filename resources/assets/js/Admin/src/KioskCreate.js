@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { Redirect } from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 
 const sweet = withReactContent(Swal)
 
@@ -23,12 +23,12 @@ export default class KioskCreate extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ hostName: window.location.host })
+    this.setState({hostName: window.location.host})
   }
 
   async newKiosk(val) {
-    this.setState({ tutorial: 1 })
-    const { data } = await axios.post('/kiosk/register', {
+    this.setState({tutorial: 1})
+    const {data} = await axios.post('/kiosk/register', {
       code: this.state.registerCode,
       name: val
     })
@@ -93,7 +93,7 @@ export default class KioskCreate extends React.Component {
                   <button
                     type="button"
                     className="btn btn-success font-weight-bold mx-auto mt-4"
-                    onClick={() => this.setState({ tutorial: 1 })}
+                    onClick={() => this.setState({tutorial: 1})}
                   >
                     <span className="badge">
                       <i className="icon-circle-plus" />
@@ -131,7 +131,7 @@ export default class KioskCreate extends React.Component {
                     className="form-control"
                     value={this.state.registerCode}
                     onChange={e =>
-                      this.setState({ registerCode: e.target.value })
+                      this.setState({registerCode: e.target.value})
                     }
                     placeholder="Code"
                   />

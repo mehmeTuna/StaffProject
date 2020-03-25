@@ -52,15 +52,6 @@ class ResponseDataController extends Controller
             ->json($result);
     }
 
-    public function experienceList()
-    {
-        $experience = Experience::where('Business', session('businessId'))->get();
-
-        return response()
-            ->json($experience);
-
-    }
-
     public function staffData(Request $request)
     {
         //type == log ise yapilacak

@@ -1,33 +1,27 @@
-// eslint-disable-next-line no-unused-vars
 import React from 'react'
-import { withStyles } from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
-import theme from './../theme'
-
-// eslint-disable-next-line no-unused-vars
-const CustomButton = withStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     boxShadow: 'none',
     textTransform: 'none',
     fontSize: 16,
-    padding: '6px 12px',
-    border: '1px solid',
+    padding: theme.spacing(1),
     lineHeight: 1.5,
     color: 'white',
-    backgroundColor: theme.colors.primary,
+    margin: theme.spacing(1),
     '&:hover': {
-      backgroundColor: '#0069d9',
-      borderColor: '#0062cc',
       boxShadow: 'none'
     }
   }
-})(Button)
+}))
 
-export default function Btn({ children, ...props }) {
+export default function Btn({children, ...props}) {
+  const classes = useStyles()
   return (
-    <CustomButton {...props} variant="contained" disableRipple>
+    <Button className={classes.root} {...props}>
       {children}
-    </CustomButton>
+    </Button>
   )
 }

@@ -4,7 +4,7 @@ import axios from 'axios'
 import TimeField from 'react-simple-timefield'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { Redirect } from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 
 const sweet = withReactContent(Swal)
 
@@ -74,13 +74,13 @@ class ExperienceDefine extends React.Component {
   }
 
   async componentDidMount() {
-    const { data } = await axios.post('/business/location/minWage')
+    const {data} = await axios.post('/business/location/minWage')
 
-    this.setState({ isMinWage: data })
+    this.setState({isMinWage: data})
   }
 
   handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value })
+    this.setState({[e.target.name]: e.target.value})
   }
 
   compareTime(str1, str2) {
@@ -146,37 +146,37 @@ class ExperienceDefine extends React.Component {
       case 'monday':
         let dataMonday = this.state.monday
         dataMonday.splice(key, 1)
-        this.setState({ monday: dataMonday })
+        this.setState({monday: dataMonday})
         break
       case 'tuesday':
         let dataTuesday = this.state.tuesday
         dataTuesday.splice(key, 1)
-        this.setState({ tuesday: dataTuesday })
+        this.setState({tuesday: dataTuesday})
         break
       case 'wednesday':
         let dataWednesday = this.state.wednesday
         dataWednesday.splice(key, 1)
-        this.setState({ wednesday: dataWednesday })
+        this.setState({wednesday: dataWednesday})
         break
       case 'thursday':
         let dataThursday = this.state.thursday
         dataThursday.splice(key, 1)
-        this.setState({ Thursday: dataThursday })
+        this.setState({Thursday: dataThursday})
         break
       case 'friday':
         let dataFriday = this.state.friday
         dataFriday.splice(key, 1)
-        this.setState({ friday: dataFriday })
+        this.setState({friday: dataFriday})
         break
       case 'saturday':
         let dataSaturday = this.state.saturday
         dataSaturday.splice(key, 1)
-        this.setState({ saturday: dataSaturday })
+        this.setState({saturday: dataSaturday})
         break
       case 'sunday':
         let dataSunday = this.state.sunday
         dataSunday.splice(key, 1)
-        this.setState({ sunday: dataSunday })
+        this.setState({sunday: dataSunday})
         break
     }
   }
@@ -215,7 +215,7 @@ class ExperienceDefine extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ monday: dataMonday })
+        this.setState({monday: dataMonday})
         break
       case 'tuesday':
         let dataTuesday = this.state.tuesday
@@ -223,7 +223,7 @@ class ExperienceDefine extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ tuesday: dataTuesday })
+        this.setState({tuesday: dataTuesday})
         break
       case 'wednesday':
         let dataWednesday = this.state.wednesday
@@ -231,7 +231,7 @@ class ExperienceDefine extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ wednesday: dataWednesday })
+        this.setState({wednesday: dataWednesday})
         break
       case 'thursday':
         let dataThursday = this.state.thursday
@@ -239,7 +239,7 @@ class ExperienceDefine extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ Thursday: dataThursday })
+        this.setState({Thursday: dataThursday})
         break
       case 'friday':
         let dataFriday = this.state.friday
@@ -247,7 +247,7 @@ class ExperienceDefine extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ friday: dataFriday })
+        this.setState({friday: dataFriday})
         break
       case 'saturday':
         let dataSaturday = this.state.saturday
@@ -255,7 +255,7 @@ class ExperienceDefine extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ saturday: dataSaturday })
+        this.setState({saturday: dataSaturday})
         break
       case 'sunday':
         let dataSunday = this.state.sunday
@@ -263,7 +263,7 @@ class ExperienceDefine extends React.Component {
           start: this.state.selectedStartTime,
           end: this.state.selectedEndTime
         })
-        this.setState({ sunday: dataSunday })
+        this.setState({sunday: dataSunday})
         break
       default:
         console.log('dataSet foksiyion kismi default')
@@ -272,15 +272,15 @@ class ExperienceDefine extends React.Component {
   }
 
   changeStartTime(time) {
-    this.setState({ selectedStartTime: time.target.value })
+    this.setState({selectedStartTime: time.target.value})
   }
 
   changeEndTime(time) {
-    this.setState({ selectedEndTime: time.target.value })
+    this.setState({selectedEndTime: time.target.value})
   }
 
   customClock(data) {
-    this.setState({ selectedDay: data })
+    this.setState({selectedDay: data})
     sweet
       .fire({
         title: 'Saat Belirtiniz',
@@ -408,7 +408,7 @@ class ExperienceDefine extends React.Component {
               <div className="card-body">Working Plan Select</div>
               <div
                 className="card-body display-4 btn-outline-success btn-fw"
-                onClick={event => this.setState({ workingPlan: 'freeTime' })}
+                onClick={event => this.setState({workingPlan: 'freeTime'})}
               >
                 {this.state.workingPlan === 'freeTime' && (
                   <i className="icon-check icon-lg text-primary" />
@@ -417,7 +417,7 @@ class ExperienceDefine extends React.Component {
               </div>
               <div
                 className="card-body display-4 btn-outline-success btn-fw"
-                onClick={event => this.setState({ workingPlan: 'plannedTime' })}
+                onClick={event => this.setState({workingPlan: 'plannedTime'})}
               >
                 {this.state.workingPlan === 'plannedTime' && (
                   <i className="icon-check icon-lg text-primary" />
@@ -426,7 +426,7 @@ class ExperienceDefine extends React.Component {
               </div>
               <div
                 className="card-body display-4 btn-outline-success btn-fw"
-                onClick={() => this.setState({ workingPlan: 'fullTime' })}
+                onClick={() => this.setState({workingPlan: 'fullTime'})}
               >
                 {this.state.workingPlan === 'fullTime' && (
                   <i className="icon-check icon-lg text-primary" />

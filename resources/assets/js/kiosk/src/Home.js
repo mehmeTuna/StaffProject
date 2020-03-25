@@ -2,7 +2,7 @@ import React from 'react'
 import Axios from 'axios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { resetServerContext } from 'react-beautiful-dnd'
+import {resetServerContext} from 'react-beautiful-dnd'
 
 const sweet = withReactContent(Swal)
 
@@ -21,14 +21,14 @@ export default class Home extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({ loading: true })
-    const { data } = await Axios.post('/kiosk/me')
+    this.setState({loading: true})
+    const {data} = await Axios.post('/kiosk/me')
 
     if (data.status === true) {
-      this.setState({ data: data.data })
+      this.setState({data: data.data})
     }
 
-    this.setState({ loading: false })
+    this.setState({loading: false})
 
     window.setInterval(this.renderImg, 120000)
 
@@ -36,9 +36,9 @@ export default class Home extends React.Component {
   }
 
   renderImg() {
-    this.setState({ loading: true })
+    this.setState({loading: true})
 
-    var timer = setTimeout(() => this.setState({ loading: false }), 2000)
+    var timer = setTimeout(() => this.setState({loading: false}), 2000)
     //clearTimeout(timer);
     console.log('refresh img')
   }

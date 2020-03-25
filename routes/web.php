@@ -16,10 +16,11 @@
 Route::any('/', 'WelcomeController@index');
 
 Route::get('404', 'WelcomeController@noPage');
+Route::get('forget-password', 'WelcomeController@index');
 
 Route::get('kiosk', 'KioskController@kioskRegisterPage');
 Route::get('login', 'BusinessController@loginPage');
-Route::get('staff/home', 'StaffController@staffHomePage');
+
 Route::get('staff/login', 'StaffController@staticStaffLoginPage');
 Route::post('kiosk/staff/login', 'StaffController@staffLogin');
 
@@ -32,6 +33,7 @@ Route::prefix('kiosk')->group(function () {
 
 Route::middleware(['staff'])->group(function(){
     Route::prefix('staff')->group(function(){
+        Route::get('home', 'StaffController@staffHomePage');
         Route::post('me', 'StaffController@me');
         Route::post('logout', 'StaffController@staffLogout');
     });
@@ -39,7 +41,6 @@ Route::middleware(['staff'])->group(function(){
 
 Route::prefix('business')->group(function(){
   Route::post('loginData', 'BusinessController@login');
-  Route::post('logout', 'BusinessController@logout');
   Route::post('register', 'BusinessController@register'); //isletme kayit icin post edilecek yer
 
 
@@ -57,20 +58,24 @@ Route::middleware(['business'])->group(function(){
         //data controller
         Route::post('data', 'BusinessController@businessData');
         Route::post('update', 'BusinessController@update');
+        Route::post('logout', 'BusinessController@logout');
         Route::post('search', 'ResponseDataController@businessPageSearch');
 
         Route::post("staff/list", 'StaffController@staffList');
+        Route::post("staff/payment/history", 'StaffController@paymentHistory');
+        Route::post("staff/log/history", 'StaffController@logHistory');
         Route::post('staff/pay', 'StaffController@payment');
         Route::post("staff/delete", 'StaffController@delete');
 
-        Route::post("experience/list", 'ResponseDataController@experienceList');
+        Route::post("experience/list/{page}/{count}", 'ExperienceController@listData');
+        Route::post("experience/list", 'ExperienceController@list');
         Route::post("experience/delete", 'ExperienceController@delete');
-        Route::post("experience/list/data", 'ExperienceController@listData');
 
         Route::post("kiosk/list", 'ResponseDataController@kioskList');
         Route::post("kiosk/delete", 'ResponseDataController@kioskDelete');
 
         Route::post("location/minWage", 'ResponseDataController@getBusinessLocationMinWage');
+        Route::post("data/home", 'BusinessController@homeData');
     });
 
     //business route group
@@ -79,7 +84,6 @@ Route::middleware(['business'])->group(function(){
         Route::get('/', 'BusinessController@home');
 
         Route::get('profile', 'BusinessController@home');
-        Route::post("data/home", 'BusinessController@homeData');
 
         Route::prefix('/staff')->group(function(){
             Route::get('/list', 'BusinessController@home');

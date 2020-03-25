@@ -2,11 +2,14 @@ import React from 'react'
 import Axios from 'axios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
+
+import {experienceList} from './../api/business'
 
 const sweet = withReactContent(Swal)
 
 function dayPlanList(data) {
+  if (typeof data !== 'object') return
   return data.map((value, key) => (
     <button
       key={key}
@@ -20,23 +23,20 @@ function dayPlanList(data) {
   ))
 }
 
-function ExperienceRender(data) {
-  let result = data
-  return data.data.map((val, key) => (
+function ExperienceRender(props) {
+  return props.data.map((val, key) => (
     <div key={key} className="col-lg-12 grid-margin stretch-card">
       <div className="card">
         <div className="card-body">
           <div className="col-sm-12 mb-4 mb-xl-0 d-flex justify-content-between legend-label">
             <div>
-              <h5 className="font-weight-bold">{val.experience.identifier}</h5>
+              <h5 className="font-weight-bold">{val.identifier}</h5>
             </div>
             <div className="">
               <button
                 type="button"
                 className="m-2 btn btn-success btn-icon-text font-weight-bold"
-                onClick={() =>
-                  result.delete(val.experience.id, val.experience.identifier)
-                }
+                onClick={() => props.delete(val.id, val.identifier)}
               >
                 Delete
               </button>
@@ -47,16 +47,14 @@ function ExperienceRender(data) {
               <div className="card">
                 <div className="card-body">
                   <h5 className="text-dark">
-                    Pay:{' '}
-                    <span className="text-muted">{val.experience.pay}</span>
+                    Pay: <span className="text-muted">{val.pay}</span>
                   </h5>
                   <h5 className="text-dark">
                     Factor:
-                    <span className="text-muted">{val.experience.factor}</span>
+                    <span className="text-muted">{val.factor}</span>
                   </h5>
                   <h5 className="text-dark">
-                    Period:{' '}
-                    <span className="text-muted">{val.experience.periode}</span>
+                    Period: <span className="text-muted">{val.periode}</span>
                   </h5>
                 </div>
               </div>
@@ -71,51 +69,35 @@ function ExperienceRender(data) {
               <div className="card">
                 <div className="card-body">
                   <div className="card-title">Plan</div>
-                  {val.experience.workingPlan !== undefined &&
-                    val.experience.workingPlan.monday.length !== 0 && (
+                  {val.workingPlan !== undefined &&
+                    val.workingPlan.monday.length !== 0 && (
+                      <h5>Monday {dayPlanList(val.workingPlan.monday)}</h5>
+                    )}
+                  {val.workingPlan !== undefined &&
+                    val.workingPlan.tuesday.length !== 0 && (
+                      <h5>Tuesday {dayPlanList(val.workingPlan.tuesday)}</h5>
+                    )}
+                  {val.workingPlan !== undefined &&
+                    val.workingPlan.wednesday.length !== 0 && (
                       <h5>
-                        Monday {dayPlanList(val.experience.workingPlan.monday)}
+                        Wednesday {dayPlanList(val.workingPlan.wednesday)}
                       </h5>
                     )}
-                  {val.experience.workingPlan !== undefined &&
-                    val.experience.workingPlan.tuesday.length !== 0 && (
-                      <h5>
-                        Tuesday{' '}
-                        {dayPlanList(val.experience.workingPlan.tuesday)}
-                      </h5>
+                  {val.workingPlan !== undefined &&
+                    val.workingPlan.thursday.length !== 0 && (
+                      <h5>Thursday {dayPlanList(val.workingPlan.thursday)}</h5>
                     )}
-                  {val.experience.workingPlan !== undefined &&
-                    val.experience.workingPlan.wednesday.length !== 0 && (
-                      <h5>
-                        Wednesday{' '}
-                        {dayPlanList(val.experience.workingPlan.wednesday)}
-                      </h5>
+                  {val.workingPlan !== undefined &&
+                    val.workingPlan.friday.length !== 0 && (
+                      <h5>Friday {dayPlanList(val.workingPlan.friday)}</h5>
                     )}
-                  {val.experience.workingPlan !== undefined &&
-                    val.experience.workingPlan.thursday.length !== 0 && (
-                      <h5>
-                        Thursday{' '}
-                        {dayPlanList(val.experience.workingPlan.thursday)}
-                      </h5>
+                  {val.workingPlan !== undefined &&
+                    val.workingPlan.saturday.length !== 0 && (
+                      <h5>Saturday {dayPlanList(val.workingPlan.saturday)}</h5>
                     )}
-                  {val.experience.workingPlan !== undefined &&
-                    val.experience.workingPlan.friday.length !== 0 && (
-                      <h5>
-                        Friday {dayPlanList(val.experience.workingPlan.friday)}
-                      </h5>
-                    )}
-                  {val.experience.workingPlan !== undefined &&
-                    val.experience.workingPlan.saturday.length !== 0 && (
-                      <h5>
-                        Saturday{' '}
-                        {dayPlanList(val.experience.workingPlan.saturday)}
-                      </h5>
-                    )}
-                  {val.experience.workingPlan !== undefined &&
-                    val.experience.workingPlan.sunday.length !== 0 && (
-                      <h5>
-                        Sunday {dayPlanList(val.experience.workingPlan.sunday)}
-                      </h5>
+                  {val.workingPlan !== undefined &&
+                    val.workingPlan.sunday.length !== 0 && (
+                      <h5>Sunday {dayPlanList(val.workingPlan.sunday)}</h5>
                     )}
                 </div>
               </div>
@@ -128,14 +110,17 @@ function ExperienceRender(data) {
                       <div className="font-weight-bold ml-2">Staff</div>
                       <div className="font-weight-bold">Balance</div>
                     </div>
-                    {val.staffList.map(val => (
-                      <div className="d-flex justify-content-between legend-label">
+                    {val.staffList.map((val, key) => (
+                      <div
+                        key={key}
+                        className="d-flex justify-content-between legend-label"
+                      >
                         <div className="d-flex align-items-center">
                           <img
                             src={val.img}
-                            alt={val.username}
+                            alt={`${val.firstName} ${val.lastName}`}
                             className="mr-1 rounded-circle z-depth-2"
-                            style={{ width: '50px', height: '50px' }}
+                            style={{width: '50px', height: '50px'}}
                           />
                           <p> {val.username} </p>
                         </div>
@@ -168,8 +153,9 @@ class ExperienceList extends React.Component {
   }
 
   async componentDidMount() {
-    const { data } = await Axios.post('/business/experience/list/data')
-    this.setState({ list: data })
+    const {status, data} = await experienceList()
+
+    if (status === true) this.setState({list: data})
   }
 
   deleteEx(id, username) {
@@ -184,20 +170,18 @@ class ExperienceList extends React.Component {
       })
       .then(result => {
         if (result.value) {
-          this.delete({ id, username })
+          this.delete({id, username})
         }
       })
   }
 
-  async delete({ id, username }) {
-    const { list } = this.state
-    const result = list.filter(e => e.experience.id !== id)
-    this.setState({ list: result })
-    const { data } = await Axios.post('/business/experience/delete', {
+  async delete({id, username}) {
+    this.setState({list: this.state.list.filter(e => e.id !== id)})
+    const {status} = await Axios.post('/business/experience/delete', {
       id: id
     })
 
-    if (data.status === true) {
+    if (status === true) {
       sweet.fire({
         title: `${username} deleted`,
         timer: 1500

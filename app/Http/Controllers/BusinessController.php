@@ -3,20 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Business;
-use App\Experience;
 use App\Http\Requests\StoreBusinessLogin;
 use App\Http\Requests\StoreBusinessRegister;
-use App\Kiosk;
-use App\Kioskqrcode;
 use App\PaymentHistory;
 use App\Staff;
 use App\Tio;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 
 class BusinessController extends Controller
 {
+    protected  $businessId = null;
+
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            $this->businessId = session('businessId', null);
+            return $next($request);
+        });
+    }
 
     public function registerPage()
     {
@@ -90,57 +96,48 @@ class BusinessController extends Controller
 
     public function login(StoreBusinessLogin $request)
     {
-        $business = Business::where('email', $request->username)->active()->first();
+        $username = $request->username ;
+        $password = $request->password ;
+        $business = Business::where('email', $username)->active()->first();
 
-        if ($business == null) {
-            return response()->json([
-                'status' => false,
-                'text' => 'username or password incorrect',
-            ]);
+        if ($business == null || !Hash::check($password, $business->password)) {
+            return $this->incorrectPassword();
         }
-
-        if (!Hash::check($request->password, $business->password)) {
-            return response()->json([
-                'status' => false,
-                'text' => 'username or password incorrect',
-                'url' => '/business/giris',
-            ]);
-        }
-
         session()->put('businessId', $business->id);
 
-        return response()->json([
-            'status' => true,
-            'text' => 'is login',
-            'url' => '/' . $business->username . '/',
-        ]);
+        return $this->respondSuccess(['url' => "/{$business->username}/"]);
     }
 
     public function logout()
     {
-        if (session()->has('businessId')) {
-            session()->forget('businessId');
-            return response()->json([
-                'status' => true,
-                'text' => 'is logut',
-            ]);
-        }
-
-        return response()->json([
-            'status' => false,
-        ]);
+        session()->forget('businessId');
+        return $this->respondSuccess();
     }
 
     public function register(StoreBusinessRegister $request)
     {
-        $business = Business::create([
-            "email" => $request["email"],
-            "businessName" => $request["businessName"],
-            "phone" => $request["telephone"],
-            "password" => Hash::make($request["password"]),
-            "country" => "TR_tr",
-            "lang" => "TR_tr",
-        ]);
+        $email = $request->email;
+        $businessName= $request->businessName;
+        $phone = $request->telephone ;
+        $password = $request->password ;
+        $country = 'TR_tr';
+        $lang = 'TR_tr';
+        $business= (object)[];
+
+        try {
+            $business = Business::create([
+                "email" => $email,
+                "businessName" => $businessName,
+                "phone" => $phone,
+                "password" => Hash::make($password),
+                "country" => $country,
+                "lang" => $lang,
+            ]);
+        }catch(QueryException $exception){
+            $errorInfo = $exception->errorInfo;
+
+            Log::debug($errorInfo);
+        }
 
         session()->put("businessId", $business->id);
         return redirect("/{$business->username}/");
@@ -148,23 +145,17 @@ class BusinessController extends Controller
 
     public function home()
     {
-        if (!session()->has("businessId")) {
-            return view('business.register');
-        }
-
         return view("business.Home");
     }
 
     public function businessData()
     {
-
-        $id = session()->get("businessId");
-        $business = Business::find($id);
+        $business = Business::find($this->businessId);
 
         $staffCount = $business->staff->count();
         $experienceCount = $business->experience->count();
 
-        return response()->json([
+        return $this->respondSuccess([
             "email" => $business->email,
             "username" => $business->username,
             "img" => $business->image,
@@ -180,7 +171,8 @@ class BusinessController extends Controller
 
     public function homeData()
     {
-        $result['status'] = true;
+
+        $result = (object)[];
 
         /*
         if(Cache::has('homeData')){
@@ -191,17 +183,18 @@ class BusinessController extends Controller
         }
          */
 
-        $businessId = session()->get("businessId");
-        $business = Business::find($businessId);
+        $business = Business::find($this->businessId)->first();
+
+        $tio = $business->tio()->orderBy('created_at', 'desc')->groupBy('staff')->get();
 
         //total
-        $result['staffCount'] = $business->staff->count();
-        $result['kioskCount'] = $business->experience->count();
-        $tio = Tio::where('business', $businessId)->where('traffic', 'Enter')->limit(5)->orderBy('created_at', 'desc')->get();
+        $result->staffCount = $business->staff->count();
+        $result->kioskCount = $business->experience->count();
+        $tio = Tio::where('business', $this->businessId)->where('traffic', 'Enter')->limit(5)->orderBy('created_at', 'desc')->get();
 
-        $result['onlineStaff'] = [];
+        $result->onlineStaff = [];
 
-        $result['onlineKiosk'] = [];
+        $result->onlineKiosk = [];
 
         $staff = $business->staff;
 
@@ -211,7 +204,7 @@ class BusinessController extends Controller
 
         $paymentHistory = PaymentHistory::whereIn('staff', $staff)->get();
 
-        $result['lastPayment'] = $paymentHistory->map(function ($data) {
+        $result->lastPayment = $paymentHistory->map(function ($data) {
             $result = (object) [];
             $staff = Staff::where('id', $data->staff)->get();
             $result->name = $staff[0]->firstName . ' ' . $staff[0]->lastName;
@@ -219,8 +212,8 @@ class BusinessController extends Controller
             return $result;
         });
 
-        $tio = Tio::where('business', $businessId)->limit(5)->orderBy('created_at', 'desc')->get();
-        $result['lastLog'] = $tio->map(function ($data) {
+        $tio = Tio::where('business', $this->businessId)->limit(5)->orderBy('created_at', 'desc')->get();
+        $result->lastLog = $tio->map(function ($data) {
             $result = (object) [];
 
             $staff = Staff::where('id', $data->staff)->get();
@@ -230,9 +223,9 @@ class BusinessController extends Controller
             return $result;
         });
 
-        $staff = Staff::where('business', $businessId)->where('active', 1)->where('balance', '>', 0)->limit(5)->orderBy('created_at', 'desc')->get();
+        $staff = Staff::where('business', $this->businessId)->where('active', 1)->where('balance', '>', 0)->limit(5)->orderBy('created_at', 'desc')->get();
 
-        $result['paymentHistory'] = $staff->map(function ($data) {
+        $result->paymentHistory = $staff->map(function ($data) {
             $result = (object) [];
 
             $result->name = $data->firstName . ' ' . $data->LastName;

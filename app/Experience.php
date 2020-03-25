@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Experience extends Model
 {
-    protected $visible = ['id', 'active', "workClass", 'workingPlan', "pay", "factor", "periode", "color", "business", "identifier", "class", 'created_at', 'updated_at'];
+    protected $visible = ['id', 'workingPlan', "pay", "factor", "periode", "color", "identifier", "class", 'created_at'];
     protected $fillable = ['id', 'active', "workClass", 'workingPlan', "pay", "factor", "periode", "color", "business", "identifier", "class", 'created_at', 'updated_at'];
     protected $table = "experience";
     protected $primaryKey = "id";
@@ -36,6 +36,11 @@ class Experience extends Model
     public function business()
     {
         return $this->hasOne("App\Business", "id", "business");
+    }
+
+    public function staff()
+    {
+        return $this->hasMany('App\Staff', 'experience', 'id')->where('active', 1);
     }
 
 }

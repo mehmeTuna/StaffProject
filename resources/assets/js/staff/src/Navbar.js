@@ -2,7 +2,7 @@ import React from 'react'
 import Axios from 'axios'
 
 async function logOut() {
-  const { data } = await Axios.post('/staff/logout')
+  const {data} = await Axios.post('/staff/logout')
 
   if (data.status === true) {
     window.location.href = '/staff/login'

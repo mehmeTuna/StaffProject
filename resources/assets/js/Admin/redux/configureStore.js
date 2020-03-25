@@ -1,12 +1,11 @@
-import { applyMiddleware, compose, createStore } from 'redux'
+import {applyMiddleware, compose, createStore} from 'redux'
 import thunk from 'redux-thunk'
-
-import staffReducer from './reducers/StaffReducer'
+import postsReducer from './reducers/postsReducer'
 
 const configureStore = preloadedState => {
   const composed = applyMiddleware(thunk)
 
-  return createStore(staffReducer, preloadedState, compose(composed))
+  return createStore(postsReducer, preloadedState, compose(composed))
 }
 
 export default configureStore

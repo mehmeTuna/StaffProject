@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
-    protected $visible = ['id', 'firstName', 'experience', 'factor', 'pay', 'periode', 'workingPlan', 'lastName', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus'];
-    protected $fillable = ['id', 'password', 'experience', 'factor', 'pay', 'periode', 'workingPlan', 'firstName', 'lastName', 'active', 'loginToken', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus', 'lang', 'business', 'emaployment', 'career', 'timeSheetMap'];
+    protected $visible = ['id', 'firstName', 'experience', 'factor', 'pay', 'periode', 'workingPlan', 'online', 'lastName', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus'];
+    protected $fillable = ['id', 'password', 'experience', 'factor', 'pay', 'periode', 'workingPlan', 'online', 'firstName', 'lastName', 'active', 'loginToken', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus', 'lang', 'business', 'emaployment', 'career', 'timeSheetMap'];
     protected $table = "staff";
     protected $primaryKey = "id";
     protected $casts = [
@@ -16,12 +16,13 @@ class Staff extends Model
     protected $attributes = [
         'loginToken' => '',
         'balance' => 0,
-        'totalPayment' => 0
+        'totalPayment' => 0,
+        'timeSheetMap' => 1
     ];
 
-    public function scopeActive($query)
+    public function scopeActive()
     {
-        return $query->where('active', 1);
+        return $this->where('active', 1);
     }
 
     public function setworkingPlanAttribute($value)
@@ -34,9 +35,14 @@ class Staff extends Model
 
     }
 
-    public function progressPayment()
+    public function paymentHistory()
     {
-        return $this->hasOne("App\StaffPorgressPayment", "Id", "Staff");
+        return $this->hasMany("App\PaymentHistory", "staff", "id")->orderBy('created_at', 'desc')->limit(100);
+    }
+
+    public function logHistory()
+    {
+        return $this->hasMany("App\Tio", "staff", "id")->orderBy('created_at', 'desc')->limit(100);
     }
 
     public function career()

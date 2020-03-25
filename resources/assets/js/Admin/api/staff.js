@@ -1,13 +1,13 @@
 import Axios from 'axios'
 
 export async function getStaffData() {
-  const { data } = await Axios.post('/business/staff/list')
+  const {data} = await Axios.post('/business/staff/list')
 
-  return data
+  return data.data
 }
 
 export async function getDeleteStaff(id) {
-  const { data } = await Axios.post('/business/staff/delete', {
+  const {data} = await Axios.post('/business/staff/delete', {
     id: id
   })
 
@@ -15,7 +15,7 @@ export async function getDeleteStaff(id) {
 }
 
 export async function getStaffDetail(id) {
-  const { data } = await Axios.post('/user/data', {
+  const {data} = await Axios.post('/user/data', {
     userId: id,
     type: 'log'
   })
@@ -23,11 +23,28 @@ export async function getStaffDetail(id) {
   return data
 }
 
+export async function getStaffPaymentHistory(id) {
+  const {data} = await Axios.post('/business/staff/payment/history', {
+    userId: id
+  })
+
+  return data.data
+}
+
+export async function getStaffLogHistory(id) {
+  const {data} = await Axios.post('/business/staff/log/history', {
+    userId: id
+  })
+
+  return data.data
+}
+
 export async function staffPayment(value) {
   try {
-    const { data } = await Axios.post('/business/staff/pay', {
+    const {data} = await Axios.post('/business/staff/pay', {
       userId: value.id,
-      pay: value.pay
+      pay: value.pay,
+      comment: value.comment
     })
     return data
   } catch (error) {

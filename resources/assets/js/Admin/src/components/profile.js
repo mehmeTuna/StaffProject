@@ -9,7 +9,7 @@ import {
   Box
 } from '@material-ui/core'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import {makeStyles, withStyles} from '@material-ui/core/styles'
 import UpdatePhotoModal from './udpatePhotoModal'
 import UpdateOtherDataModal from './updateOtherDataModal'
 
@@ -87,7 +87,7 @@ const Profile = props => {
               </Typography>
               <Grid container item container direction="column">
                 <ProfileRow
-                  onClick={() => updateData({ type: 'photo' })}
+                  onClick={() => updateData({type: 'photo'})}
                   container
                   justify="space-between"
                   alignItems="center"
@@ -118,7 +118,7 @@ const Profile = props => {
                   container
                   justify="space-between"
                   alignItems="center"
-                  onClick={() => updateData({ type: 'name' })}
+                  onClick={() => updateData({type: 'name'})}
                 >
                   <Grid item>
                     <Typography variant="body1">Name</Typography>
@@ -138,7 +138,7 @@ const Profile = props => {
                   container
                   justify="space-between"
                   alignItems="center"
-                  onClick={() => updateData({ type: 'password' })}
+                  onClick={() => updateData({type: 'password'})}
                 >
                   <Grid item>
                     <Typography variant="body1">Password</Typography>
@@ -158,7 +158,7 @@ const Profile = props => {
                   container
                   justify="space-between"
                   alignItems="center"
-                  onClick={() => updateData({ type: 'address' })}
+                  onClick={() => updateData({type: 'address'})}
                 >
                   <Grid item>
                     <Typography variant="body1">Address</Typography>
@@ -191,7 +191,7 @@ const Profile = props => {
                   container
                   justify="space-between"
                   alignItems="center"
-                  onClick={() => updateData({ type: 'email' })}
+                  onClick={() => updateData({type: 'email'})}
                 >
                   <Grid item>
                     <Typography variant="body1">Email</Typography>
@@ -211,7 +211,7 @@ const Profile = props => {
                   container
                   justify="space-between"
                   alignItems="center"
-                  onClick={() => updateData({ type: 'webPage' })}
+                  onClick={() => updateData({type: 'webPage'})}
                 >
                   <Grid item>
                     <Typography variant="body1">Web Page</Typography>
@@ -231,7 +231,7 @@ const Profile = props => {
                   container
                   justify="space-between"
                   alignItems="center"
-                  onClick={() => updateData({ type: 'phone' })}
+                  onClick={() => updateData({type: 'phone'})}
                 >
                   <Grid item>
                     <Typography variant="body1">Phone</Typography>

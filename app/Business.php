@@ -48,17 +48,22 @@ class Business extends Model
 
     public function staff()
     {
-        return $this->hasMany('App\Staff', 'business', 'id')->where('active', 1);
+        return $this->hasMany('App\Staff', 'business', 'id')->where('active', 1)->orderBy('created_at', 'desc')->limit(40);
     }
 
     public function experience()
     {
-        return $this->hasMany('App\Experience', 'business', 'id')->where('active', 1);
+        return $this->hasMany('App\Experience', 'business', 'id')->where('active', 1)->orderBy('created_at', 'desc');
     }
 
     public function kiosk()
     {
         return $this->hasMany('App\Kiosk', 'business', 'id')->where('active', 1);
+    }
+
+    public function tio()
+    {
+        return $this->hasMany('App\Tio', 'business', 'id');
     }
 
     /**

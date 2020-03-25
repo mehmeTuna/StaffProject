@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 
 import ChoosingPaymentPlan from './components/choosingPaymentPlan'
 
@@ -22,10 +22,11 @@ export default class Sidebar extends React.Component {
         )}
         <nav className="sidebar sidebar-offcanvas" id="sidebar">
           <div className="user-profile">
-            <div className="user-image">
-              {this.props.data.img != null && <img src={this.props.data.img} />}
-            </div>
-            <div className="user-name" />
+            {this.props.data.img != null && (
+              <div className="user-image">
+                <img src={this.props.data.img} alt={this.props.data.username} />
+              </div>
+            )}
             <div className="user-designation">{this.props.data.username}</div>
           </div>
           <ul className="nav">
@@ -160,7 +161,7 @@ export default class Sidebar extends React.Component {
               </Link>
             </li>
             <li className="nav-item">
-              <span className="nav-link" style={{ cursor: 'pointer' }}>
+              <span className="nav-link" style={{cursor: 'pointer'}}>
                 <span className="menu-title">Payment Plan</span>
               </span>
             </li>

@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import Swal from 'sweetalert2'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import withReactContent from 'sweetalert2-react-content'
 
-import { connect } from 'react-redux'
-import { staffGetItems } from '../redux/reducers/StaffReducer'
+import {connect} from 'react-redux'
 
-import { Loading } from './components/app'
-import { getStaffData, getDeleteStaff } from './../api/staff'
+import {Loading} from './components/app'
+import {getDeleteStaff, getStaffData} from './../api/staff'
 import Staff from './components/Staff/Staff'
+import {PageHeader, PageTitle, TitleRightBtn} from './components/page-title'
+import StaffFilter from './components/Staff/staff-filter'
 
 const sweet = withReactContent(Swal)
 
@@ -19,21 +20,30 @@ class StaffList extends React.Component {
     this.state = {
       Loading: false,
       experience: [],
-      staff: []
+      staff: [],
+      filteredData: [],
+      filterData: {
+        isFilterOpen: false,
+        payment: false,
+        balance: false,
+        experience: 'All'
+      }
     }
 
     this.deleteStaff = this.deleteStaff.bind(this)
     this.delete = this.delete.bind(this)
+    this.filterOpen = this.filterOpen.bind(this)
+    this.applyFilter = this.applyFilter.bind(this)
   }
 
   async componentDidMount() {
-    this.setState({ Loading: true })
+    this.setState({Loading: true})
     const data = await getStaffData()
 
-    this.setState({ Loading: false, staff: data })
+    this.setState({Loading: false, staff: data, filteredData: data})
   }
 
-  deleteStaff({ id, username }) {
+  deleteStaff({id, username}) {
     sweet
       .fire({
         title: `${username} are you sure you want to delete ?`,
@@ -45,13 +55,13 @@ class StaffList extends React.Component {
       })
       .then(result => {
         if (result.value) {
-          this.delete({ id, username })
+          this.delete({id, username})
         }
       })
   }
 
-  async delete({ id, username }) {
-    this.setState({ staff: this.state.staff.filter(e => e.id !== id) })
+  async delete({id, username}) {
+    this.setState({staff: this.state.staff.filter(e => e.id !== id)})
     const data = await getDeleteStaff(id)
 
     if (data.status === true) {
@@ -62,9 +72,43 @@ class StaffList extends React.Component {
     }
   }
 
+  filterOpen(e) {
+    this.setState({
+      filterData: Object.assign({}, this.state.filterData, {
+        isFilterOpen: e
+      })
+    })
+  }
+
+  applyFilter() {
+    let data = this.state.staff
+    if (this.state.filterData.experience !== 'All') {
+      data = data.filter(e => e.experience === this.state.filterData.experience)
+    }
+    if (this.state.filterData.payment === true) {
+      data = data.filter(e => e.totalPayment > 0)
+    }
+    if (this.state.filterData.balance === true) {
+      data = data.filter(e => e.balance > 0)
+    }
+    this.setState({
+      filteredData: data,
+      filterData: Object.assign({}, this.state.filterData, {
+        isFilterOpen: false
+      })
+    })
+  }
+
   render() {
     return (
       <React.Fragment>
+        <StaffFilter
+          updateFilterData={e => this.setState({filterData: e})}
+          data={this.state.filterData}
+          staff={this.state.staff}
+          setOpen={this.filterOpen}
+          applyFilter={this.applyFilter}
+        />
         {this.state.Loading === true ? (
           <Loading />
         ) : this.state.staff === undefined || this.state.staff.length === 0 ? (
@@ -97,11 +141,15 @@ class StaffList extends React.Component {
           </div>
         ) : (
           <React.Fragment>
-            <div className="col-sm-12 mb-4 mb-xl-0">
-              <h5 className="font-weight-bold text-dark">Staff List</h5>
-            </div>
+            <PageHeader>
+              <div></div>
+              <PageTitle>Staff List</PageTitle>
+              <TitleRightBtn onClick={() => this.filterOpen(true)}>
+                Filter
+              </TitleRightBtn>
+            </PageHeader>
             <div className="col-12 mt-3">
-              {this.state.staff.map((val, key) => (
+              {this.state.filteredData.map((val, key) => (
                 <Staff key={key} data={val} delete={this.deleteStaff} />
               ))}
             </div>
@@ -112,16 +160,4 @@ class StaffList extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    state: state
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    onGetStaff: () => dispatch(staffGetItems())
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(StaffList)
+export default StaffList
