@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class ExperienceController extends Controller
 {
-    protected  $businessId = null;
+    protected $businessId = null;
 
     public function __construct()
     {
@@ -22,19 +22,20 @@ class ExperienceController extends Controller
 
     public function register(ExperienceRegisterRequest $request)
     {
-        $businessId = session ("businessId");
+        $businessId = session("businessId");
 
-        $workClass = ['freeTime', 'plannedTime', 'fullTime'];//TODO: db den al onu kontrol et sonraki adimda
-        if(!in_array ($request->workingPlan, $workClass))
-            return response()->json (['status' => false, 'workingPlan' => 'not defined']);
+        $workClass = ['freeTime', 'plannedTime', 'fullTime']; //TODO: db den al onu kontrol et sonraki adimda
+        if (!in_array($request->workingPlan, $workClass)) {
+            return response()->json(['status' => false, 'workingPlan' => 'not defined']);
+        }
 
         $workPlan = array_keys($workClass, $request->workingPlan); //db ye sayisal olarak eklenecek
 
         $experience = Experience::create([
-            "workClass" =>  $workPlan[0],
+            "workClass" => $workPlan[0],
             'business' => $businessId,
-            'identifier' =>  $request->experienceName,
-            'class' => 1 , //TODO: business tablosundan kontrol edilip eklenecek,
+            'identifier' => $request->experienceName,
+            'class' => 1, //TODO: business tablosundan kontrol edilip eklenecek,
             'periode' => $request->experiencePeriode,
             'factor' => $request->experienceFactor,
             'pay' => $request->experiencePay,
@@ -45,13 +46,13 @@ class ExperienceController extends Controller
                 'thursday' => $request->thursday,
                 'friday' => $request->friday,
                 'saturday' => $request->saturday,
-                'sunday' => $request->sunday
-            ]
+                'sunday' => $request->sunday,
+            ],
         ]);
 
-        return response ()->json([
+        return response()->json([
             'status' => true,
-            'text' => 'success'
+            'text' => 'success',
         ]);
     }
 
@@ -60,41 +61,42 @@ class ExperienceController extends Controller
         $id = $request->id;
 
         $experience = Experience::where('id', $id)->update([
-            'active' => 0
+            'active' => 0,
         ]);
 
-        return $this->respondSuccess() ;
+        return $this->respondSuccess();
     }
 
-    public function listData($page= 1, $count = 20)
+    public function listData($page = 1, $count = 20)
     {
-        if((int)$page > 10 || (int)$count > 60)
+        if ((int) $page > 10 || (int) $count > 60) {
             return $this->respondFail();
+        }
 
-        $perPage = ($page-1) * $count;
-        $business = Business::where('id' ,$this->businessId)->active()->first();
+        $perPage = ($page - 1) * $count;
+        $business = Business::where('id', $this->businessId)->active()->first();
         $experience = $business->experience()->take($perPage)->limit($count)->get();
 
-        $experience = $experience->map(function($experience){
-            $data = (object)[];
-            $data->id = $experience->id ;
-            $data->workingPlan = $experience->workingPlan ;
-            $data->pay = $experience->pay ;
+        $experience = $experience->map(function ($experience) {
+            $data = (object) [];
+            $data->id = $experience->id;
+            $data->workingPlan = $experience->workingPlan;
+            $data->pay = $experience->pay;
             $data->periode = $experience->periode;
             $data->factor = $experience->factor;
-            $data->color = $experience->color ;
+            $data->color = $experience->color;
             $data->identifier = $experience->identifier;
             $data->created_at = $experience->created_at->toDateString();
             $data->staffList = Staff::where('experience', $experience->id)->where('active', 1)->get();
-            return $data ;
+            return $data;
         });
 
         return $this->respondSuccess($experience);
     }
 
-    public function list(mixed $businessId)
+    public function listEx()
     {
-        $business = Business::where('id' ,$this->businessId)->active()->first();
+        $business = Business::where('id', $this->businessId)->active()->first();
         $experience = $business->experience()->get();
 
         return $this->respondSuccess($experience);

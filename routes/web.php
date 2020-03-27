@@ -68,7 +68,7 @@ Route::middleware(['business'])->group(function(){
         Route::post("staff/delete", 'StaffController@delete');
 
         Route::post("experience/list/{page}/{count}", 'ExperienceController@listData');
-        Route::post("experience/list", 'ExperienceController@list');
+        Route::post("experience/list", 'ExperienceController@listEx');
         Route::post("experience/delete", 'ExperienceController@delete');
 
         Route::post("kiosk/list", 'ResponseDataController@kioskList');

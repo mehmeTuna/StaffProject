@@ -139,6 +139,13 @@ class ExperienceDefine extends React.Component {
           })
         )
       })
+      .catch(res => {
+        let responseText = ''
+        for (let [key, value] of Object.entries(res.response.data)) {
+          responseText = responseText + ` ${value} <br>`
+        }
+        sweet.fire({html: responseText})
+      })
   }
 
   deleteTime(key, day) {
