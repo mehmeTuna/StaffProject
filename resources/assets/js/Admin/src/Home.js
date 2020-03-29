@@ -17,14 +17,15 @@ export default class Home extends React.Component {
 
   async componentDidMount() {
     const {data} = await axios.post('/business/data/home')
+
     if (data.status === true) {
       this.setState({
-        onlineStaff: data.onlineStaff,
-        onlineKiosk: data.onlineKiosk,
-        lastLog: data.lastLog,
-        paymentHistory: data.paymentHistory,
-        staffCount: data.staffCount,
-        kioskCount: data.kioskCount
+        onlineStaff: data.data.staff.online,
+        onlineKiosk: data.data.kiosk.online,
+        lastLog: data.data.lastLog,
+        paymentHistory: data.data.paymentHistory,
+        staffCount: data.data.staff.count,
+        kioskCount: data.data.kiosk.count
       })
     }
   }
@@ -142,12 +143,10 @@ export default class Home extends React.Component {
                                 this.state.onlineKiosk.map((e, key) => (
                                   <div
                                     key={key}
-                                    className="d-flex justify-content-between legend-label"
+                                    className="d-flex justify-content-between "
                                   >
-                                    <div>
-                                      <span className="bg-light">{e.name}</span>
-                                    </div>
-                                    <div>30dk</div>
+                                    <div>{e.identifier}</div>
+                                    <div>5 min</div>
                                   </div>
                                 ))}
                             </div>
@@ -193,25 +192,6 @@ export default class Home extends React.Component {
                   <div className="card-body">
                     <div className="d-flex justify-content-between mb-3">
                       <h4 className="card-title">Last Payment</h4>
-                      <div className="dropdown">
-                        <button
-                          className="btn btn-sm dropdown-toggle text-dark pt-0 pr-0"
-                          type="button"
-                          id="dropdownMenuSizeButton3"
-                          data-toggle="dropdown"
-                          aria-haspopup="true"
-                          aria-expanded="false"
-                        >
-                          This week
-                        </button>
-                        <div
-                          className="dropdown-menu"
-                          aria-labelledby="dropdownMenuSizeButton3"
-                        >
-                          <h6 className="dropdown-header">This week</h6>
-                          <h6 className="dropdown-header">This month</h6>
-                        </div>
-                      </div>
                     </div>
                     <div className="row">
                       <div className="col-sm-12">
@@ -293,79 +273,6 @@ export default class Home extends React.Component {
                                 <div>{e.balance}</div>
                               </div>
                             ))}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div className="row">
-              <div className="col-xl-9 grid-margin-lg-0 grid-margin stretch-card">
-                <div className="card">
-                  <div className="card-body">
-                    <h4 className="card-title">Other Data</h4>
-                    <div className="table-responsive mt-3">
-                      <table className="table table-header-bg">
-                        <thead>
-                          <tr>
-                            <th>Name</th>
-                            <th>Count</th>
-                            <th>Vs Last Month</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <tr>
-                            <td>Staff</td>
-                            <td>100</td>
-                            <td>
-                              <div className="text-success">
-                                <i className="icon-arrow-up mr-2"></i>+60%
-                              </div>
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="col-xl-3 grid-margin-lg-0 grid-margin stretch-card">
-                <div className="card">
-                  <div className="card-body">
-                    <h4 className="card-title mb-3">Upcoming Payments</h4>
-                    <div className="row">
-                      <div className="col-sm-12">
-                        <div className="d-flex justify-content-between mt-2 text-dark mb-2">
-                          <div>
-                            <span className="font-weight-bold">4453</span>{' '}
-                            online
-                          </div>
-                          <div>Total: 0</div>
-                        </div>
-                        <div className="progress progress-md grouped mb-2">
-                          <div
-                            className="progress-bar bg-success"
-                            role="progressbar"
-                            style={{width: '50%'}}
-                            aria-valuenow="50"
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                          ></div>
-                        </div>
-                      </div>
-                      <div className="col-sm-12">
-                        <div className="traffic-source-legend">
-                          <div className="d-flex justify-content-between mb-1 mt-2">
-                            <div className="font-weight-bold">Name</div>
-                            <div className="font-weight-bold">time</div>
-                          </div>
-                          <div className="d-flex justify-content-between legend-label">
-                            <div>
-                              <span className="bg-light"></span>First Kiosk
-                            </div>
-                            <div>30dk</div>
-                          </div>
                         </div>
                       </div>
                     </div>

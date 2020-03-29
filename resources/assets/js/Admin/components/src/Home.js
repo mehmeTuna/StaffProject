@@ -1,25 +1,25 @@
-import React from "react";
-import axios from "axios";
+import React from 'react'
+import axios from 'axios'
 
-import { Alert } from "./components/atoms/app";
+import {Alert} from './components/atoms/app'
 
 export default class Home extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       data: [],
       alert: []
-    };
+    }
   }
 
   async componentDidMount() {
-    const { data } = await axios.post("data/home");
-    this.setState({ data: data.data });
+    const {data} = await axios.post('data/home')
+    this.setState({data: data.data})
   }
 
   render() {
-    const { onlineStaff } = this.state.data;
-    const listDemo = onlineStaff;
+    const {onlineStaff} = this.state.data
+    const listDemo = onlineStaff
     return (
       <React.Fragment>
         <div className="container"></div>
@@ -43,7 +43,7 @@ export default class Home extends React.Component {
                           <div className="col-sm-12">
                             <div className="d-flex justify-content-between mt-2 text-dark mb-2">
                               <div>
-                                <span className="font-weight-bold"></span>{" "}
+                                <span className="font-weight-bold"></span>{' '}
                                 online {typeof listDemo}
                               </div>
                               <div>Total:</div>
@@ -52,7 +52,7 @@ export default class Home extends React.Component {
                               <div
                                 className="progress-bar bg-success"
                                 role="progressbar"
-                                style={{ width: "50%" }}
+                                style={{width: '50%'}}
                                 aria-valuenow="50"
                                 aria-valuemin="0"
                                 aria-valuemax="100"
@@ -79,7 +79,7 @@ export default class Home extends React.Component {
                           <div className="col-sm-12">
                             <div className="d-flex justify-content-between mt-2 text-dark mb-2">
                               <div>
-                                <span className="font-weight-bold">4453</span>{" "}
+                                <span className="font-weight-bold">4453</span>{' '}
                                 online
                               </div>
                               <div>Total: 0</div>
@@ -88,7 +88,7 @@ export default class Home extends React.Component {
                               <div
                                 className="progress-bar bg-success"
                                 role="progressbar"
-                                style={{ width: "50%" }}
+                                style={{width: '50%'}}
                                 aria-valuenow="50"
                                 aria-valuemin="0"
                                 aria-valuemax="100"
@@ -277,7 +277,7 @@ export default class Home extends React.Component {
                       <div className="col-sm-12">
                         <div className="d-flex justify-content-between mt-2 text-dark mb-2">
                           <div>
-                            <span className="font-weight-bold">4453</span>{" "}
+                            <span className="font-weight-bold">4453</span>{' '}
                             online
                           </div>
                           <div>Total: 0</div>
@@ -286,7 +286,7 @@ export default class Home extends React.Component {
                           <div
                             className="progress-bar bg-success"
                             role="progressbar"
-                            style={{ width: "50%" }}
+                            style={{width: '50%'}}
                             aria-valuenow="50"
                             aria-valuemin="0"
                             aria-valuemax="100"
@@ -315,6 +315,6 @@ export default class Home extends React.Component {
           </div>
         </div>
       </React.Fragment>
-    );
+    )
   }
 }

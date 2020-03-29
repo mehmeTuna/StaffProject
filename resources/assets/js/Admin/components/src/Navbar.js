@@ -1,11 +1,11 @@
-import React from "react";
-import Axios from "axios";
+import React from 'react'
+import Axios from 'axios'
 
 async function logOut() {
-  const { data } = await Axios.post("/business/logout");
+  const {data} = await Axios.post('/business/logout')
 
   if (data.status === true) {
-    window.location.href = "/business/giris";
+    window.location.href = '/business/giris'
   }
 }
 
@@ -16,7 +16,7 @@ const Navbar = props => {
         <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
           {props.img != null && (
             <Link
-              to={"/" + `${props.data.username}`}
+              to={'/' + `${props.data.username}`}
               className="navbar-brand brand-logo"
             >
               <img src={props.data.img} alt={props.data.username} />
@@ -24,7 +24,7 @@ const Navbar = props => {
           )}
           {props.img != null && (
             <Link
-              to={"/" + `${props.data.username}`}
+              to={'/' + `${props.data.username}`}
               className="navbar-brand brand-logo-mini"
             >
               <img src={props.data.img} alt={props.data.username} />
@@ -95,7 +95,7 @@ const Navbar = props => {
         </div>
       </nav>
     </div>
-  );
-};
+  )
+}
 
-export default Navbar;
+export default Navbar

@@ -1,10 +1,10 @@
-import React from "react";
-import Axios from "axios";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import React from 'react'
+import Axios from 'axios'
+import {Link} from 'react-router-dom'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
-const sweet = withReactContent(Swal);
+const sweet = withReactContent(Swal)
 
 function KioskRender(data) {
   return data.data.map((val, key) => (
@@ -32,9 +32,9 @@ function KioskRender(data) {
                   <div className="card">
                     <div className="card-body">
                       <div className="card-title">
-                        {" "}
-                        Remote Adress:{" "}
-                        <span className="text-muted">{val.ip}</span>{" "}
+                        {' '}
+                        Remote Adress:{' '}
+                        <span className="text-muted">{val.ip}</span>{' '}
                       </div>
                     </div>
                   </div>
@@ -46,8 +46,8 @@ function KioskRender(data) {
                 <div className="card-body">
                   <p className="text-center mb-2">
                     {val.logHistory.length > 0
-                      ? "Son Islemler"
-                      : "Herhangi bir islem bulunamadi"}
+                      ? 'Son Islemler'
+                      : 'Herhangi bir islem bulunamadi'}
                   </p>
                   {val.logHistory.length > 0 && (
                     <div className="row">
@@ -69,9 +69,9 @@ function KioskRender(data) {
                               <div>{val.date}</div>
                               <div
                                 className={
-                                  val.status === "Enter"
-                                    ? "badge badge-success"
-                                    : "badge badge-danger"
+                                  val.status === 'Enter'
+                                    ? 'badge badge-success'
+                                    : 'badge badge-danger'
                                 }
                               >
                                 {val.status}
@@ -89,7 +89,7 @@ function KioskRender(data) {
         </div>
       </div>
     </div>
-  ));
+  ))
 }
 
 function KioskListTitle(props) {
@@ -102,46 +102,46 @@ function KioskListTitle(props) {
         <KioskRender data={props.data} deleteKiosk={props.deleteKiosk} />
       </div>
     </React.Fragment>
-  );
+  )
 }
 
 export default class KioskList extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       listData: []
-    };
+    }
 
-    this.deleteKiosk = this.deleteKiosk.bind(this);
-    this.getData = this.getData.bind(this);
-    this.deleteData = this.deleteData.bind(this);
+    this.deleteKiosk = this.deleteKiosk.bind(this)
+    this.getData = this.getData.bind(this)
+    this.deleteData = this.deleteData.bind(this)
   }
 
   async componentDidMount() {
-    this.getData();
+    this.getData()
   }
 
   async getData() {
-    const { data } = await Axios.post("/business/kiosk/list");
+    const {data} = await Axios.post('/business/kiosk/list')
 
-    this.setState({ listData: data });
+    this.setState({listData: data})
   }
 
   async deleteData(id) {
-    const { data } = await axios.post("/business/kiosk/delete", {
+    const {data} = await axios.post('/business/kiosk/delete', {
       id: id
-    });
+    })
 
-    this.getData();
+    this.getData()
   }
 
   deleteKiosk(id) {
-    sweet.fire("Silmek istediginize eminmisiniz ?").then(result => {
+    sweet.fire('Silmek istediginize eminmisiniz ?').then(result => {
       if (result.value === true) {
-        this.deleteData(id);
+        this.deleteData(id)
       }
-    });
+    })
   }
 
   render() {
@@ -160,7 +160,7 @@ export default class KioskList extends React.Component {
                 </div>
                 <div className="row display-3">
                   <Link
-                    to={"/" + `${this.props.data.username + "/kiosk/create"}`}
+                    to={'/' + `${this.props.data.username + '/kiosk/create'}`}
                     className="nav-link mx-auto"
                   >
                     <button
@@ -184,6 +184,6 @@ export default class KioskList extends React.Component {
           />
         )}
       </React.Fragment>
-    );
+    )
   }
 }

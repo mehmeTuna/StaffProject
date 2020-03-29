@@ -4,7 +4,6 @@ namespace App;
 
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Business extends Model
 {
@@ -58,7 +57,27 @@ class Business extends Model
 
     public function kiosk()
     {
-        return $this->hasMany('App\Kiosk', 'business', 'id')->where('active', 1);
+        return $this->hasMany('App\Kiosk', 'business', 'id')->where('kiosk.active', 1);
+    }
+
+    public function onlineKiosk()
+    {
+        return $this->hasManyThrough('App\Kioskqrcode', 'App\Kiosk', 'business', 'ip', 'remoteAddress')->where('kioskqrcode.updated_at','>=', Carbon::now()->addMinute(-5)->toDateTimeString());
+    }
+
+    public function lastPayment()
+    {
+        return $this->hasManyThrough('App\Staff', 'App\PaymentHistory', 'staff', 'business', 'id')->orderBy('paymenthistory.created_at','desc')->limit(20);
+    }
+
+    public function lastLog()
+    {
+        return $this->hasManyThrough('App\Staff', 'App\Tio', 'staff', 'business', 'id')->orderBy('tio.created_at','desc')->limit(20);
+    }
+
+    public function staffWithPayment()
+    {
+        return $this->hasMany('App\Staff', 'business', 'id')->where('active', 1)->where('balance', '>', 0)->orderBy('balance', 'desc')->limit(40);
     }
 
     public function tio()

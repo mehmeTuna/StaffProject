@@ -5,16 +5,17 @@ namespace App\Http\Controllers;
 use App\Business;
 use App\Http\Requests\StoreBusinessLogin;
 use App\Http\Requests\StoreBusinessRegister;
-use App\PaymentHistory;
-use App\Staff;
+use App\Kioskqrcode;
 use App\Tio;
+use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class BusinessController extends Controller
 {
-    protected  $businessId = null;
+    protected $businessId = null;
 
     public function __construct()
     {
@@ -96,8 +97,8 @@ class BusinessController extends Controller
 
     public function login(StoreBusinessLogin $request)
     {
-        $username = $request->username ;
-        $password = $request->password ;
+        $username = $request->username;
+        $password = $request->password;
         $business = Business::where('email', $username)->active()->first();
 
         if ($business == null || !Hash::check($password, $business->password)) {
@@ -117,12 +118,11 @@ class BusinessController extends Controller
     public function register(StoreBusinessRegister $request)
     {
         $email = $request->email;
-        $businessName= $request->businessName;
-        $phone = $request->telephone ;
-        $password = $request->password ;
-        $country = 'TR_tr';
-        $lang = 'TR_tr';
-        $business= (object)[];
+        $businessName = $request->businessName;
+        $phone = $request->telephone;
+        $password = $request->password;
+        $locationData = $this->learnGeoPlugin('176.90.65.99');
+        $business = (object) [];
 
         try {
             $business = Business::create([
@@ -130,13 +130,17 @@ class BusinessController extends Controller
                 "businessName" => $businessName,
                 "phone" => $phone,
                 "password" => Hash::make($password),
-                "country" => $country,
-                "lang" => $lang,
+                "country" => $locationData->geoplugin_countryName,
+                "lang" => $locationData->geoplugin_countryCode,
+                'data' => json_encode([
+                    'currencySymbol' => $locationData->geoplugin_currencySymbol,
+                    'timeZone' => $locationData->geoplugin_timezone,
+                    'countryCode' => $locationData->geoplugin_countryCode,
+                    'country' => $locationData->geoplugin_countryName
+                ], JSON_UNESCAPED_UNICODE),
             ]);
-        }catch(QueryException $exception){
-            $errorInfo = $exception->errorInfo;
-
-            Log::debug($errorInfo);
+        } catch (QueryException $exception) {
+            Log::debug($exception->errorInfo);
         }
 
         session()->put("businessId", $business->id);
@@ -171,70 +175,37 @@ class BusinessController extends Controller
 
     public function homeData()
     {
+        $business = Business::find($this->businessId);
+        $kiosk = [];
 
-        $result = (object)[];
-
-        /*
-        if(Cache::has('homeData')){
-        return response()->json(array(
-        'status' => true,
-        'data' => Cache::get('homeData')
-        ));
+        if($business == null){
+            return $this->respondSuccess([]);
         }
-         */
 
-        $business = Business::find($this->businessId)->first();
+        foreach ($business->kiosk()->get() as $value)
+        {
+            $tio = Kioskqrcode::where('ip', $value->remoteAddress)->where('updated_at', '>=', Carbon::now()->addMinute(-5)->toDateTimeString())->first();
+            if ($tio != null)
+                array_push($kiosk, $value);
+        }
 
-        $tio = $business->tio()->orderBy('created_at', 'desc')->groupBy('staff')->get();
-
-        //total
-        $result->staffCount = $business->staff->count();
-        $result->kioskCount = $business->experience->count();
-        $tio = Tio::where('business', $this->businessId)->where('traffic', 'Enter')->limit(5)->orderBy('created_at', 'desc')->get();
-
-        $result->onlineStaff = [];
-
-        $result->onlineKiosk = [];
-
-        $staff = $business->staff;
-
-        $staff = $staff->map(function ($val) {
-            return $val->id;
-        });
-
-        $paymentHistory = PaymentHistory::whereIn('staff', $staff)->get();
-
-        $result->lastPayment = $paymentHistory->map(function ($data) {
-            $result = (object) [];
-            $staff = Staff::where('id', $data->staff)->get();
-            $result->name = $staff[0]->firstName . ' ' . $staff[0]->lastName;
-            $result->pay = $data->pay;
-            return $result;
-        });
-
-        $tio = Tio::where('business', $this->businessId)->limit(5)->orderBy('created_at', 'desc')->get();
-        $result->lastLog = $tio->map(function ($data) {
-            $result = (object) [];
-
-            $staff = Staff::where('id', $data->staff)->get();
-
-            $result->name = $staff[0]->firstName . ' ' . $staff[0]->lastName;
-            $result->time = $data->created_at->toDateTimeString();
-            return $result;
-        });
-
-        $staff = Staff::where('business', $this->businessId)->where('active', 1)->where('balance', '>', 0)->limit(5)->orderBy('created_at', 'desc')->get();
-
-        $result->paymentHistory = $staff->map(function ($data) {
-            $result = (object) [];
-
-            $result->name = $data->firstName . ' ' . $data->LastName;
-            $result->balance = $data->balance;
-            return $result;
-        });
-
-        // Cache::put('homeData', $result, Carbon::now()->addSeconds(30));
-
-        return response()->json($result);
+        return $this->respondSuccess([
+            'staff' => [
+                'count' => $business->staff()->count(),
+                'online' => $business->staff()->where('online', 1)->get()
+            ],
+            'experience' => [
+                'count' => $business->experience()->count()
+            ],
+            'kiosk' =>[
+                'count' => $business->kiosk()->count(),
+                'online' => $kiosk
+            ],
+            'lastPayment' => $business->lastPayment()->get(),
+            'lastLog' => $business->lastLog()->get(),
+            'paymentHistory' => $business->staffWithPayment()->get()
+        ]);
     }
 }
+
+//select * from `kioskqrcode` inner join `kiosk` on `kiosk`.`id` = `kioskqrcode`.`ip` where `kiosk`.`business` = 9 and `kioskqrcode`.`updated_at` >= `2020-03-29 19:02:45`

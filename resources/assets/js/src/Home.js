@@ -1,23 +1,23 @@
-import React from "react";
-import axios from "axios";
+import React from 'react'
+import axios from 'axios'
 
-import { Alert } from "./components/atoms/app";
+import {Alert} from './components/atoms/app'
 
 export default class Home extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       data: [],
       alert: []
-    };
+    }
   }
 
   async componentDidMount() {
-    const { data } = await axios.post("/business/statistics");
-    this.setState({ data });
+    const {data} = await axios.post('/business/statistics')
+    this.setState({data})
 
     if (data.status === true) {
-      this.setState({ alert: data.alert });
+      this.setState({alert: data.alert})
     }
   }
   render() {
@@ -36,6 +36,6 @@ export default class Home extends React.Component {
           </div>
         </div>
       </React.Fragment>
-    );
+    )
   }
 }

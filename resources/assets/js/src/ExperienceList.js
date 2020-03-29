@@ -1,6 +1,6 @@
-import React from "react";
-import Axios from "axios";
-import { Link } from "react-router-dom";
+import React from 'react'
+import Axios from 'axios'
+import {Link} from 'react-router-dom'
 
 function dayPlanList(data) {
   return data.map((value, key) => (
@@ -13,7 +13,7 @@ function dayPlanList(data) {
         {value.start}- {value.end}
       </span>
     </button>
-  ));
+  ))
 }
 
 function ExperienceRender(data) {
@@ -31,8 +31,8 @@ function ExperienceRender(data) {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="text-dark">
-                        Pay:{" "}
-                        <span className="text-muted">{val.experience.Pay}</span>{" "}
+                        Pay:{' '}
+                        <span className="text-muted">{val.experience.Pay}</span>{' '}
                       </h5>
                       <h5 className="text-dark">
                         Factor:
@@ -41,10 +41,10 @@ function ExperienceRender(data) {
                         </span>
                       </h5>
                       <h5 className="text-dark">
-                        Period:{" "}
+                        Period:{' '}
                         <span className="text-muted">
                           {val.experience.Periode}
-                        </span>{" "}
+                        </span>{' '}
                       </h5>
                     </div>
                   </div>
@@ -54,8 +54,8 @@ function ExperienceRender(data) {
             <div
               className={
                 val.staffList.length > 0
-                  ? "col-xl-5 d-flex grid-margin stretch-card"
-                  : "col-xl-9 d-flex grid-margin stretch-card"
+                  ? 'col-xl-5 d-flex grid-margin stretch-card'
+                  : 'col-xl-9 d-flex grid-margin stretch-card'
               }
             >
               <div className="card">
@@ -70,21 +70,21 @@ function ExperienceRender(data) {
                   {val.experience.workingPlan !== undefined &&
                     val.experience.workingPlan.tuesday.length !== 0 && (
                       <h5>
-                        Tuesday{" "}
+                        Tuesday{' '}
                         {dayPlanList(val.experience.workingPlan.tuesday)}
                       </h5>
                     )}
                   {val.experience.workingPlan !== undefined &&
                     val.experience.workingPlan.wednesday.length !== 0 && (
                       <h5>
-                        Wednesday{" "}
+                        Wednesday{' '}
                         {dayPlanList(val.experience.workingPlan.wednesday)}
                       </h5>
                     )}
                   {val.experience.workingPlan !== undefined &&
                     val.experience.workingPlan.thursday.length !== 0 && (
                       <h5>
-                        Thursday{" "}
+                        Thursday{' '}
                         {dayPlanList(val.experience.workingPlan.thursday)}
                       </h5>
                     )}
@@ -97,7 +97,7 @@ function ExperienceRender(data) {
                   {val.experience.workingPlan !== undefined &&
                     val.experience.workingPlan.saturday.length !== 0 && (
                       <h5>
-                        Saturday{" "}
+                        Saturday{' '}
                         {dayPlanList(val.experience.workingPlan.saturday)}
                       </h5>
                     )}
@@ -124,7 +124,7 @@ function ExperienceRender(data) {
                           <img
                             src={val.img}
                             className="mr-1 rounded-circle z-depth-2"
-                            style={{ width: "50px", height: "50px" }}
+                            style={{width: '50px', height: '50px'}}
                           ></img>
                           <p> {val.username} </p>
                         </div>
@@ -141,22 +141,22 @@ function ExperienceRender(data) {
         </div>
       </div>
     </div>
-  ));
+  ))
 }
 
 class ExperienceList extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       list: []
-    };
+    }
   }
 
   async componentDidMount() {
-    const { data } = await Axios.post("/business/experience/list/data");
+    const {data} = await Axios.post('/business/experience/list/data')
 
-    this.setState({ list: data });
+    this.setState({list: data})
   }
 
   render() {
@@ -175,7 +175,7 @@ class ExperienceList extends React.Component {
                 <div className="row display-3">
                   <Link
                     to={
-                      "/" + `${this.props.data.username + "/experience/create"}`
+                      '/' + `${this.props.data.username + '/experience/create'}`
                     }
                     className="nav-link mx-auto"
                   >
@@ -197,8 +197,8 @@ class ExperienceList extends React.Component {
           <ExperienceRender data={this.state.list} />
         )}
       </React.Fragment>
-    );
+    )
   }
 }
 
-export default ExperienceList;
+export default ExperienceList

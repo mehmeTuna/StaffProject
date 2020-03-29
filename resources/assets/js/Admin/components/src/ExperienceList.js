@@ -1,10 +1,10 @@
-import React from "react";
-import Axios from "axios";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
+import React from 'react'
+import Axios from 'axios'
+import {Link} from 'react-router-dom'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
 
-const sweet = withReactContent(Swal);
+const sweet = withReactContent(Swal)
 
 function dayPlanList(data) {
   return data.map((value, key) => (
@@ -17,11 +17,11 @@ function dayPlanList(data) {
         {value.start}- {value.end}
       </span>
     </button>
-  ));
+  ))
 }
 
 function ExperienceRender(data) {
-  let result = data;
+  let result = data
   return data.data.map((val, key) => (
     <div key={key} className="col-lg-12 grid-margin stretch-card">
       <div className="card">
@@ -49,8 +49,8 @@ function ExperienceRender(data) {
                   <div className="card">
                     <div className="card-body">
                       <h5 className="text-dark">
-                        Pay:{" "}
-                        <span className="text-muted">{val.experience.Pay}</span>{" "}
+                        Pay:{' '}
+                        <span className="text-muted">{val.experience.Pay}</span>{' '}
                       </h5>
                       <h5 className="text-dark">
                         Factor:
@@ -59,10 +59,10 @@ function ExperienceRender(data) {
                         </span>
                       </h5>
                       <h5 className="text-dark">
-                        Period:{" "}
+                        Period:{' '}
                         <span className="text-muted">
                           {val.experience.Periode}
-                        </span>{" "}
+                        </span>{' '}
                       </h5>
                     </div>
                   </div>
@@ -72,8 +72,8 @@ function ExperienceRender(data) {
             <div
               className={
                 val.staffList.length > 0
-                  ? "col-xl-5 d-flex grid-margin stretch-card"
-                  : "col-xl-9 d-flex grid-margin stretch-card"
+                  ? 'col-xl-5 d-flex grid-margin stretch-card'
+                  : 'col-xl-9 d-flex grid-margin stretch-card'
               }
             >
               <div className="card">
@@ -88,21 +88,21 @@ function ExperienceRender(data) {
                   {val.experience.workingPlan !== undefined &&
                     val.experience.workingPlan.tuesday.length !== 0 && (
                       <h5>
-                        Tuesday{" "}
+                        Tuesday{' '}
                         {dayPlanList(val.experience.workingPlan.tuesday)}
                       </h5>
                     )}
                   {val.experience.workingPlan !== undefined &&
                     val.experience.workingPlan.wednesday.length !== 0 && (
                       <h5>
-                        Wednesday{" "}
+                        Wednesday{' '}
                         {dayPlanList(val.experience.workingPlan.wednesday)}
                       </h5>
                     )}
                   {val.experience.workingPlan !== undefined &&
                     val.experience.workingPlan.thursday.length !== 0 && (
                       <h5>
-                        Thursday{" "}
+                        Thursday{' '}
                         {dayPlanList(val.experience.workingPlan.thursday)}
                       </h5>
                     )}
@@ -115,7 +115,7 @@ function ExperienceRender(data) {
                   {val.experience.workingPlan !== undefined &&
                     val.experience.workingPlan.saturday.length !== 0 && (
                       <h5>
-                        Saturday{" "}
+                        Saturday{' '}
                         {dayPlanList(val.experience.workingPlan.saturday)}
                       </h5>
                     )}
@@ -142,7 +142,7 @@ function ExperienceRender(data) {
                           <img
                             src={val.img}
                             className="mr-1 rounded-circle z-depth-2"
-                            style={{ width: "50px", height: "50px" }}
+                            style={{width: '50px', height: '50px'}}
                           ></img>
                           <p> {val.username} </p>
                         </div>
@@ -159,57 +159,57 @@ function ExperienceRender(data) {
         </div>
       </div>
     </div>
-  ));
+  ))
 }
 
 class ExperienceList extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       list: []
-    };
+    }
 
-    this.deleteEx = this.deleteEx.bind(this);
-    this.delete = this.delete.bind(this);
+    this.deleteEx = this.deleteEx.bind(this)
+    this.delete = this.delete.bind(this)
   }
 
   async componentDidMount() {
-    const { data } = await Axios.post("/business/experience/list/data");
+    const {data} = await Axios.post('/business/experience/list/data')
 
-    this.setState({ list: data });
+    this.setState({list: data})
   }
 
   deleteEx(id, username) {
     sweet
       .fire({
         title: `${username} silmek istediğinize eminmisiniz ?`,
-        icon: "warning",
+        icon: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#d33",
-        cancelButtonColor: "#3085d6",
-        confirmButtonText: "Sil"
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Sil'
       })
       .then(result => {
         if (result.value) {
-          this.delete({ id, username });
+          this.delete({id, username})
         }
-      });
+      })
   }
 
-  async delete({ id, username }) {
-    const { list } = this.state;
-    const result = list.filter(e => e.experience.Id != id);
-    this.setState({ list: result });
-    const { data } = await Axios.post("/business/experience/delete", {
+  async delete({id, username}) {
+    const {list} = this.state
+    const result = list.filter(e => e.experience.Id != id)
+    this.setState({list: result})
+    const {data} = await Axios.post('/business/experience/delete', {
       id: id
-    });
+    })
 
     if (data.status === true) {
       sweet.fire({
         title: `${username} silindi`,
         timer: 1500
-      });
+      })
     }
   }
 
@@ -229,7 +229,7 @@ class ExperienceList extends React.Component {
                 <div className="row display-3">
                   <Link
                     to={
-                      "/" + `${this.props.data.username + "/experience/create"}`
+                      '/' + `${this.props.data.username + '/experience/create'}`
                     }
                     className="nav-link mx-auto"
                   >
@@ -251,8 +251,8 @@ class ExperienceList extends React.Component {
           <ExperienceRender data={this.state.list} delete={this.deleteEx} />
         )}
       </React.Fragment>
-    );
+    )
   }
 }
 
-export default ExperienceList;
+export default ExperienceList

@@ -1,82 +1,82 @@
-import React from "react";
-import axios from "axios";
-import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-import { Redirect } from "react-router-dom";
+import React from 'react'
+import axios from 'axios'
+import Swal from 'sweetalert2'
+import withReactContent from 'sweetalert2-react-content'
+import {Redirect} from 'react-router-dom'
 
-const sweet = withReactContent(Swal);
+const sweet = withReactContent(Swal)
 
 export default class KioskCreate extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      hostName: "",
+      hostName: '',
       tutorial: 0,
-      registerCode: "",
-      kioskName: "",
+      registerCode: '',
+      kioskName: '',
       redirect: null
-    };
+    }
 
-    this.newKiosk = this.newKiosk.bind(this);
-    this.addCode = this.addCode.bind(this);
+    this.newKiosk = this.newKiosk.bind(this)
+    this.addCode = this.addCode.bind(this)
   }
 
   componentDidMount() {
-    this.setState({ hostName: window.location.host });
+    this.setState({hostName: window.location.host})
   }
 
   async newKiosk(val) {
-    this.setState({ tutorial: 1 });
-    const { data } = await axios.post("/kiosk/register", {
+    this.setState({tutorial: 1})
+    const {data} = await axios.post('/kiosk/register', {
       code: this.state.registerCode,
       name: val
-    });
+    })
 
     if (data.status === true) {
       this.setState({
         redirect: `/${this.props.data.username}/kiosk/list`
-      });
+      })
     } else {
       sweet.fire({
-        icon: "warning",
-        title: "Geçerli bir code giriniz",
+        icon: 'warning',
+        title: 'Geçerli bir code giriniz',
         timer: 1500,
         showCloseButton: true,
         showCancelButton: false,
         focusConfirm: false,
         showConfirmButton: false
-      });
+      })
     }
   }
 
   addCode() {
-    if (this.state.registerCode === "") {
+    if (this.state.registerCode === '') {
       sweet.fire({
-        icon: "warning",
-        title: "Geçerli bir code giriniz",
+        icon: 'warning',
+        title: 'Geçerli bir code giriniz',
         timer: 1500,
         showCloseButton: true,
         showCancelButton: false,
         focusConfirm: false,
         showConfirmButton: false
-      });
-      return;
+      })
+      return
     }
 
     sweet
       .fire({
-        title: "Kioks Name",
-        input: "text"
+        title: 'Kioks Name',
+        input: 'text'
       })
       .then(val => {
-        if (typeof val.value !== "undefined") this.newKiosk(val.value);
-      });
+        if (typeof val.value !== 'undefined') this.newKiosk(val.value)
+      })
   }
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />;
+      return <Redirect to={this.state.redirect} />
     }
     return (
       <React.Fragment>
@@ -93,7 +93,7 @@ export default class KioskCreate extends React.Component {
                   <button
                     type="button"
                     className="btn btn-success font-weight-bold mx-auto mt-4"
-                    onClick={() => this.setState({ tutorial: 1 })}
+                    onClick={() => this.setState({tutorial: 1})}
                   >
                     <span className="badge">
                       <i className="icon-circle-plus" />
@@ -116,9 +116,9 @@ export default class KioskCreate extends React.Component {
                   <li className="lead">
                     Kodu nasil goruntuleyeceginizi bilmiyorsaniz
                     <span className="text-success">
-                      {" "}
+                      {' '}
                       {`${this.state.hostName}/kiosk`}
-                    </span>{" "}
+                    </span>{' '}
                     sayfayi ziyaret ediniz
                   </li>
                 </ul>
@@ -131,7 +131,7 @@ export default class KioskCreate extends React.Component {
                     className="form-control"
                     value={this.state.registerCode}
                     onChange={e =>
-                      this.setState({ registerCode: e.target.value })
+                      this.setState({registerCode: e.target.value})
                     }
                     placeholder="Code"
                   />
@@ -153,6 +153,6 @@ export default class KioskCreate extends React.Component {
           </div>
         )}
       </React.Fragment>
-    );
+    )
   }
 }

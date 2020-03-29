@@ -1,5 +1,5 @@
-import React from "react";
+import React from 'react'
 
-import { Loading } from "./atoms/app";
+import {Loading} from './atoms/app'
 
-export { Loading };
+export {Loading}

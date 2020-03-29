@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import Axios from "axios";
-import Swal from "sweetalert2";
-import { Link } from "react-router-dom";
-import withReactContent from "sweetalert2-react-content";
+import React, {useState} from 'react'
+import Axios from 'axios'
+import Swal from 'sweetalert2'
+import {Link} from 'react-router-dom'
+import withReactContent from 'sweetalert2-react-content'
 
-import { Loading } from "./components/app";
+import {Loading} from './components/app'
 
-const sweet = withReactContent(Swal);
+const sweet = withReactContent(Swal)
 
 function dayPlanList(data) {
   return data.map((value, key) => (
@@ -19,7 +19,7 @@ function dayPlanList(data) {
         {value.start} - {value.end}
       </span>
     </button>
-  ));
+  ))
 }
 
 function StaffDetail(data, staffPayment) {
@@ -111,9 +111,9 @@ function StaffDetail(data, staffPayment) {
                             <div>{val.Hour}</div>
                             <div
                               className={
-                                val.Traffic === "Enter"
-                                  ? "badge badge-success"
-                                  : "badge badge-danger"
+                                val.Traffic === 'Enter'
+                                  ? 'badge badge-success'
+                                  : 'badge badge-danger'
                               }
                             >
                               {val.Traffic}
@@ -202,68 +202,68 @@ function StaffDetail(data, staffPayment) {
             )}
           </div>
         </div>
-      </div>{" "}
+      </div>{' '}
     </React.Fragment>
-  );
+  )
 }
 
 class StaffRender extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
-      logList: "",
+      logList: '',
       isLoading: false,
       user: [],
       userData: []
-    };
+    }
 
-    this.getUserDetail = this.getUserDetail.bind(this);
+    this.getUserDetail = this.getUserDetail.bind(this)
 
-    this.staffPayment = this.staffPayment.bind(this);
-    this.userBalancePay = this.userBalancePay.bind(this);
+    this.staffPayment = this.staffPayment.bind(this)
+    this.userBalancePay = this.userBalancePay.bind(this)
   }
 
   componentDidMount() {
-    this.setState({ user: this.props.val });
+    this.setState({user: this.props.val})
   }
 
   async getUserDetail(refresh) {
-    console.log(this.state.user.Experience.Identifier);
-    if (refresh === false && this.state.logList !== "") {
-      this.setState({ logList: "" });
-      return;
+    console.log(this.state.user.Experience.Identifier)
+    if (refresh === false && this.state.logList !== '') {
+      this.setState({logList: ''})
+      return
     }
-    this.setState({ isLoading: true, logList: "" });
-    const { data } = await Axios.post("/user/data", {
+    this.setState({isLoading: true, logList: ''})
+    const {data} = await Axios.post('/user/data', {
       userId: this.state.user.Id,
-      type: "log"
-    });
+      type: 'log'
+    })
 
     if (data.status === true) {
-      this.setState({ isLoading: false, userData: data, logList: "log" });
+      this.setState({isLoading: false, userData: data, logList: 'log'})
     }
   }
 
   async userBalancePay(value) {
-    const { data } = await Axios.post("/user/balance/payment", {
+    const {data} = await Axios.post('/user/balance/payment', {
       userId: this.state.user.Id,
       pay: value
-    });
-    this.getUserDetail(true);
+    })
+    this.getUserDetail(true)
   }
 
   staffPayment() {
     sweet
       .fire({
-        title: "Odemek istediginiz tutar",
-        input: "number"
+        title: 'Odemek istediginiz tutar',
+        input: 'number'
       })
       .then(result => {
-        if (result.value !== "") {
-          this.userBalancePay(result.value);
+        if (result.value !== '') {
+          this.userBalancePay(result.value)
         }
-      });
+      })
   }
 
   render() {
@@ -279,7 +279,7 @@ class StaffRender extends React.Component {
                 <div>
                   <img
                     src={this.state.user.Image}
-                    style={{ width: "100px", height: "100px" }}
+                    style={{width: '100px', height: '100px'}}
                     className="mx-auto"
                   />
                 </div>
@@ -299,7 +299,7 @@ class StaffRender extends React.Component {
                   onClick={() => this.getUserDetail(false)}
                   className="m-2 btn btn-success btn-icon-text font-weight-bold"
                 >
-                  {this.state.logList === "" ? "Detaylar" : "Detaylari Gizle"}
+                  {this.state.logList === '' ? 'Detaylar' : 'Detaylari Gizle'}
                 </button>
               </div>
             </div>
@@ -311,25 +311,25 @@ class StaffRender extends React.Component {
                       <div className="card-body">
                         <p className="text-dark">{this.state.user.Factor}</p>
                         <p className="text-dark">
-                          Adress:{" "}
+                          Adress:{' '}
                           <span className="text-muted">
                             {this.state.user.Adress}
                           </span>
                         </p>
                         <p className="text-dark">
-                          GSM:{" "}
+                          GSM:{' '}
                           <span className="text-muted">
                             {this.state.user.Gsm}
                           </span>
                         </p>
                         <p className="text-dark">
-                          Gender:{" "}
+                          Gender:{' '}
                           <span className="text-muted">
                             {this.state.user.Gender}
                           </span>
                         </p>
                         <p className="text-dark">
-                          Martial Status:{" "}
+                          Martial Status:{' '}
                           <span className="text-muted">
                             {this.state.user.MartialStatus}
                           </span>
@@ -349,49 +349,49 @@ class StaffRender extends React.Component {
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.monday.length !== 0 && (
                         <h5>
-                          Monday{" "}
+                          Monday{' '}
                           {dayPlanList(this.state.user.workingPlan.monday)}
                         </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.tuesday.length !== 0 && (
                         <h5>
-                          Tuesday{" "}
+                          Tuesday{' '}
                           {dayPlanList(this.state.user.workingPlan.tuesday)}
                         </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.wednesday.length !== 0 && (
                         <h5>
-                          Wednesday{" "}
+                          Wednesday{' '}
                           {dayPlanList(this.state.user.workingPlan.wednesday)}
                         </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.thursday.length !== 0 && (
                         <h5>
-                          Thursday{" "}
+                          Thursday{' '}
                           {dayPlanList(this.state.user.workingPlan.thursday)}
                         </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.friday.length !== 0 && (
                         <h5>
-                          Friday{" "}
+                          Friday{' '}
                           {dayPlanList(this.state.user.workingPlan.friday)}
                         </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.saturday.length !== 0 && (
                         <h5>
-                          Saturday{" "}
+                          Saturday{' '}
                           {dayPlanList(this.state.user.workingPlan.saturday)}
                         </h5>
                       )}
                     {this.state.user.workingPlan !== undefined &&
                       this.state.user.workingPlan.sunday.length !== 0 && (
                         <h5>
-                          Sunday{" "}
+                          Sunday{' '}
                           {dayPlanList(this.state.user.workingPlan.sunday)}
                         </h5>
                       )}
@@ -400,45 +400,45 @@ class StaffRender extends React.Component {
               </div>
             </div>
             {this.state.isLoading === true && <Loading />}
-            {this.state.logList !== "" &&
+            {this.state.logList !== '' &&
               StaffDetail(this.state.userData, this.staffPayment)}
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
 class StaffList extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       Loading: false,
       experience: [],
       staff: []
-    };
+    }
 
-    this.getExperience = this.getExperience.bind(this);
-    this.getStaff = this.getStaff.bind(this);
+    this.getExperience = this.getExperience.bind(this)
+    this.getStaff = this.getStaff.bind(this)
   }
 
   async componentDidMount() {
-    this.setState({ Loading: true });
-    await this.getExperience();
-    await this.getStaff();
+    this.setState({Loading: true})
+    await this.getExperience()
+    await this.getStaff()
 
-    this.setState({ Loading: false });
+    this.setState({Loading: false})
   }
 
   async getExperience() {
-    const { data } = await Axios.post("/business/experience/list");
-    this.setState({ experience: data });
+    const {data} = await Axios.post('/business/experience/list')
+    this.setState({experience: data})
   }
 
   async getStaff() {
-    const { data } = await Axios.post("/business/staff/list");
-    this.setState({ staff: data });
+    const {data} = await Axios.post('/business/staff/list')
+    this.setState({staff: data})
   }
 
   render() {
@@ -458,7 +458,7 @@ class StaffList extends React.Component {
                 </div>
                 <div className="row display-3">
                   <Link
-                    to={"/" + `${this.props.data.username + "/staff/create"}`}
+                    to={'/' + `${this.props.data.username + '/staff/create'}`}
                     className="nav-link mx-auto"
                   >
                     <button
@@ -488,8 +488,8 @@ class StaffList extends React.Component {
           </React.Fragment>
         )}
       </React.Fragment>
-    );
+    )
   }
 }
 
-export default StaffList;
+export default StaffList

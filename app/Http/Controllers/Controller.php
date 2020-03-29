@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Foundation\Bus\DispatchesJobs;
-use Illuminate\Routing\Controller as BaseController;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Foundation\Bus\DispatchesJobs;
+use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Routing\Controller as BaseController;
+use Illuminate\Support\Facades\Log;
 
 class Controller extends BaseController
 {
@@ -13,10 +14,11 @@ class Controller extends BaseController
 
     public $kioskCookieName = '_k';
     public $staffCookieName = '_s';
+    public $iplearnApi = 'http://www.geoplugin.net/php.gp';
 
     public function oneYearCookieTime()
     {
-        return time()+31556926 ;
+        return time() + 31556926;
     }
 
     public function respondSuccess($data = [])
@@ -24,7 +26,7 @@ class Controller extends BaseController
         return response()->json([
             'status' => true,
             'text' => trans('auth.success'),
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -33,7 +35,7 @@ class Controller extends BaseController
         return response()->json([
             'status' => false,
             'text' => trans('auth.error'),
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
@@ -42,9 +44,42 @@ class Controller extends BaseController
         return response()->json([
             'status' => false,
             'text' => trans('auth.incorrectPassword'),
-            'data' => $data
+            'data' => $data,
         ]);
     }
 
+    public function learnGeoPlugin($ip)
+    {
+        if (\App::environment('local')) {
+            $result = (object) [];
+            $result->geoplugin_request = $ip;
+            $result->geoplugin_status = 200;
+            $result->geoplugin_city = '';
+            $result->geoplugin_countryCode = 'TR';
+            $result->geoplugin_countryName = 'Turkey';
+            $result->geoplugin_latitude = '';
+            $result->geoplugin_longitude = '';
+            $result->geoplugin_timezone = 'Europe/Istanbul';
+            $result->geoplugin_currencyCode = 'TRY';
+            $result->geoplugin_currencySymbol = '&#8378;';
+            $result->geoplugin_currencySymbol_UTF8 = '₺';
+            return $result;
+        }
+
+        $client = new \GuzzleHttp\Client();
+
+        // url will be: http://my.domain.com/test.php?key1=5&key2=ABC;
+        $response = $client->request('GET', $this->iplearnApi . '?ip=' . $ip);
+
+        $statusCode = $response->getStatusCode();
+        $content = $response->getBody();
+
+        if ($statusCode != 200) {
+            log::info('ip is location learn failed ip:' . $ip);
+        }
+        return json_decode(unserialize($content));
+        // or when your server returns json
+        // $content = json_decode($response->getBody(), true);
+    }
 
 }

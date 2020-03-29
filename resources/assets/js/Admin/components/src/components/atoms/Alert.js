@@ -1,26 +1,26 @@
-import React from "react";
+import React from 'react'
 
 export default class Alert extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
-      context: "content",
-      title: "",
-      content: "",
-      footer: ""
-    };
+      context: 'content',
+      title: '',
+      content: '',
+      footer: ''
+    }
   }
 
   componentDidMount() {
-    console.log(this.props.context);
-    const { type, title, content, footer } = this.props.context;
-    this.setState({ type, title, content, footer });
+    console.log(this.props.context)
+    const {type, title, content, footer} = this.props.context
+    this.setState({type, title, content, footer})
   }
 
   render() {
     return (
       <React.Fragment>
-        {this.state.context === "content" && (
+        {this.state.context === 'content' && (
           <div className="mx-auto">
             <div className="alert alert-success" role="alert">
               <button
@@ -32,8 +32,8 @@ export default class Alert extends React.Component {
                 <span aria-hidden="true">&times;</span>
               </button>
               <h4 className="alert-heading">{this.state.title}</h4>
-              <p dangerouslySetInnerHTML={{ __html: this.state.content }} />
-              {this.state.footer !== "" && (
+              <p dangerouslySetInnerHTML={{__html: this.state.content}} />
+              {this.state.footer !== '' && (
                 <React.Fragment>
                   <hr />
                   <p className="mb-0">{this.state.footer}</p>
@@ -43,6 +43,6 @@ export default class Alert extends React.Component {
           </div>
         )}
       </React.Fragment>
-    );
+    )
   }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Kiosk extends Model
@@ -24,6 +25,16 @@ class Kiosk extends Model
     public function scopeActive($query)
     {
         return $query->where('active', 1);
+    }
+
+    public function online()
+    {
+        return $this->hasMany('App\Kioskqrcode', 'ip','remoteAddress')->where('updated_at', '>=', Carbon::now()->addMinute(-5)->toDateTimeString());
+    }
+
+    public function qrCode()
+    {
+        return $this->hasMany('App\Kioskqrcode', 'ip','remoteAddress');
     }
 
 }

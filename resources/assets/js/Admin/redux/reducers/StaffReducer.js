@@ -5,10 +5,10 @@ const actions = {
   STAFF_CREATE: 'STAFF_CREATE'
 }
 
-const staffReducer = (state = { staffList: [] }, action) => {
+const staffReducer = (state = {staffList: []}, action) => {
   switch (action.type) {
     case actions.STAFF_GET_ITEMS:
-      return { staffList: [{ username: 'mehmet' }, { username: 'tuna' }] }
+      return {staffList: [{username: 'mehmet'}, {username: 'tuna'}]}
 
     default:
       return state
@@ -29,4 +29,4 @@ const staffCreate = item => {
 }
 
 export default staffReducer
-export { staffGetItems, staffCreate }
+export {staffGetItems, staffCreate}
