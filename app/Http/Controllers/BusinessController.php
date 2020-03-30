@@ -6,7 +6,6 @@ use App\Business;
 use App\Http\Requests\StoreBusinessLogin;
 use App\Http\Requests\StoreBusinessRegister;
 use App\Kioskqrcode;
-use App\Tio;
 use Carbon\Carbon;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -80,7 +79,7 @@ class BusinessController extends Controller
                 ]);
             }
 
-            $business = Business::where('id', session('businessId'))->active()->update([
+            $business = Business::where('id', $this->businessId)->active()->update([
                 $renameData => $request->data,
             ]);
             return response()->json([
@@ -121,7 +120,7 @@ class BusinessController extends Controller
         $businessName = $request->businessName;
         $phone = $request->telephone;
         $password = $request->password;
-        $locationData = $this->learnGeoPlugin('176.90.65.99');
+        $locationData = $this->learnGeoPlugin($request->ip());
         $business = (object) [];
 
         try {
@@ -132,12 +131,14 @@ class BusinessController extends Controller
                 "password" => Hash::make($password),
                 "country" => $locationData->geoplugin_countryName,
                 "lang" => $locationData->geoplugin_countryCode,
-                'data' => json_encode([
+                'data' => [
                     'currencySymbol' => $locationData->geoplugin_currencySymbol,
                     'timeZone' => $locationData->geoplugin_timezone,
                     'countryCode' => $locationData->geoplugin_countryCode,
-                    'country' => $locationData->geoplugin_countryName
-                ], JSON_UNESCAPED_UNICODE),
+                    'country' => $locationData->geoplugin_countryName,
+                    'currencyCode' => $locationData->geoplugin_currencyCode,
+                    'currencySymbolUtf8' => $locationData->geoplugin_currencySymbol_UTF8
+                ],
             ]);
         } catch (QueryException $exception) {
             Log::debug($exception->errorInfo);
@@ -156,20 +157,19 @@ class BusinessController extends Controller
     {
         $business = Business::find($this->businessId);
 
-        $staffCount = $business->staff->count();
-        $experienceCount = $business->experience->count();
-
         return $this->respondSuccess([
             "email" => $business->email,
             "username" => $business->username,
             "img" => $business->image,
             "name" => $business->businessName,
-            "staff" => $staffCount,
-            "experience" => $experienceCount,
+            "staff" => $business->staff->count(),
+            "experience" => $business->experience->count(),
             'businessName' => $business->businessName,
             'address' => $business->address,
             'webPage' => $business->webPage,
             'phone' => $business->phone,
+            'country' => $business->data->country,
+            'currencySymbolUtf8' => $business->currencySymbolUtf8
         ]);
     }
 
@@ -207,5 +207,3 @@ class BusinessController extends Controller
         ]);
     }
 }
-
-//select * from `kioskqrcode` inner join `kiosk` on `kiosk`.`id` = `kioskqrcode`.`ip` where `kiosk`.`business` = 9 and `kioskqrcode`.`updated_at` >= `2020-03-29 19:02:45`

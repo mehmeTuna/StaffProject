@@ -162,8 +162,9 @@ class StaffController extends Controller
         if($staff == null)
             return $this->respondSuccess([]);
 
-        $staff = $staff->map(function ($user) use ($factorText) {
+        $staff = $staff->map(function ($user) use ($business, $factorText) {
             $data = $user;
+            $data->currencySymbol = $business->currencySymbolUtf8;
             $data->online = $user->online;
             $experience = Experience::where('id', $data->experience)->first();
             $data->experience = $experience->identifier;

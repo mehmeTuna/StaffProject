@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
-    protected $visible = ['id', 'email', 'username', 'phone', 'active', 'webPage', 'image', 'longitute', 'latitude', 'address', 'businessName', 'options', 'data', 'experienceData', 'staffData', 'kioskData', 'packageTime', 'lastLoginTime', 'created_at', 'updated_at'];
+    protected $visible = ['id', 'email', 'username', 'phone', 'webPage', 'image', 'address', 'businessName', 'data', 'packageTime', 'created_at', 'updated_at'];
     protected $fillable = ['password', 'email', 'username', 'phone', 'active', 'webPage', 'image', 'longitute', 'latitude', 'address', 'businessName', 'options', 'data', 'experienceData', 'staffData', 'kioskData', 'packageTime', 'lastLoginTime', 'created_at', 'updated_at'];
     protected $table = 'business';
     protected $primaryKey = 'id';
@@ -95,6 +95,7 @@ class Business extends Model
     {
         $this->attributes['experienceClass'] = json_encode($value);
     }
+
 
     /**
      *

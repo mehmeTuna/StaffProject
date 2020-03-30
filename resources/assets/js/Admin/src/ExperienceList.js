@@ -47,7 +47,10 @@ function ExperienceRender(props) {
               <div className="card">
                 <div className="card-body">
                   <h5 className="text-dark">
-                    Pay: <span className="text-muted">{val.pay}</span>
+                    Pay:{' '}
+                    <span className="text-muted">
+                      {`${val.pay} ${val.currencySymbol}`}
+                    </span>
                   </h5>
                   <h5 className="text-dark">
                     Factor:

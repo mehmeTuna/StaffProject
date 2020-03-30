@@ -24,7 +24,7 @@ class ExperienceController extends Controller
     {
         $businessId = session("businessId");
 
-        $workClass = ['freeTime', 'plannedTime', 'fullTime']; //TODO: db den al onu kontrol et sonraki adimda
+        $workClass = ['freeTime', 'plannedTime', 'fullTime'];
         if (!in_array($request->workingPlan, $workClass)) {
             return response()->json(['status' => false, 'workingPlan' => 'not defined']);
         }
@@ -35,7 +35,7 @@ class ExperienceController extends Controller
             "workClass" => $workPlan[0],
             'business' => $businessId,
             'identifier' => $request->experienceName,
-            'class' => 1, //TODO: business tablosundan kontrol edilip eklenecek,
+            'class' => 1,
             'periode' => $request->experiencePeriode,
             'factor' => $request->experienceFactor,
             'pay' => $request->experiencePay,
@@ -74,10 +74,14 @@ class ExperienceController extends Controller
         }
 
         $perPage = ($page - 1) * $count;
-        $business = Business::where('id', $this->businessId)->active()->first();
+        $business = Business::find($this->businessId);
+        if($business == null){
+            return $this->respondSuccess([]);
+        }
+
         $experience = $business->experience()->take($perPage)->limit($count)->get();
 
-        $experience = $experience->map(function ($experience) {
+        $experience = $experience->map(function ($experience) use($business){
             $data = (object) [];
             $data->id = $experience->id;
             $data->workingPlan = $experience->workingPlan;
@@ -86,6 +90,7 @@ class ExperienceController extends Controller
             $data->factor = $experience->factor;
             $data->color = $experience->color;
             $data->identifier = $experience->identifier;
+            $data->currencySymbol = $business->data->currencySymbolUtf8;
             $data->created_at = $experience->created_at->toDateString();
             $data->staffList = Staff::where('experience', $experience->id)->where('active', 1)->get();
             return $data;

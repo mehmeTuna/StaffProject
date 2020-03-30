@@ -68,7 +68,6 @@ class Controller extends BaseController
 
         $client = new \GuzzleHttp\Client();
 
-        // url will be: http://my.domain.com/test.php?key1=5&key2=ABC;
         $response = $client->request('GET', $this->iplearnApi . '?ip=' . $ip);
 
         $statusCode = $response->getStatusCode();
@@ -78,8 +77,6 @@ class Controller extends BaseController
             log::info('ip is location learn failed ip:' . $ip);
         }
         return json_decode(unserialize($content));
-        // or when your server returns json
-        // $content = json_decode($response->getBody(), true);
     }
 
 }
