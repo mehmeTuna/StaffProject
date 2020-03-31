@@ -150,7 +150,12 @@ class StaffList extends React.Component {
             </PageHeader>
             <div className="col-12 mt-3">
               {this.state.filteredData.map((val, key) => (
-                <Staff key={key} data={val} delete={this.deleteStaff} />
+                <Staff
+                  key={key}
+                  data={val}
+                  delete={this.deleteStaff}
+                  currencySymbolUtf8={this.props.data.currencySymbolUtf8}
+                />
               ))}
             </div>
           </React.Fragment>

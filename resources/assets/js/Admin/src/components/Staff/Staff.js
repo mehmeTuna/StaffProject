@@ -75,6 +75,7 @@ const Staff = props => {
           </div>
           {showData === true && (
             <StaffDetail
+              currencySymbolUtf8={props.currencySymbolUtf8}
               isOpen={showData}
               setOpen={setShowData}
               key={id}

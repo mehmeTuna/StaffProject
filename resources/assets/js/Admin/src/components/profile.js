@@ -250,6 +250,34 @@ const Profile = props => {
               </Grid>
             </Paper>
           </Grid>
+          <Grid item className={classes.root}>
+            <Paper className={classes.paper}>
+              <Typography
+                align="left"
+                variant="h6"
+                className={classes.BoxTitle}
+              >
+                Location
+              </Typography>
+              <Grid container item container direction="column">
+                <ProfileRow
+                  container
+                  justify="space-between"
+                  alignItems="center"
+                >
+                  <Grid item>
+                    <Typography variant="body1">Country</Typography>
+                  </Grid>
+                  <Grid item lg={8}>
+                    <Typography variant="body1" align="left">
+                      {props.businessData.country}
+                    </Typography>
+                  </Grid>
+                  <Grid item></Grid>
+                </ProfileRow>
+              </Grid>
+            </Paper>
+          </Grid>
         </Grid>
       </div>
     </React.Fragment>

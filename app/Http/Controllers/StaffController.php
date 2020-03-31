@@ -107,6 +107,7 @@ class StaffController extends Controller
         $staffId = (int)$request->userId;
 
         $staff = Staff::where('id', $staffId)->first();
+        $business = Business::find($staff->business);
         if($staff == null)
             return $this->respondFail();
 
@@ -114,9 +115,9 @@ class StaffController extends Controller
         if($data == null)
             return $this->respondSuccess([]);
 
-        $response = $data->map(function($data){
+        $response = $data->map(function($data) use ($business) {
             $response = (object)[];
-            $response->amount = $data->pay ;
+            $response->amount = $data->pay .' '. $business->data->currencySymbolUtf8;
             $response->comment = $data->comment ;
             $response->date = $data->created_at->toDateString();
             return $response;

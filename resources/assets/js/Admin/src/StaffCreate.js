@@ -42,6 +42,7 @@ class StaffCreate extends React.Component {
     super(props)
 
     this.state = {
+      currencySymbolUtf8: '',
       img: [],
       firstName: '',
       lastName: '',
@@ -169,6 +170,7 @@ class StaffCreate extends React.Component {
   }
 
   async componentDidMount() {
+    this.setState({currencySymbolUtf8: this.props.data.currencySymbolUtf8})
     const {data} = await axios.post('/business/experience/list/1/60')
 
     this.setState({workingData: data.data})
@@ -359,7 +361,7 @@ class StaffCreate extends React.Component {
         this.setState({workingData: dataSunday})
         break
       default:
-        console.log('dataSet foksiyion kismi default')
+        console.log('default')
         break
     }
   }
@@ -388,7 +390,7 @@ class StaffCreate extends React.Component {
               />
             </div>
             <div className="col-8 mx-auto">
-              Exit
+              Logout
               <TimeField
                 input={<input type="text" className="form-control" />}
                 value={this.state.selectedEndTime}
@@ -667,6 +669,7 @@ class StaffCreate extends React.Component {
                             this.updateWorkingDataPay(event.target.value)
                           }
                         />
+                        <p className="ml-2">{this.state.currencySymbolUtf8}</p>
                       </div>
                     </div>
                   </div>

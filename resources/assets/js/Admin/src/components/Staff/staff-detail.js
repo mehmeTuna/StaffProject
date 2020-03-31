@@ -161,10 +161,12 @@ export default function StaffDetail(props) {
             </Grid>
             <Grid container item xs={12} sm={6} justify="space-between">
               <Grid item xs={12} sm={6} md={6}>
-                Total payment: {state.totalPayment}
+                Total payment:{' '}
+                {`${state.totalPayment} ${props.currencySymbolUtf8}`}
               </Grid>
               <Grid item xs={12} sm={6} md={6}>
-                Amount to be paid: {state.balance}
+                Amount to be paid:{' '}
+                {`${state.balance} ${props.currencySymbolUtf8}`}
               </Grid>
               <Grid item xs={12} sm={6} md={6}>
                 <TextField

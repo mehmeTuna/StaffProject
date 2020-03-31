@@ -169,7 +169,8 @@ class BusinessController extends Controller
             'webPage' => $business->webPage,
             'phone' => $business->phone,
             'country' => $business->data->country,
-            'currencySymbolUtf8' => $business->currencySymbolUtf8
+            'currencySymbolUtf8' => $business->data->currencySymbolUtf8,
+            'currencySymbol' => $business->data->currencySymbol
         ]);
     }
 

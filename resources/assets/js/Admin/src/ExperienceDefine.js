@@ -35,6 +35,7 @@ class ExperienceDefine extends React.Component {
     super(props)
 
     this.state = {
+      currencySymbolUtf8: '',
       selectedStartTime: '08:30',
       selectedEndTime: '17:00',
       showDate: false,
@@ -74,6 +75,8 @@ class ExperienceDefine extends React.Component {
   }
 
   async componentDidMount() {
+    console.log(this.props)
+    this.setState({currencySymbolUtf8: this.props.data.currencySymbolUtf8})
     const {data} = await axios.post('/business/location/minWage')
 
     this.setState({isMinWage: data})
@@ -290,11 +293,11 @@ class ExperienceDefine extends React.Component {
     this.setState({selectedDay: data})
     sweet
       .fire({
-        title: 'Saat Belirtiniz',
+        title: 'Select Clock',
         html: (
           <div className="row">
             <div className="col-8 mb-2 mx-auto">
-              Giris
+              Login
               <TimeField
                 input={<input type="text" className="form-control" />}
                 value={this.state.selectedStartTime}
@@ -302,7 +305,7 @@ class ExperienceDefine extends React.Component {
               />
             </div>
             <div className="col-8 mx-auto">
-              Cikis
+              logout
               <TimeField
                 input={<input type="text" className="form-control" />}
                 value={this.state.selectedEndTime}
@@ -358,10 +361,11 @@ class ExperienceDefine extends React.Component {
                       <input
                         type="number"
                         className="form-control"
-                        placeholder="Pay"
+                        placeholder={`Pay (${this.state.currencySymbolUtf8})`}
                         value={this.state.pay}
                         onChange={e => this.paymentFormat(e.target.value)}
                       />
+                      <p className="ml-2"> {this.state.currencySymbolUtf8}</p>
                     </div>
                   </div>
                 </div>
