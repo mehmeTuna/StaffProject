@@ -6,28 +6,10 @@ import withReactContent from 'sweetalert2-react-content'
 import TimeField from 'react-simple-timefield'
 import DatePicker from 'react-date-picker'
 import Input from 'react-phone-number-input/input'
+import PlanList from './components/assets/planList'
+import PageTitle from './components/assets/pageTitle'
 
 const sweet = withReactContent(Swal)
-
-function PlanList(props) {
-  if (typeof props.data !== 'object') return
-
-  return props.data.map((value, key) => (
-    <button
-      key={key}
-      type="button"
-      onClick={() => props.deleteTime(key, props.day)}
-      className="m-2 btn btn-info font-weight-bold"
-    >
-      <span className="m-1">
-        {value.start}- {value.end}
-      </span>
-      <span className="badge badge-light">
-        <i className="icon-cross" />
-      </span>
-    </button>
-  ))
-}
 
 function ExperinceSelect(data) {
   return data.map((value, key) => (
@@ -224,7 +206,6 @@ class StaffCreate extends React.Component {
           1
         )
         this.setState({workingData: dataMonday})
-        console.log(this.state.workingData)
         break
       case 'tuesday':
         let dataTuesday = this.state.workingData
@@ -448,13 +429,7 @@ class StaffCreate extends React.Component {
     }
     return (
       <div className="col-12 grid-margin">
-        <div className="col-sm-12 col-md-12 grid-margin stretch-card">
-          <div className="card">
-            <div className="card-body">
-              <h4 className="text-center display-4 ml-4">Staff Define</h4>
-            </div>
-          </div>
-        </div>
+        <PageTitle>Staff Create</PageTitle>
         <div className="card grid-margin">
           <div className="card-body">
             <div className="text-center w-25 mx-auto">
@@ -485,7 +460,6 @@ class StaffCreate extends React.Component {
               )}
             </div>
             <form className="form-sample">
-              <p className="card-description"></p>
               <div className="row">
                 <div className="col-md-6 form-group row">
                   <label className="col-sm-2 col-form-label text-right pb-0">

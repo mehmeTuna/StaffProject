@@ -1,10 +1,10 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import axios from 'axios'
 import TimeField from 'react-simple-timefield'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import {Redirect} from 'react-router-dom'
+import PageTitle from './components/assets/pageTitle'
 
 const sweet = withReactContent(Swal)
 
@@ -327,9 +327,9 @@ class ExperienceDefine extends React.Component {
     return (
       <React.Fragment>
         <div className="col-12 grid-margin">
+          <PageTitle>Experience Create</PageTitle>
           <div className="card">
             <div className="card-body">
-              <h4 className="text-center display-4">Experience Define</h4>
               <form className="form-sample" onSubmit={this.handleSubmit}>
                 <div className="row">
                   <div className="col-md-6">
