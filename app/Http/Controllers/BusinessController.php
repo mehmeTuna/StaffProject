@@ -137,7 +137,7 @@ class BusinessController extends Controller
                     'countryCode' => $locationData->geoplugin_countryCode,
                     'country' => $locationData->geoplugin_countryName,
                     'currencyCode' => $locationData->geoplugin_currencyCode,
-                    'currencySymbolUtf8' => $locationData->geoplugin_currencySymbol_UTF8
+                    'currencySymbolUtf8' => $locationData->geoplugin_currencySymbol_UTF8,
                 ],
             ]);
         } catch (QueryException $exception) {
@@ -170,7 +170,7 @@ class BusinessController extends Controller
             'phone' => $business->phone,
             'country' => $business->data->country,
             'currencySymbolUtf8' => $business->data->currencySymbolUtf8,
-            'currencySymbol' => $business->data->currencySymbol
+            'currencySymbol' => $business->data->currencySymbol,
         ]);
     }
 
@@ -179,32 +179,33 @@ class BusinessController extends Controller
         $business = Business::find($this->businessId);
         $kiosk = [];
 
-        if($business == null){
+        if ($business == null) {
             return $this->respondSuccess([]);
         }
 
-        foreach ($business->kiosk()->get() as $value)
-        {
+        foreach ($business->kiosk()->get() as $value) {
             $tio = Kioskqrcode::where('ip', $value->remoteAddress)->where('updated_at', '>=', Carbon::now()->addMinute(-5)->toDateTimeString())->first();
-            if ($tio != null)
+            if ($tio != null) {
                 array_push($kiosk, $value);
+            }
+
         }
 
         return $this->respondSuccess([
             'staff' => [
                 'count' => $business->staff()->count(),
-                'online' => $business->staff()->where('online', 1)->get()
+                'online' => $business->staff()->where('online', 1)->get(),
             ],
             'experience' => [
-                'count' => $business->experience()->count()
+                'count' => $business->experience()->count(),
             ],
-            'kiosk' =>[
+            'kiosk' => [
                 'count' => $business->kiosk()->count(),
-                'online' => $kiosk
+                'online' => $kiosk,
             ],
             'lastPayment' => $business->lastPayment()->get(),
             'lastLog' => $business->lastLog()->get(),
-            'paymentHistory' => $business->staffWithPayment()->get()
+            'paymentHistory' => $business->staffWithPayment()->get(),
         ]);
     }
 }

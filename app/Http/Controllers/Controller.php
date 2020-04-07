@@ -50,7 +50,7 @@ class Controller extends BaseController
 
     public function learnGeoPlugin($ip)
     {
-        if (\App::environment('local')) {
+        if ($ip == '::1') {
             $result = (object) [];
             $result->geoplugin_request = $ip;
             $result->geoplugin_status = 200;
@@ -76,7 +76,8 @@ class Controller extends BaseController
         if ($statusCode != 200) {
             log::info('ip is location learn failed ip:' . $ip);
         }
-        return json_decode(unserialize($content));
+
+        return (object) unserialize($content);
     }
 
 }

@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f91cbb7-cbf0-4371-831c-34425797dcaf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../../public/admin/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/../../public/admin/css/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Mehmet.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/eslintPlugin.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -21,17 +21,20 @@
     <auto-save>true</auto-save>
   </component>
   <component name="ProjectId" id="1a794UyRIdQCq571ZUx6JMK5XaO" />
-  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
-    <property name="settings.editor.selected.configurable" value="reference.settingsdialog.IDE.editor.colors" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../.eslintrc" />
+    <property name="settings.editor.selected.configurable" value="com.eslint.settings.ESLintSettingsPage" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -49,10 +52,29 @@
       <workItem from="1582990640307" duration="756000" />
       <workItem from="1582991608281" duration="130000" />
       <workItem from="1586075584292" duration="1494000" />
+      <workItem from="1586159596028" duration="494000" />
+      <workItem from="1586166165373" duration="563000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="1" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="552" y="183" key="#Notifications" timestamp="1586160077873">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="552" y="183" key="#Notifications/0.0.1920.1050/-1366.306.1366.738@0.0.1920.1050" timestamp="1586160077873" />
+    <state x="902" y="269" key="FileChooserDialogImpl" timestamp="1586160091503">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="902" y="269" key="FileChooserDialogImpl/0.0.1920.1050/-1366.306.1366.738@0.0.1920.1050" timestamp="1586160091503" />
+    <state x="536" y="137" key="SettingsEditor" timestamp="1586160096605">
+      <screen x="0" y="0" width="1920" height="1050" />
+    </state>
+    <state x="536" y="137" key="SettingsEditor/0.0.1920.1050/-1366.306.1366.738@0.0.1920.1050" timestamp="1586160096605" />
   </component>
 </project>
