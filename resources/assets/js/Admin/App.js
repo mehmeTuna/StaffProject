@@ -1,13 +1,16 @@
+require('../bootstrap')
 import React from 'react'
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
 
-import Navbar from './src/Navbar'
-import Sidebar from './src/Sidebar'
+import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import ReactDOM from 'react-dom'
+
+import Navbar from './src/navbar'
+import Sidebar from './src/sidebar'
 import Footer from './src/Footer'
 import StaffCreate from './src/StaffCreate'
 import StaffList from './src/StaffList'
 import Home from './src/Home'
-import ExperienceDefine from './src/ExperienceDefine'
+import ExperienceCreate from './src/ExperienceCreate'
 import ExperienceList from './src/ExperienceList'
 import KioskList from './src/KioskList'
 import KioskCreate from './src/KioskCreate'
@@ -50,7 +53,7 @@ export default class App extends React.Component {
                       '/' + `${this.state.data.username + '/experience/create'}`
                     }
                   >
-                    <ExperienceDefine data={this.state.data} />
+                    <ExperienceCreate data={this.state.data} />
                   </Route>
                   <Route
                     path={
@@ -91,4 +94,8 @@ export default class App extends React.Component {
       </Router>
     )
   }
+}
+
+if (document.getElementById('root')) {
+  ReactDOM.render(<App />, document.getElementById('root'))
 }

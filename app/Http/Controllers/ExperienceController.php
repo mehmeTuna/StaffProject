@@ -101,8 +101,19 @@ class ExperienceController extends Controller
 
     public function listEx()
     {
-        $business = Business::where('id', $this->businessId)->active()->first();
-        $experience = $business->experience()->get();
+        $business = Business::find( $this->businessId);
+        $experience = $business->experience()->where('experience.active', 1)->get();
+
+        $experience = $experience->map(function($value){
+            $data = (object)[];
+            $data->value = $value->id;
+            $data->name = $value->identifier;
+            $data->workingPlan = $value->workingPlan;
+            $data->pay = $value->pay ;
+            $data->factor = $value->factor ;
+            $data->periode = $value->periode ;
+            return $data ;
+        });
 
         return $this->respondSuccess($experience);
     }

@@ -48,7 +48,7 @@ class Handler extends ExceptionHandler
 
         if ($this->isHttpException($exception))
         {
-          //  return redirect()->guest('404');
+            return redirect()->guest('404');
         }
 
         return parent::render($request, $exception);

@@ -5,7 +5,7 @@
     "jest": true,
     "es6": true
   },
-  "plugins": ["import"],
+  "plugins": ["import", "@babel/plugin-proposal-optional-chaining"],
   "extends": ["plugin:prettier/recommended"],
   "parserOptions": {
     "ecmaVersion": 2018,
@@ -15,6 +15,6 @@
     "no-console": "warn",
     "no-eval": "error",
     "import/first": "error",
-    "quotes": [2, "single", { "avoidEscape": true }]
+    "quotes": [2, "single", {"avoidEscape": true}]
   }
 }
