@@ -4,12 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Business;
 use App\Experience;
+use App\Kiosk;
 use App\PaymentHistory;
 use App\Staff;
-use App\Kiosk;
 use App\Tio;
 use Illuminate\Http\Request;
-use function foo\func;
 
 class ResponseDataController extends Controller
 {
@@ -28,7 +27,7 @@ class ResponseDataController extends Controller
         $experience = Experience::where('Business', session('businessId'))->get();
 
         $result = $experience->map(function ($val) {
-            $data = (object)[];
+            $data = (object) [];
 
             $data->experience = $val;
 
@@ -36,7 +35,7 @@ class ResponseDataController extends Controller
             $allStaff = Staff::where('Experience', $val->Id)->limit(25)->get();
 
             $data->staffList = $allStaff->map(function ($val) {
-                $data = (object)[];
+                $data = (object) [];
 
                 $data->username = $val->FirstName . ' ' . $val->LastName;
                 $data->img = $val->Image;
@@ -74,9 +73,9 @@ class ResponseDataController extends Controller
             'logHistory' => $logHistory,
             'logCount' => $logCount,
             'paymentHistoryData' => [
-                'total' => $paymentHistoryTotalCalculatedPrice
+                'total' => $paymentHistoryTotalCalculatedPrice,
             ],
-            'paymentHistory' => $paymentHistory
+            'paymentHistory' => $paymentHistory,
         ]);
     }
 
@@ -85,7 +84,7 @@ class ResponseDataController extends Controller
         $response = Kiosk::where('business', session('businessId'))->where('active', 1)->get();
 
         $result = $response->map(function ($val) {
-            $data = (object)[];
+            $data = (object) [];
             $data->id = $val->id;
             $data->name = $val->identifier;
             $data->ip = $val->remoteAddress;
@@ -98,7 +97,7 @@ class ResponseDataController extends Controller
             $logHistoryCount = Tio::where('business', $val->business)->where('kioskId', $data->id)->count();
 
             $data->logHistory = $logHistory->map(function ($val) use ($logHistoryCount) {
-                $data = (object)[];
+                $data = (object) [];
                 $data->count = $logHistoryCount;
                 $user = Staff::where('id', $val->staff)->get();
                 $data->username = $user[0]->firstname . ' ' . $user[0]->lastName;
@@ -118,11 +117,11 @@ class ResponseDataController extends Controller
     {
         $id = $request->id;
         $kiosk = Kiosk::where('id', $id)->where('business', session('businessId'))->update([
-            'active' => 0
+            'active' => 0,
         ]);
 
         return response()->json([
-            'status' => true
+            'status' => true,
         ]);
     }
 
@@ -135,8 +134,8 @@ class ResponseDataController extends Controller
                     'type' => 'content',
                     'title' => 'Ooooooops kullanim sureniz sona eriyor.',
                     'content' => 'Isterseniz <a href="' . 'http://' . $request->getHost() . '/#section-pricing">Planlarimiza</a> goz atabilirsiniz.',
-                    'footer' => ''
-                ]
+                    'footer' => '',
+                ],
             ],
         ]);
     }
@@ -144,20 +143,20 @@ class ResponseDataController extends Controller
     public function businessPageSearch(Request $request)
     {
         $queryText = $request->q;
-        if (strlen($queryText) <= 3)
+        if (strlen($queryText) <= 3) {
             return response()->json([
-                'status' => false
+                'status' => false,
             ]);
+        }
 
         $staffResult = Staff::where('active', 1)->where('Business', session('businessId'))->where('FirstName', 'like', "%$queryText%")->where('LastName', 'like', "%$queryText%")->get();
 
         $experinceResult = Experience::where('active', 1)->where('Business', session('businessId'))->where('Identifier', 'like', "%$queryText%")->get();
 
-
         $factorText = [
             'hour' => 'hourly',
             'week' => 'weekly',
-            'month' => 'monthly'
+            'month' => 'monthly',
         ];
 
         $result['staff'] = $staffResult->map(function ($user) use ($factorText) {
@@ -169,7 +168,7 @@ class ResponseDataController extends Controller
         });
 
         $result['experience'] = $experinceResult->map(function ($val) {
-            $data = (object)[];
+            $data = (object) [];
 
             $data->experience = $val;
 
@@ -177,7 +176,7 @@ class ResponseDataController extends Controller
             $allStaff = Staff::where('Experience', $val->Id)->limit(25)->get();
 
             $data->staffList = $allStaff->map(function ($val) {
-                $data = (object)[];
+                $data = (object) [];
 
                 $data->username = $val->FirstName . ' ' . $val->LastName;
                 $data->img = $val->Image;
@@ -192,7 +191,7 @@ class ResponseDataController extends Controller
         return response()->json([
             'status' => true,
             'length' => count($result['staff']) + count($result['experience']),
-            'data' => $result
+            'data' => $result,
         ]);
     }
 
