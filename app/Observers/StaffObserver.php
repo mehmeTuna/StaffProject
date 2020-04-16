@@ -6,6 +6,7 @@ namespace App\Observers;
 use App\Career;
 use App\Employment;
 use App\Staff;
+use App\Tio;
 use Carbon\Carbon;
 
 class StaffObserver
@@ -81,4 +82,5 @@ class StaffObserver
             'employment' => $employment->id
         ]);
     }
+
 }

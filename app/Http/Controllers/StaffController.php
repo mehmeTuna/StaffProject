@@ -183,73 +183,53 @@ class StaffController extends Controller
 
     public function staffLoginPage(Request $request)
     {
-        $kiosk = Kioskqrcode::where('code', $request->code)->first();
+        $kioskQrCode = Kioskqrcode::where('code', $request->code)->firstOrFail();
         $staff = Staff::where('loginToken', $request->cookie($this->staffCookieName))->first();
 
-        if (  $kiosk == null) {
-            return view('404');
-        }
-
-        $kiosk->update([
-            'active' => 0
-        ]);
-        $kiosk->save();
+        $kioskQrCode->active = 0;
+        $kioskQrCode->save();
 
         session()->put('registerTime', time());
-        session()->put('kioskIp', $kiosk->ip);
+        session()->put('kioskIp', $kioskQrCode->ip);
 
-        if($staff != null)
+        if($staff == null)
         {
-            $kiosk = Kiosk::where('remoteAddress', $kiosk->ip)->first();
-
-            if ($kiosk != null) {
-                $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
-
-                $staff->update([
-                    'online' =>  (int)$staff->online ? 0 : 1
-                ]);
-
-                if ($tio == null) {
-                    //staff daha once herhangi giris cikis islemi yapmamaissa
-                    $newTio = Tio::create([
-                        'staff' => $staff->id,
-                        'kioskId' => session()->get('kioskIp'),
-                        'traffic' => 'Enter',
-                        'business' => $staff->business,
-                    ]);
-                } else {
-                    //staff daha once giris cikis islemi yapmissa
-                    $newTio = Tio::create([
-                        'staff' => $staff->id,
-                        'kioskId' => session()->get('kioskIp'),
-                        'traffic' => $tio->traffic == 'Enter' ? 'Leave' : 'Enter',
-                        'business' => $staff->business,
-                    ]);
-
-                    //user cikis islemi yaptiginda hesaplamaya dahil edilecek fiyati
-                    if ($tio->traffic == 'Enter') {
-                        $difference = time() - $tio->created_at->timestamp;
-                        $multiplier = $staff->salary * ($difference / 3300);
-
-                        $oldBalance = $staff->balance;
-                        $newBalance = round(($oldBalance + $multiplier), 2);
-
-                        $staff->update(['balance' => $newBalance]);
-
-                        $staff->save();
-                    }
-                }
-
-                session()->put('staff', $staff->id);
-                session()->forget('kioskIp');
-                session()->forget('registerTime');
-
-                return redirect('/staff/home');
-            }
+            return view('staff.login');
         }
 
+        $kiosk = Kiosk::where('remoteAddress', $kioskQrCode->ip)->first();
 
+        if ($kiosk != null) {
 
+            //staff daha once giris cikis islemi yapmissa
+            $newTio = Tio::create([
+                'staff' => $staff->id,
+                'kioskId' => session()->get('kioskIp'),
+                'traffic' => $staff->online == 'Enter' ? 'Leave' : 'Enter',
+                'business' => $staff->business,
+            ]);
+
+            //user cikis islemi yaptiginda hesaplamaya dahil edilecek fiyati
+            if ($newTio->traffic == 'Leave') {
+                $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
+                $difference = time() - $tio->created_at->timestamp;
+                $multiplier = $staff->salary * ($difference / 3300);
+
+                $oldBalance = $staff->balance;
+                $newBalance = round(($oldBalance + $multiplier), 2);
+
+                $staff->balance = $newBalance ;
+            }
+
+            $staff->online = !$staff->online ;
+            $staff->save();
+
+            session()->put('staff', $staff->id);
+            session()->forget('kioskIp');
+            session()->forget('registerTime');
+
+            return redirect('/staff/home');
+        }
         return view('staff.login');
     }
 
@@ -260,14 +240,7 @@ class StaffController extends Controller
 
     public function staffLogin(StoreStaffLogin $request)
     {
-        $staff = Staff::where('email', $request->username)->first();
-
-        if ($staff == null) {
-            return response()->json([
-                'status' => false,
-                'text' => 'Username and password incorrect',
-            ]);
-        }
+        $staff = Staff::where('email', $request->username)->firstOrFail();
 
         if (!Hash::check($request->password, $staff->password)) {
             return response()->json([
@@ -278,70 +251,59 @@ class StaffController extends Controller
 
         if (session()->has('kioskIp')) {
             $kiosk = Kiosk::where('remoteAddress', session()->get('kioskIp'))->first();
-
-            if ($kiosk != null) {
-
-                $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
-
-                $staff->update([
-                    'online' =>  (int)$staff->online ? 0 : 1
-                ]);
-
-                if ($tio == null) {
-                    //staff daha once herhangi giris cikis islemi yapmamaissa
-                    $newTio = Tio::create([
-                        'staff' => $staff->id,
-                        'kioskId' => session()->get('kioskIp'),
-                        'traffic' => 'Enter',
-                        'business' => $staff->business,
-                    ]);
-                } else {
-                    //staff daha once giris cikis islemi yapmissa
-                    $newTio = Tio::create([
-                        'staff' => $staff->id,
-                        'kioskId' => session()->get('kioskIp'),
-                        'traffic' => $tio->traffic == 'Enter' ? 'Leave' : 'Enter',
-                        'business' => $staff->business,
-                    ]);
-
-                    //user cikis islemi yaptiginda hesaplamaya dahil edilecek fiyati
-                    if ($tio->traffic == 'Enter') {
-                        $difference = time() - $tio->created_at->timestamp;
-                        $multiplier = $staff->salary * ($difference / 3300);
-
-                        Tio::where('id', $tio->id)->update(['active' => 0]);
-                        Tio::where('id', $newTio->id)->update(['active' => 0]);
-
-                        $oldBalance = $staff->balance;
-                        $newBalance = round(($oldBalance + $multiplier), 2);
-                        Staff::where('id', $staff->id)->update(['balance' => $newBalance]);
-                    }
-                }
-
-                session()->put('staff', $staff->id);
-                session()->forget('kioskIp');
-                session()->forget('registerTime');
-
+            if($kiosk == null)
+            {
                 return response()->json([
-                    'status' => true,
-                    'text' => 'Basarili  giris',
+                    'status' => false,
+                    'text' => 'error',
                 ]);
             }
+
+            $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
+
+            $newTio = Tio::create([
+                'staff' => $staff->id,
+                'kioskId' => session()->get('kioskIp'),
+                'traffic' => $staff->online ? 'Leave' : 'Enter',
+                'business' => $staff->business,
+            ]);
+
+            if($staff->online == 1) {
+                //user cikis islemi yaptiginda hesaplamaya dahil edilecek fiyati
+                if ($tio->traffic == 'Enter') {
+                    $difference = time() - $tio->created_at->timestamp;
+                    $multiplier = $staff->salary * ($difference / 3300);
+
+                    Tio::where('id', $tio->id)->update(['active' => 0]);
+                    Tio::where('id', $newTio->id)->update(['active' => 0]);
+
+                    $oldBalance = $staff->balance;
+                    $newBalance = round(($oldBalance + $multiplier), 2);
+                    $staff->balance = $newBalance;
+                }
+            }
+
+            $staff->online = !$staff->online ;
+            session()->put('staff', $staff->id);
+            session()->forget('kioskIp');
+            session()->forget('registerTime');
+
+            $token =str_random(60);
+
+            $staff->loginToken = $token;
+
+            $staff->save();
+
+            return response()->json([
+                'status' => true,
+                'text' => 'Basarili  giris',
+            ])->cookie($this->staffCookieName, $token, $this->oneYearCookieTime());
         }
 
-        $token =str_random(60);
-
-        $staff->update([
-            'loginToken' => $token
-        ]);
-
-        $staff->save();
-
-        session()->put('staff', $staff->id);
         return response()->json([
-            'status' => true,
-            'text' => ':)',
-        ])->cookie($this->staffCookieName, $token, $this->oneYearCookieTime());
+            'status' => false,
+            'text' => 'you have not logged in for a long time',
+        ]);
     }
 
     public function me()
