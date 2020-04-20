@@ -88,4 +88,25 @@ class BusinessControllerTest extends TestCase
             ]);
     }
 
+    public function testUpdate()
+    {
+        //TODO: bu kisimda business data update kismi
+    }
+
+    public function testLogout()
+    {
+        $business = Business::all()->random(1)->first();
+
+        $response = $this->withSession([
+            'businessId' => $business->id
+        ])->post('/business/logout');
+
+        $response->assertStatus(200)
+            ->assertJson([
+                'status' => true,
+                'text' => trans('auth.success'),
+                'data' => []
+            ]);
+    }
+
 }
