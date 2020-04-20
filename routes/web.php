@@ -41,7 +41,7 @@ Route::middleware(['staff'])->group(function(){
 
 Route::prefix('business')->group(function(){
   Route::post('loginData', 'BusinessController@login');
-  Route::post('register', 'BusinessController@register'); //isletme kayit icin post edilecek yer
+  Route::post('register', 'BusinessController@register');
 
 
   //kiosk islemleri bu kisim istekleri  sadece  kiosk requestleri icin dir

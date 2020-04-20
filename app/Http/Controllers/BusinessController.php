@@ -24,11 +24,6 @@ class BusinessController extends Controller
         });
     }
 
-    public function registerPage()
-    {
-        return view('business.register');
-    }
-
     public function loginPage()
     {
         return view('business.login');
