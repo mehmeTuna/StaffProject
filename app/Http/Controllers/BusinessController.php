@@ -143,6 +143,42 @@ class BusinessController extends Controller
         return redirect("/{$business->username}/");
     }
 
+    public function apiRegister(StoreBusinessRegister $request)
+    {
+        $email = $request->email;
+        $businessName = $request->businessName;
+        $phone = $request->telephone;
+        $password = $request->password;
+        $locationData = $this->learnGeoPlugin($request->ip());
+        $business = (object) [];
+
+        try {
+            $business = Business::create([
+                "email" => $email,
+                "businessName" => $businessName,
+                "phone" => $phone,
+                "password" => Hash::make($password),
+                "country" => $locationData->geoplugin_countryName,
+                "lang" => $locationData->geoplugin_countryCode,
+                'data' => [
+                    'currencySymbol' => $locationData->geoplugin_currencySymbol,
+                    'timeZone' => $locationData->geoplugin_timezone,
+                    'countryCode' => $locationData->geoplugin_countryCode,
+                    'country' => $locationData->geoplugin_countryName,
+                    'currencyCode' => $locationData->geoplugin_currencyCode,
+                    'currencySymbolUtf8' => $locationData->geoplugin_currencySymbol_UTF8,
+                ],
+            ]);
+        } catch (QueryException $exception) {
+            Log::debug($exception->errorInfo);
+        }
+
+        session()->put("businessId", $business->id);
+        return $this->respondSuccess([
+            'businessSlugName' => $business->username
+        ]);
+    }
+
     public function home()
     {
         return view("business.Home");
@@ -163,9 +199,9 @@ class BusinessController extends Controller
             'address' => $business->address,
             'webPage' => $business->webPage,
             'phone' => $business->phone,
-            'country' => $business->data->country,
-            'currencySymbolUtf8' => $business->data->currencySymbolUtf8,
-            'currencySymbol' => $business->data->currencySymbol,
+            'country' => is_object($business->data) ? $business->data->country : '',
+            'currencySymbolUtf8' => is_object($business->data) ? $business->data->currencySymbolUtf8 : '',
+            'currencySymbol' => is_object($business->data) ? $business->data->currencySymbol : '',
         ]);
     }
 

@@ -35,6 +35,16 @@ class Staff extends Model
 
     }
 
+    public function experinceData()
+    {
+        return $this->hasOne('App\Experience','' , '')->where('experience.active', 1);
+    }
+
+    public function businessOwner()
+    {
+        return $this->hasOne('App\Business', 'id' , 'business');
+    }
+
     public function paymentHistory()
     {
         return $this->hasMany("App\PaymentHistory", "staff", "id")->orderBy('created_at', 'desc')->limit(100);

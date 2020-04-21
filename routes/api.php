@@ -13,3 +13,5 @@ use Illuminate\Http\Request;
 |
 */
 
+
+Route::post('business/register', 'BusinessController@apiRegister');

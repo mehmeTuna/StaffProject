@@ -59,7 +59,6 @@ Route::middleware(['business'])->group(function(){
         Route::post('data', 'BusinessController@businessData');
         Route::post('update', 'BusinessController@update');
         Route::post('logout', 'BusinessController@logout');
-        Route::post('search', 'ResponseDataController@businessPageSearch');
 
         Route::post("staff/list", 'StaffController@staffList');
         Route::post("staff/payment/history", 'StaffController@paymentHistory');

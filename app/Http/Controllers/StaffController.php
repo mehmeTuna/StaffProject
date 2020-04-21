@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Business;
 use App\Experience;
+use App\Http\Requests\BusinessStaffRelationship;
 use App\Http\Requests\StaffCreateRequest;
 use App\Http\Requests\StaffPayment;
 use App\Http\Requests\StoreStaffLogin;
@@ -27,10 +28,9 @@ class StaffController extends Controller
         });
     }
 
-    //TODO: bu kisim ismi degistirelecek. Daha uygun bir isim bul
     public function payment(StaffPayment $request)
     {
-        $user = (int)$request->userId;
+        $user = $request->userId;
         $pay = (int) $request->pay;
         $comment = $request->comment ;
 
@@ -102,36 +102,26 @@ class StaffController extends Controller
         return $this->respondSuccess();
     }
 
-    public function paymentHistory(Request $request)
+    public function paymentHistory(BusinessStaffRelationship $request)
     {
-        $staffId = (int)$request->userId;
+        $staff = Staff::find('id', $request->userId)->with(['businessOwner', 'paymentHistory']);
 
-        $staff = Staff::where('id', $staffId)->first();
-        $business = Business::find($staff->business);
-        if($staff == null)
-            return $this->respondFail();
-
-        $data = $staff->paymentHistory()->get();
-        if($data == null)
-            return $this->respondSuccess([]);
-
-        $response = $data->map(function($data) use ($business) {
+        $data = [];
+        foreach ($staff->paymentHistory as $value){
             $response = (object)[];
-            $response->amount = $data->pay .' '. $business->data->currencySymbolUtf8;
-            $response->comment = $data->comment ;
-            $response->date = $data->created_at->toDateString();
-            return $response;
-        });
+            $response->amount = $value->pay .' '. $value->businessOwner->data->currencySymbolUtf8;
+            $response->comment = $value->comment ;
+            $response->date = $value->created_at->toDateString();
+            $data[] = $response ;
+        }
 
-        return $this->respondSuccess($response);
+        return $this->respondSuccess($data);
     }
 
     public function logHistory(Request $request)
     {
-        $staffId = $request->userId;
+        $staffId = (int)$request->userId;
         $staff = Staff::where('id', $staffId)->first();
-        if($staff == null)
-            return $this->respondFail();
 
         $data = $staff->logHistory()->get();
 
@@ -155,7 +145,7 @@ class StaffController extends Controller
         'hour' => 'hourly',
         'week' => 'weekly',
         'month' => 'monthly',
-    ];
+        ];
 
         $business = Business::where('id', $this->businessId)->active()->first() ;
         $staff = $business->staff()->get() ;

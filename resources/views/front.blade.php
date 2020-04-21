@@ -71,32 +71,9 @@
                 </div>
                 <div class="col-md-1">
                 </div>
-                <div class="col-md-5 relative align-self-center">
+                <div class="col-md-5 relative align-self-center" id='businessForm'>
 
-                    <form action="/business/register" method="post" class="bg-white rounded pb_form_v1">
-                        {{csrf_field ()}}
-                        <h2 class="mb-4 mt-0 text-center">Sign Up for Free</h2>
-                        <div class="form-group">
-                            <input type="text" class="form-control pb_height-50 reverse" name="businessName"
-                                placeholder="Business Name">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control pb_height-50 reverse" name="telephone"
-                                placeholder="Telephone">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control pb_height-50 reverse" name="email"
-                                placeholder="Business Email">
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control pb_height-50 reverse" name="password"
-                                placeholder="Password">
-                        </div>
-                        <div class="form-group">
-                            <input type="submit" class="btn btn-primary btn-lg btn-block pb_btn-pill  btn-shadow-blue"
-                                value="Register">
-                        </div>
-                    </form>
+
 
                 </div>
             </div>
@@ -652,7 +629,7 @@
             <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
             <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
                 stroke="#1d82ff" /></svg></div>
-
+    <script src="/public/businessRegister/js/app.js"></script>
 
     <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
     <!-- cookie policy js file-->
