@@ -57,14 +57,14 @@ class StaffController extends Controller
 
     public function register(StaffCreateRequest $request)
     {
-        $img = [0 => null];
+        $img = '';
 
-        if ($request->hasFile('img0')) {
-            $image = $request->file('img0');
+        if ($request->hasFile('img')) {
+            $image = $request->file('img');
             $name = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
             $destinationPath = public_path('/images');
             $image->move($destinationPath, $name);
-            $img[0] = '/public/images/' . $name;
+            $img = '/public/images/' . $name;
         }
 
         $staff = Staff::create([
@@ -72,7 +72,7 @@ class StaffController extends Controller
             "lastName" => $request->lastName,
             "birthday" => $request->birthday,
             'password' => bcrypt($request->password),
-            "image" => $img[0],
+            "image" => $img,
             "address" => $request->address,
             "telephone" => $request->telephone,
             "gsm" => $request->telephone,

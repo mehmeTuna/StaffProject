@@ -2,7 +2,7 @@ import React from 'react'
 
 const FormSubmitBtn = ({ children, onClick }) => {
   return (
-    <div className="col-sm-12 col-md-12 grid-margin stretch-card">
+    <div className="grid-margin">
       <div className="card">
         <div className="card-body">
           <div className="row display-3">

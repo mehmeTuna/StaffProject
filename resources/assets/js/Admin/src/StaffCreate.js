@@ -53,21 +53,22 @@ class StaffCreate extends React.Component {
   }
 
   handleSubmit() {
-    if (this.state.selectedExperience === '' || this.state.img.length === 0) {
-      sweet.fire({
-        title: 'Select Experince',
-        timer: 1500
-      })
+    if (
+      this.state.img === null ||
+      this.state.firstName === '' ||
+      this.state.lastName === '' ||
+      this.state.address === '' ||
+      this.state.telephone === '' ||
+      this.state.email === '' ||
+      this.state.password === '' ||
+      typeof this.state.selectedExperience.value === 'undefined'
+    ) {
+      this.setState({ alert: true })
+      console.log('hatali')
       return
     }
 
     let formData = new FormData()
-
-    if (this.state.img.length > 0) {
-      for (let a = 0; a < this.state.img.length; a++) {
-        formData.set('img' + a, this.state.img[a].file)
-      }
-    }
 
     let customDate = new Date(this.state.birthday)
 
@@ -78,7 +79,7 @@ class StaffCreate extends React.Component {
     formData.set('lastName', this.state.lastName)
     formData.set('gender', this.state.gender)
     formData.set('martialStatus', this.state.martialStatus)
-
+    formData.set('img', this.state.img.file)
     formData.set('birthday', date)
     formData.set('address', this.state.address)
     formData.set('telephone', this.state.telephone)
@@ -148,7 +149,7 @@ class StaffCreate extends React.Component {
       return <Redirect to={this.state.redirect} />
     }
     return (
-      <div className="col-12 grid-margin">
+      <div className="container">
         <PageTitle>Staff Create</PageTitle>
         <div className="card grid-margin">
           <div className="card-body">
@@ -159,17 +160,16 @@ class StaffCreate extends React.Component {
                     src={this.state.img.url}
                     style={{ width: '100px', height: '100px' }}
                     className="img-thumbnail mx-auto"
-                   />
+                  />
                 ) : (
                   <span
-                    className="glyphicon glyphicon-folder-open align-self-center"
+                    className="glyphicon glyphicon-folder-open"
                     aria-hidden="true"
                   >
-                    <p>Select image</p>
-                    <i className="mx-auto icon-circle-plus icon-lg text-success" />
+                    <p className={this.state.alert && this.state.img === null ? 'text-danger' : ''}>Select image</p>
+                    <i className="icon-circle-plus icon-lg text-success" />
                   </span>
                 )}
-
                 <input
                   type="file"
                   id="upload"
@@ -181,20 +181,23 @@ class StaffCreate extends React.Component {
             <form>
               <div className="row justify-content-between">
                 <FormInputElement
+                  alert={this.state.alert && this.state.firstName === ''}
                   name="First Name"
                   type="text"
                   value={this.state.firstName}
                   onChange={e => this.setState({ firstName: e.target.value })}
                 />
                 <FormInputElement
+                  alert={this.state.alert && this.state.lastName === ''}
                   name="Last Name"
                   type="text"
                   value={this.state.lastName}
                   onChange={e => this.setState({ lastName: e.target.value })}
                 />
               </div>
-              <div className="row">
+              <div className="row justify-content-between align-items-end">
                 <FormInputElement
+                  alert={this.state.alert && this.state.gender === ''}
                   name="Gender"
                   type="selectBox"
                   value={{
@@ -208,13 +211,14 @@ class StaffCreate extends React.Component {
                   onChange={e => this.setState({ gender: e.target.value })}
                 />
                 <FormInputElement
+                  alert={this.state.alert && this.state.birthday === ''}
                   name="Date of Birth"
                   type="date"
                   value={this.state.birthday}
                   onChange={e => this.setState({ birthday: e })}
                 />
               </div>
-              <div className="row">
+              <div className="row justify-content-between align-items-end">
                 <FormInputElement
                   name="Martial Status"
                   type="selectBox"
@@ -231,34 +235,42 @@ class StaffCreate extends React.Component {
                   }
                 />
                 <FormInputElement
+                  alert={this.state.alert && this.state.email === ''}
                   name="E-mail"
                   type="text"
                   value={this.state.email}
                   onChange={e => this.setState({ email: e.target.value })}
                 />
               </div>
-              <div className="row">
+              <div className="row justify-content-between align-items-end">
                 <FormInputElement
+                  alert={this.state.alert && this.state.address === ''}
                   name="Address"
                   type="text"
                   value={this.state.address}
                   onChange={e => this.setState({ address: e.target.value })}
                 />
                 <FormInputElement
+                  alert={this.state.alert && this.state.telephone === ''}
                   name="GSM"
                   type="phone"
                   value={this.state.telephone}
                   onChange={e => this.setState({ telephone: e })}
                 />
               </div>
-              <div className="row">
+              <div className="row justify-content-between align-items-end">
                 <FormInputElement
+                  alert={this.state.alert && this.state.password === ''}
                   name="Password"
                   type="password"
                   value={this.state.password}
                   onChange={e => this.setState({ password: e.target.value })}
                 />
                 <FormInputElement
+                  alert={
+                    this.state.alert &&
+                    typeof this.state.selectedExperience.value === 'undefined'
+                  }
                   name="Change Experience"
                   type="selectBox"
                   value={{
@@ -273,12 +285,12 @@ class StaffCreate extends React.Component {
         </div>
         {typeof this.state.selectedExperience.value !== 'undefined' && (
           <>
-            <div className="col-12 grid-margin">
+            <div className="grid-margin">
               <div className="card">
                 <div className="card-body">
                   <PageTitle>{this.state.selectedExperience.name}</PageTitle>
                   <form className="form-sample">
-                    <div className="row">
+                    <div className="row justify-content-between align-items-end">
                       <FormInputElement
                         name="Pay"
                         type="number"
@@ -315,7 +327,7 @@ class StaffCreate extends React.Component {
                         }
                       />
                     </div>
-                    <div className="row">
+                    <div className="row justify-content-between align-items-end">
                       <FormInputElement
                         name="Periode"
                         type="number"
@@ -337,7 +349,7 @@ class StaffCreate extends React.Component {
                 </div>
               </div>
             </div>
-            <div className="col-md-12 grid-margin stretch-card">
+            <div className="grid-margin">
               <div className="card">
                 <div className="card-body">
                   <p className="card-description">
