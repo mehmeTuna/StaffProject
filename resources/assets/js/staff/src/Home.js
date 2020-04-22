@@ -26,9 +26,9 @@ export default class Home extends React.Component {
   }
 
   async componentDidMount() {
-    const {data} = await Axios.post('/staff/me')
+    const { data } = await Axios.post('/staff/me')
 
-    this.setState({data: data, loading: false})
+    this.setState({ data: data, loading: false })
   }
 
   render() {
@@ -46,7 +46,7 @@ export default class Home extends React.Component {
                       <img
                         src={this.state.data.img}
                         alt={this.state.data.username}
-                        style={{width: '100px', height: '100px'}}
+                        style={{ width: '100px', height: '100px' }}
                         className="mx-auto"
                       />
                     </div>

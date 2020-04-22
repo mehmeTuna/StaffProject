@@ -25,7 +25,7 @@ export default class App extends React.Component {
 
   handleChange(e) {
     let val = e.target.value
-    this.setState({[e.target.name]: val})
+    this.setState({ [e.target.name]: val })
   }
 
   async handleSubmit(event) {
@@ -36,35 +36,35 @@ export default class App extends React.Component {
       this.state.email === '' ||
       this.state.password === ''
     ) {
-      this.setState({alert: true})
+      this.setState({ alert: true })
       return
     }
 
     try {
-      const {data} = await Axios.post('/api/business/register', {
+      const { data } = await Axios.post('/api/business/register', {
         businessName: this.state.businessName,
         telephone: this.state.telephone,
         email: this.state.email,
         password: this.state.password
       })
 
-      window.location.replace(`/${data.data.businessSlugName}`)
+      window.location.href = `/${data.data.businessSlugName}`
     } catch (error) {
       if (typeof error.response.data.businessName !== undefined) {
         let businessNameAlert = error.response.data.businessName
-        this.setState({businessNameAlert})
+        this.setState({ businessNameAlert })
       }
       if (typeof error.response.data.email !== undefined) {
         let emailAlert = error.response.data.email
-        this.setState({emailAlert})
+        this.setState({ emailAlert })
       }
       if (typeof error.response.data.password !== undefined) {
         let passwordAlert = error.response.data.password
-        this.setState({passwordAlert})
+        this.setState({ passwordAlert })
       }
       if (typeof error.response.data.telephone !== undefined) {
         let telephoneAlert = error.response.data.telephone
-        this.setState({telephoneAlert})
+        this.setState({ telephoneAlert })
       }
     }
   }

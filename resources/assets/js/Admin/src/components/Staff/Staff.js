@@ -54,7 +54,7 @@ const Staff = props => {
               <div className="d-flex flex-column flex-sm-row justify-content-start align-items-center">
                 <div>
                   <Btn
-                    style={{background: theme.colors.primary}}
+                    style={{ background: theme.colors.primary }}
                     startIcon={<DetailsIcon />}
                     onClick={() => setShowData(true)}
                   >
@@ -63,9 +63,9 @@ const Staff = props => {
                 </div>
                 <div>
                   <Btn
-                    style={{background: theme.colors.danger}}
+                    style={{ background: theme.colors.danger }}
                     startIcon={<DeleteIcon />}
-                    onClick={() => props.delete({id: id, username: fullName})}
+                    onClick={() => props.delete({ id: id, username: fullName })}
                   >
                     Delete
                   </Btn>

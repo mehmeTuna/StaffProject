@@ -13,8 +13,8 @@ export default class Alert extends React.Component {
 
   componentDidMount() {
     console.log(this.props.context)
-    const {type, title, content, footer} = this.props.context
-    this.setState({type, title, content, footer})
+    const { type, title, content, footer } = this.props.context
+    this.setState({ type, title, content, footer })
   }
 
   render() {
@@ -32,7 +32,7 @@ export default class Alert extends React.Component {
                 <span aria-hidden="true">&times;</span>
               </button>
               <h4 className="alert-heading">{this.state.title}</h4>
-              <p dangerouslySetInnerHTML={{__html: this.state.content}} />
+              <p dangerouslySetInnerHTML={{ __html: this.state.content }} />
               {this.state.footer !== '' && (
                 <React.Fragment>
                   <hr />

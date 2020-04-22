@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title> Beta - Version 2.0 </title>
     <meta name="description" content="description">
     <meta name="keywords" content="keywords">
@@ -625,10 +625,12 @@
     </footer>
 
     <!-- loader -->
-    <div id="pb_loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
+    <!-- 
+        <div id="pb_loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
             <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
             <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
                 stroke="#1d82ff" /></svg></div>
+ -->
     <script src="/public/businessRegister/js/app.js"></script>
 
     <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>

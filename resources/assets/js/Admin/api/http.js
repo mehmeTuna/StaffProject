@@ -3,7 +3,7 @@ import axios from 'axios'
 const http = axios.create({
   baseURL: '/api/',
   timeout: 4000,
-  headers: {'Content-Type': 'application/json'}
+  headers: { 'Content-Type': 'application/json' }
 })
 
 http.interceptors.request.use(

@@ -1,5 +1,5 @@
 import React from 'react'
-import {makeStyles} from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import Button from '@material-ui/core/Button'
 
 const useStyles = makeStyles(theme => ({
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function Btn({children, ...props}) {
+export default function Btn({ children, ...props }) {
   const classes = useStyles()
   return (
     <Button className={classes.root} {...props}>

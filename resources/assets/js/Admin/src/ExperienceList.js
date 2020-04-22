@@ -2,9 +2,9 @@ import React from 'react'
 import Axios from 'axios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-import {experienceList} from './../api/business'
+import { experienceList } from './../api/business'
 
 const sweet = withReactContent(Swal)
 
@@ -123,7 +123,7 @@ function ExperienceRender(props) {
                             src={val.img}
                             alt={`${val.firstName} ${val.lastName}`}
                             className="mr-1 rounded-circle z-depth-2"
-                            style={{width: '50px', height: '50px'}}
+                            style={{ width: '50px', height: '50px' }}
                           />
                           <p> {val.username} </p>
                         </div>
@@ -156,9 +156,9 @@ class ExperienceList extends React.Component {
   }
 
   async componentDidMount() {
-    const {status, data} = await experienceList()
+    const { status, data } = await experienceList()
 
-    if (status === true) this.setState({list: data})
+    if (status === true) this.setState({ list: data })
   }
 
   deleteEx(id, username) {
@@ -173,14 +173,14 @@ class ExperienceList extends React.Component {
       })
       .then(result => {
         if (result.value) {
-          this.delete({id, username})
+          this.delete({ id, username })
         }
       })
   }
 
-  async delete({id, username}) {
-    this.setState({list: this.state.list.filter(e => e.id !== id)})
-    const {status} = await Axios.post('/business/experience/delete', {
+  async delete({ id, username }) {
+    this.setState({ list: this.state.list.filter(e => e.id !== id) })
+    const { status } = await Axios.post('/business/experience/delete', {
       id: id
     })
 

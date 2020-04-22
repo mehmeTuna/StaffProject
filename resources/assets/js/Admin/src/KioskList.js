@@ -1,6 +1,6 @@
 import React from 'react'
 import Axios from 'axios'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
@@ -120,13 +120,13 @@ export default class KioskList extends React.Component {
   }
 
   async getData() {
-    const {data} = await Axios.post('/business/kiosk/list')
+    const { data } = await Axios.post('/business/kiosk/list')
 
-    this.setState({listData: data})
+    this.setState({ listData: data })
   }
 
   async deleteData(id) {
-    const {data} = await axios.post('/business/kiosk/delete', {
+    const { data } = await axios.post('/business/kiosk/delete', {
       id: id
     })
 

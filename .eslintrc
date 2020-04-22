@@ -5,16 +5,15 @@
     "jest": true,
     "es6": true
   },
-  "plugins": ["import", "@babel/plugin-proposal-optional-chaining"],
-  "extends": ["plugin:prettier/recommended"],
+  "plugins": ["import"],
   "parserOptions": {
     "ecmaVersion": 2018,
     "sourceType": "module"
   },
   "rules": {
+    "semi": ["error", "never"],
     "no-console": "warn",
     "no-eval": "error",
-    "import/first": "error",
-    "quotes": [2, "single", {"avoidEscape": true}]
+    "quotes": [2, "single"]
   }
 }

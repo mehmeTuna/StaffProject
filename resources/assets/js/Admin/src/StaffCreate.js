@@ -1,5 +1,5 @@
 import React from 'react'
-import {Redirect} from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import withReactContent from 'sweetalert2-react-content'
@@ -110,9 +110,9 @@ class StaffCreate extends React.Component {
   }
 
   async componentDidMount() {
-    const {data} = await axios.post('/business/experience/list')
+    const { data } = await axios.post('/business/experience/list')
 
-    this.setState({workingData: data.data})
+    this.setState({ workingData: data.data })
   }
 
   handleChange(event) {
@@ -138,11 +138,11 @@ class StaffCreate extends React.Component {
       let alert = this.state.alert
       alert.pay.status = true
       alert.pay.text = `minimum ${min} tutar giriniz`
-      this.setState({alert: alert})
+      this.setState({ alert: alert })
     } else {
       let alert = this.state.alert
       alert.pay.status = false
-      this.setState({alert: alert})
+      this.setState({ alert: alert })
     }
   }
 
@@ -161,7 +161,7 @@ class StaffCreate extends React.Component {
                   this.state.img.map(val => (
                     <img
                       src={val.url}
-                      style={{width: '100px', height: '100px'}}
+                      style={{ width: '100px', height: '100px' }}
                       className="img-thumbnail mx-auto"
                     />
                   ))
@@ -178,7 +178,7 @@ class StaffCreate extends React.Component {
                 <input
                   type="file"
                   id="upload"
-                  style={{display: 'none'}}
+                  style={{ display: 'none' }}
                   onChange={this.handleChange}
                 />
               </label>
@@ -189,13 +189,13 @@ class StaffCreate extends React.Component {
                   name="First Name"
                   type="text"
                   value={this.state.firstName}
-                  onChange={e => this.setState({firstName: e.target.value})}
+                  onChange={e => this.setState({ firstName: e.target.value })}
                 />
                 <FormInputElement
                   name="Last Name"
                   type="text"
                   value={this.state.lastName}
-                  onChange={e => this.setState({lastName: e.target.value})}
+                  onChange={e => this.setState({ lastName: e.target.value })}
                 />
               </div>
               <div className="row">
@@ -205,18 +205,18 @@ class StaffCreate extends React.Component {
                   value={{
                     value: this.state.gender,
                     data: [
-                      {value: 'unspecified', name: 'Unspecified'},
-                      {value: 'male', name: 'Male'},
-                      {value: 'female', name: 'Female'}
+                      { value: 'unspecified', name: 'Unspecified' },
+                      { value: 'male', name: 'Male' },
+                      { value: 'female', name: 'Female' }
                     ]
                   }}
-                  onChange={e => this.setState({gender: e.target.value})}
+                  onChange={e => this.setState({ gender: e.target.value })}
                 />
                 <FormInputElement
                   name="Date of Birth"
                   type="date"
                   value={this.state.birthday}
-                  onChange={e => this.setState({birthday: e})}
+                  onChange={e => this.setState({ birthday: e })}
                 />
               </div>
               <div className="row">
@@ -226,18 +226,20 @@ class StaffCreate extends React.Component {
                   value={{
                     value: this.state.martialStatus,
                     data: [
-                      {value: 'unspecified', name: 'Unspecified'},
-                      {value: 'single', name: 'Single'},
-                      {value: 'married', name: 'Married'}
+                      { value: 'unspecified', name: 'Unspecified' },
+                      { value: 'single', name: 'Single' },
+                      { value: 'married', name: 'Married' }
                     ]
                   }}
-                  onChange={e => this.setState({martialStatus: e.target.value})}
+                  onChange={e =>
+                    this.setState({ martialStatus: e.target.value })
+                  }
                 />
                 <FormInputElement
                   name="E-mail"
                   type="text"
                   value={this.state.email}
-                  onChange={e => this.setState({email: e.target.value})}
+                  onChange={e => this.setState({ email: e.target.value })}
                 />
               </div>
               <div className="row">
@@ -245,13 +247,13 @@ class StaffCreate extends React.Component {
                   name="Address"
                   type="text"
                   value={this.state.address}
-                  onChange={e => this.setState({address: e.target.value})}
+                  onChange={e => this.setState({ address: e.target.value })}
                 />
                 <FormInputElement
                   name="GSM"
                   type="phone"
                   value={this.state.telephone}
-                  onChange={e => this.setState({telephone: e})}
+                  onChange={e => this.setState({ telephone: e })}
                 />
               </div>
               <div className="row">
@@ -259,7 +261,7 @@ class StaffCreate extends React.Component {
                   name="Password"
                   type="password"
                   value={this.state.password}
-                  onChange={e => this.setState({password: e.target.value})}
+                  onChange={e => this.setState({ password: e.target.value })}
                 />
                 <FormInputElement
                   name="Change Experience"
@@ -291,7 +293,7 @@ class StaffCreate extends React.Component {
                             selectedExperience: Object.assign(
                               {},
                               this.state.selectedExperience,
-                              {pay: e.target.value > 0 ? e.target.value : 1}
+                              { pay: e.target.value > 0 ? e.target.value : 1 }
                             )
                           })
                         }
@@ -302,9 +304,9 @@ class StaffCreate extends React.Component {
                         value={{
                           value: this.state.selectedExperience.factor,
                           data: [
-                            {value: 'hour', name: 'Hour'},
-                            {value: 'week', name: 'Week'},
-                            {value: 'month', name: 'Month'}
+                            { value: 'hour', name: 'Hour' },
+                            { value: 'week', name: 'Week' },
+                            { value: 'month', name: 'Month' }
                           ]
                         }}
                         onChange={e =>
@@ -312,7 +314,7 @@ class StaffCreate extends React.Component {
                             selectedExperience: Object.assign(
                               {},
                               this.state.selectedExperience,
-                              {factor: e.target.value}
+                              { factor: e.target.value }
                             )
                           })
                         }
@@ -328,7 +330,9 @@ class StaffCreate extends React.Component {
                             selectedExperience: Object.assign(
                               {},
                               this.state.selectedExperience,
-                              {periode: e.target.value > 0 ? e.target.value : 1}
+                              {
+                                periode: e.target.value > 0 ? e.target.value : 1
+                              }
                             )
                           })
                         }
@@ -349,12 +353,12 @@ class StaffCreate extends React.Component {
                     deletePlan={e => {
                       let data = this.state.workingPlan
                       data[e.day].splice(e.index, 1)
-                      this.setState({workingPlan: data})
+                      this.setState({ workingPlan: data })
                     }}
                     addPlan={e => {
                       let data = this.state.workingPlan
-                      data[e.day].push({start: e.start, end: e.end})
-                      this.setState({workingPlan: data})
+                      data[e.day].push({ start: e.start, end: e.end })
+                      this.setState({ workingPlan: data })
                     }}
                   />
                 </div>

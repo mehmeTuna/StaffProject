@@ -1,6 +1,6 @@
 import React from 'react'
 
-const PageTitle = ({children}) => {
+const PageTitle = ({ children }) => {
   return (
     <div className="col-sm-12 col-md-12 grid-margin stretch-card m-2">
       <div className="card">

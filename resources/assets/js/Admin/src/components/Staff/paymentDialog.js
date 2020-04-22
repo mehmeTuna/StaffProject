@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogContentText from '@material-ui/core/DialogContentText'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
-import {staffPayment} from './../../../api/staff'
+import { staffPayment } from './../../../api/staff'
 
 export default function PaymentDialog(props) {
   const [open, setOpen] = React.useState(true)
@@ -27,7 +27,7 @@ export default function PaymentDialog(props) {
   const handlePayment = async () => {
     if (pay === '' || pay === 0) return
 
-    const data = await staffPayment({id: props.id, pay: pay})
+    const data = await staffPayment({ id: props.id, pay: pay })
 
     console.log(data) //bu kisim icin hat componenti yapildiktan sonra ekle
     handleClose()

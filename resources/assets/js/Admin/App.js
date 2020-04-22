@@ -1,7 +1,5 @@
-require('../bootstrap')
 import React from 'react'
-
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import ReactDOM from 'react-dom'
 
 import Navbar from './src/navbar'
@@ -15,9 +13,11 @@ import ExperienceList from './src/ExperienceList'
 import KioskList from './src/KioskList'
 import KioskCreate from './src/KioskCreate'
 
-import {businessData} from './api/business'
+import { businessData } from './api/business'
 
 import Profile from './src/components/profile'
+
+require('../bootstrap')
 
 export default class App extends React.Component {
   constructor(props) {
@@ -30,7 +30,7 @@ export default class App extends React.Component {
 
   async componentDidMount() {
     const data = await businessData()
-    this.setState({data})
+    this.setState({ data })
   }
 
   render() {

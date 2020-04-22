@@ -1,7 +1,7 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-const HeroProfile = ({url, name}) => (
+const HeroProfile = ({ url, name }) => (
   <div className="user-profile">
     {url != null && (
       <div className="user-image">
@@ -12,7 +12,7 @@ const HeroProfile = ({url, name}) => (
   </div>
 )
 
-const MenuListItem = ({icon, url, name}) => (
+const MenuListItem = ({ icon, url, name }) => (
   <li className="nav-item">
     <Link to={url} className="nav-link">
       <i className={icon} />
@@ -21,7 +21,7 @@ const MenuListItem = ({icon, url, name}) => (
   </li>
 )
 
-const Sidebar = ({data}) => {
+const Sidebar = ({ data }) => {
   return (
     <React.Fragment>
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
@@ -113,7 +113,7 @@ const Sidebar = ({data}) => {
             name="Profile"
           />
           <li className="nav-item">
-            <span className="nav-link" style={{cursor: 'pointer'}}>
+            <span className="nav-link" style={{ cursor: 'pointer' }}>
               <span className="menu-title">Payment Plan</span>
             </span>
           </li>

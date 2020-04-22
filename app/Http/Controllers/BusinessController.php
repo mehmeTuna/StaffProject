@@ -150,9 +150,7 @@ class BusinessController extends Controller
         $phone = $request->telephone;
         $password = $request->password;
         $locationData = $this->learnGeoPlugin($request->ip());
-        $business = (object) [];
 
-        try {
             $business = Business::create([
                 "email" => $email,
                 "businessName" => $businessName,
@@ -169,14 +167,12 @@ class BusinessController extends Controller
                     'currencySymbolUtf8' => $locationData->geoplugin_currencySymbol_UTF8,
                 ],
             ]);
-        } catch (QueryException $exception) {
-            Log::debug($exception->errorInfo);
-        }
-
-        session()->put("businessId", $business->id);
-        return $this->respondSuccess([
-            'businessSlugName' => $business->username
-        ]);
+            
+            session()->put('businessId', $business->id);
+            return $this->respondSuccess([
+                'businessSlugName' => $business->username
+            ]);
+            
     }
 
     public function home()
@@ -187,6 +183,10 @@ class BusinessController extends Controller
     public function businessData()
     {
         $business = Business::find($this->businessId);
+
+        if($business == null){
+            return $this->respondFail();
+        }
 
         return $this->respondSuccess([
             "email" => $business->email,

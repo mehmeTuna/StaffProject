@@ -16,7 +16,7 @@ export default class Home extends React.Component {
   }
 
   async componentDidMount() {
-    const {data} = await axios.post('/business/data/home')
+    const { data } = await axios.post('/business/data/home')
 
     if (data.status === true) {
       this.setState({

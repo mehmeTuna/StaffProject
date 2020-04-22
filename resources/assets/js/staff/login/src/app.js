@@ -17,29 +17,29 @@ export default class Login extends React.Component {
 
   async handleSubmit() {
     if (this.state.username === '' || this.state.password === '') {
-      this.setState({alert: true})
+      this.setState({ alert: true })
       return
     }
 
-    const {data} = await Axios.post('/kiosk/staff/login', {
+    const { data } = await Axios.post('/kiosk/staff/login', {
       username: this.state.username,
       password: this.state.password
     })
 
     if (data.status === false) {
-      this.setState({alert: true})
-      this.setState({alertText: data.text})
+      this.setState({ alert: true })
+      this.setState({ alertText: data.text })
     }
 
     if (data.status === true) {
-      this.setState({alert: false})
+      this.setState({ alert: false })
       window.location.href = '/staff/home'
     }
   }
 
   componentDidMount() {
     if (this.props.username === '' && this.props.password === '') {
-      this.setState({alert: true})
+      this.setState({ alert: true })
     }
   }
 
@@ -72,7 +72,7 @@ export default class Login extends React.Component {
                           }
                           value={this.state.username}
                           onChange={e =>
-                            this.setState({username: e.target.value})
+                            this.setState({ username: e.target.value })
                           }
                           placeholder="Username"
                         />
@@ -88,7 +88,7 @@ export default class Login extends React.Component {
                           }
                           value={this.state.password}
                           onChange={e =>
-                            this.setState({password: e.target.value})
+                            this.setState({ password: e.target.value })
                           }
                           placeholder="Password"
                         />
