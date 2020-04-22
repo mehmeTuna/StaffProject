@@ -17,7 +17,7 @@ class StaffCreate extends React.Component {
 
     this.state = {
       currencySymbolUtf8: this.props.data.currencySymbolUtf8,
-      img: [],
+      img: null,
       firstName: '',
       lastName: '',
       gender: 'unspecified',
@@ -116,14 +116,11 @@ class StaffCreate extends React.Component {
   }
 
   handleChange(event) {
-    if (this.state.img.length >= 4) return
-    let images = this.state.img
-    images.push({
-      url: URL.createObjectURL(event.target.files[0]),
-      file: event.target.files[0]
-    })
     this.setState({
-      img: images
+      img: {
+        url: URL.createObjectURL(event.target.files[0]),
+        file: event.target.files[0]
+      }
     })
   }
 
@@ -157,14 +154,12 @@ class StaffCreate extends React.Component {
           <div className="card-body">
             <div className="d-flex justify-content-center">
               <label htmlFor="upload">
-                {this.state.img.length > 0 ? (
-                  this.state.img.map(val => (
-                    <img
-                      src={val.url}
-                      style={{ width: '100px', height: '100px' }}
-                      className="img-thumbnail mx-auto"
-                    />
-                  ))
+                {this.state.img !== null ? (
+                  <img
+                    src={this.state.img.url}
+                    style={{ width: '100px', height: '100px' }}
+                    className="img-thumbnail mx-auto"
+                   />
                 ) : (
                   <span
                     className="glyphicon glyphicon-folder-open align-self-center"

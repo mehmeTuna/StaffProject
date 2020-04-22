@@ -51954,7 +51954,7 @@ function (_React$Component) {
               case 4:
                 _context.prev = 4;
                 _context.next = 7;
-                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/api/business/register', {
+                return axios__WEBPACK_IMPORTED_MODULE_3___default.a.post('/business/register', {
                   businessName: this.state.businessName,
                   telephone: this.state.telephone,
                   email: this.state.email,

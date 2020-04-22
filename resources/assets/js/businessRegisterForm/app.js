@@ -41,7 +41,7 @@ export default class App extends React.Component {
     }
 
     try {
-      const { data } = await Axios.post('/api/business/register', {
+      const { data } = await Axios.post('/business/register', {
         businessName: this.state.businessName,
         telephone: this.state.telephone,
         email: this.state.email,

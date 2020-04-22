@@ -140,39 +140,9 @@ class BusinessController extends Controller
         }
 
         session()->put("businessId", $business->id);
-        return redirect("/{$business->username}/");
-    }
-
-    public function apiRegister(StoreBusinessRegister $request)
-    {
-        $email = $request->email;
-        $businessName = $request->businessName;
-        $phone = $request->telephone;
-        $password = $request->password;
-        $locationData = $this->learnGeoPlugin($request->ip());
-
-            $business = Business::create([
-                "email" => $email,
-                "businessName" => $businessName,
-                "phone" => $phone,
-                "password" => Hash::make($password),
-                "country" => $locationData->geoplugin_countryName,
-                "lang" => $locationData->geoplugin_countryCode,
-                'data' => [
-                    'currencySymbol' => $locationData->geoplugin_currencySymbol,
-                    'timeZone' => $locationData->geoplugin_timezone,
-                    'countryCode' => $locationData->geoplugin_countryCode,
-                    'country' => $locationData->geoplugin_countryName,
-                    'currencyCode' => $locationData->geoplugin_currencyCode,
-                    'currencySymbolUtf8' => $locationData->geoplugin_currencySymbol_UTF8,
-                ],
-            ]);
-            
-            session()->put('businessId', $business->id);
-            return $this->respondSuccess([
-                'businessSlugName' => $business->username
-            ]);
-            
+        return $this->respondSuccess([
+            'businessSlugName' => $business->username
+        ]);
     }
 
     public function home()
