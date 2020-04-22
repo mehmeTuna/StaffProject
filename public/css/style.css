@@ -9167,6 +9167,7 @@ pre code {
   .container {
     max-width: 960px;
   }
+
 }
 
 @media (min-width: 1200px) {
@@ -17372,6 +17373,10 @@ button.bg-dark:focus {
   .mx-lg-5 {
     margin-right: 3rem !important;
   }
+.mr-lg-10,
+.mx-lg-10 {
+    margin-right: 15rem !important;
+}
   .mb-lg-5,
   .my-lg-5 {
     margin-bottom: 3rem !important;

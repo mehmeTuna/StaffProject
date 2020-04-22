@@ -1,6 +1,5 @@
 import React from 'react'
 import axios from 'axios'
-import TimeField from 'react-simple-timefield'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import { Redirect } from 'react-router-dom'
@@ -125,7 +124,7 @@ class ExperienceCreate extends React.Component {
     }
     return (
       <React.Fragment>
-        <div className="col-12 grid-margin">
+        <div className="container">
           <PageTitle>Experience Create</PageTitle>
           <div className="card">
             <div className="card-body">
@@ -176,54 +175,55 @@ class ExperienceCreate extends React.Component {
               </form>
             </div>
           </div>
-        </div>
-        <div className="row col-12 grid-margin m-0 p-0">
-          <div
-            className={
-              this.state.workingPlan === ''
-                ? 'col-sm-12 col-md-12 grid-margin stretch-card'
-                : 'col-sm-12 col-md-4 grid-margin stretch-card'
-            }
-          >
-            <div className="card text-center">
-              <div className="card-body">Working Plan Select</div>
-              {this.state.planText.map((e, key) => (
-                <SelectPlanText
-                  onClick={e => this.setState({ workingPlan: e })}
-                  value={e.value}
-                  data={this.state.workingPlan}
-                  Text={e.text}
-                  key={key}
-                />
-              ))}
-            </div>
-          </div>
-          {this.state.workingPlan !== '' && (
-            <div className="col-md-8 grid-margin stretch-card">
-              <div className="card">
-                <div className="card-body">
-                  <p className="card-description">
-                    Defining a work plan depending on the chosen working method
-                  </p>
-                  <PlanDetail
-                    data={this.state.workingData}
-                    deletePlan={e => {
-                      let data = this.state.workingData
-                      data[e.day].splice(e.index, 1)
-                      this.setState({ workingData: data })
-                    }}
-                    addPlan={e => {
-                      let data = this.state.workingData
-                      data[e.day].push({ start: e.start, end: e.end })
-                      this.setState({ workingData: data })
-                    }}
+          <div className="grid-margin row mt-2">
+            <div
+              className={
+                this.state.workingPlan === ''
+                  ? 'col-sm-12 col-md-12 grid-margin'
+                  : 'col-sm-12 col-md-4 grid-margin'
+              }
+            >
+              <div className="card text-center">
+                <div className="card-body">Working Plan Select</div>
+                {this.state.planText.map((e, key) => (
+                  <SelectPlanText
+                    onClick={e => this.setState({ workingPlan: e })}
+                    value={e.value}
+                    data={this.state.workingPlan}
+                    Text={e.text}
+                    key={key}
                   />
-                </div>
+                ))}
               </div>
             </div>
-          )}
+            {this.state.workingPlan !== '' && (
+              <div className="col-md-8 grid-margin stretch-card">
+                <div className="card">
+                  <div className="card-body">
+                    <p className="card-description">
+                      Defining a work plan depending on the chosen working
+                      method
+                    </p>
+                    <PlanDetail
+                      data={this.state.workingData}
+                      deletePlan={e => {
+                        let data = this.state.workingData
+                        data[e.day].splice(e.index, 1)
+                        this.setState({ workingData: data })
+                      }}
+                      addPlan={e => {
+                        let data = this.state.workingData
+                        data[e.day].push({ start: e.start, end: e.end })
+                        this.setState({ workingData: data })
+                      }}
+                    />
+                  </div>
+                </div>
+              </div>
+            )}
+          </div>
+          <FormSubmitBtn onClick={this.handleSubmit}>Create</FormSubmitBtn>
         </div>
-        <FormSubmitBtn onClick={this.handleSubmit}>Create</FormSubmitBtn>
       </React.Fragment>
     )
   }

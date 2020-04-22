@@ -4,9 +4,9 @@ import selectClock from './select-time'
 
 const PlanDetail = ({ data, deletePlan, addPlan }) => {
   return Object.entries(data).map((key, index) => (
-    <div key={index} className="row display-4">
-      <div className="col-3">{key[0]}</div>
-      <div className="col-9">
+    <div key={index} className="row display-4 justify-content-sm-end">
+      <div className="w-auto mx-auto">{key[0]}</div>
+      <div className="flex-fill d-flex justify-content-end">
         {key[1].length !== 0 && (
           <PlanList
             data={key[1]}
@@ -17,7 +17,7 @@ const PlanDetail = ({ data, deletePlan, addPlan }) => {
         )}
         <button
           type="button"
-          className="m-2 btn btn-info font-weight-bold"
+          className="m-2 mr-lg-10 btn btn-info font-weight-bold"
           onClick={() => selectClock(addPlan, key[0])}
         >
           <span className="badge">
