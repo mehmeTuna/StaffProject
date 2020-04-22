@@ -55,12 +55,7 @@ class ExperienceCreate extends React.Component {
         { value: 'plannedTime', text: 'Planned Time' },
         { value: 'fullTime', text: 'Full Time' }
       ],
-      alert: {
-        pay: {
-          status: false,
-          text: 'minimum tutar giriniz'
-        }
-      },
+      alert: false,
       redirect: null
     }
 
@@ -87,6 +82,14 @@ class ExperienceCreate extends React.Component {
   }
 
   handleSubmit() {
+    if (
+      this.state.name === '' ||
+      this.state.pay === '' ||
+      this.state.workingPlan === ''
+    ) {
+      this.setState({ alert: true })
+      return
+    }
     axios
       .post(`/${this.props.data.username}/experience/create`, {
         experienceName: this.state.name,
@@ -131,12 +134,14 @@ class ExperienceCreate extends React.Component {
               <form className="form-sample">
                 <div className="row">
                   <FormInputElement
+                    alert={this.state.name === '' && this.state.alert}
                     name="name"
                     type="text"
                     value={this.state.name}
                     onChange={e => this.setState({ name: e.target.value })}
                   />
                   <FormInputElement
+                    alert={this.state.pay === '' && this.state.alert}
                     name={`Pay (${this.state.currencySymbolUtf8})`}
                     type="number"
                     value={this.state.pay}
@@ -162,6 +167,7 @@ class ExperienceCreate extends React.Component {
                     onChange={e => this.setState({ factor: e.target.value })}
                   />
                   <FormInputElement
+                    alert={this.state.periode === '' && this.state.alert}
                     name="Periode"
                     type="number"
                     value={this.state.periode}
@@ -183,8 +189,22 @@ class ExperienceCreate extends React.Component {
                   : 'col-sm-12 col-md-4 grid-margin'
               }
             >
-              <div className="card text-center">
-                <div className="card-body">Working Plan Select</div>
+              <div
+                className={
+                  this.state.workingPlan === '' && this.state.alert
+                    ? 'card text-center border border-danger'
+                    : 'card text-center'
+                }
+              >
+                <div
+                  className={
+                    this.state.workingPlan === '' && this.state.alert
+                      ? 'card-body text-danger'
+                      : 'card-body'
+                  }
+                >
+                  Working Plan Select
+                </div>
                 {this.state.planText.map((e, key) => (
                   <SelectPlanText
                     onClick={e => this.setState({ workingPlan: e })}

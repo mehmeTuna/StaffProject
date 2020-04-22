@@ -17,7 +17,11 @@ const PlanDetail = ({ data, deletePlan, addPlan }) => {
         )}
         <button
           type="button"
-          className="m-2 mr-lg-10 btn btn-info font-weight-bold"
+          className={
+            key[1].length === 0
+              ? 'm-2 mr-lg-10 btn btn-info font-weight-bold'
+              : 'm-2 btn btn-info font-weight-bold'
+          }
           onClick={() => selectClock(addPlan, key[0])}
         >
           <span className="badge">
