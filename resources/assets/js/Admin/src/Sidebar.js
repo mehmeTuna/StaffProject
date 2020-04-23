@@ -25,7 +25,7 @@ const Sidebar = ({ data }) => {
   return (
     <React.Fragment>
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
-        <HeroProfile url={data.img} name={data.username} />
+        <HeroProfile url={data.image} name={data.username} />
         <ul className="nav">
           <MenuListItem
             url={'/' + `${data.username}`}
