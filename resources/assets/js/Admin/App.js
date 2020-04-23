@@ -23,14 +23,14 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      data: {},
+      data: rootData,
       token: localStorage.getItem('businessToken')
     }
   }
 
   async componentDidMount() {
-    const data = await businessData()
-    this.setState({ data })
+    //console.log(this.state.data)
+
   }
 
   render() {

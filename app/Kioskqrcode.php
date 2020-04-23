@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Kioskqrcode extends Model
@@ -15,4 +16,9 @@ class Kioskqrcode extends Model
     ];
 
     public $timestamps = true;
+
+    public function online()
+    {
+        return $this->hasMany('App\Kiosk', 'remoteAddress', 'ip')->where('kioskqrcode.updated_at','>=', Carbon::now()->addMinute(-5)->toDateTimeString());
+    }
 }

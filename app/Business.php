@@ -2,13 +2,12 @@
 
 namespace App;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
-    protected $visible = ['id', 'email', 'username', 'phone', 'webPage', 'image', 'address', 'businessName', 'data', 'packageTime', 'created_at', 'updated_at'];
-    protected $fillable = ['password', 'email', 'username', 'phone', 'active', 'webPage', 'image', 'longitute', 'latitude', 'address', 'businessName', 'options', 'data', 'experienceData', 'staffData', 'kioskData', 'packageTime', 'lastLoginTime', 'created_at', 'updated_at'];
+    protected $hidden = ['password', 'active', 'longitute', 'latitude', 'options', 'experienceData', 'staffData', 'kioskData', 'lastLoginTime', 'created_at', 'updated_at'];
+    protected $guarded = ['id'];
     protected $table = 'business';
     protected $primaryKey = 'id';
     public $timestamps = true;
@@ -60,11 +59,6 @@ class Business extends Model
         return $this->hasMany('App\Kiosk', 'business', 'id')->where('kiosk.active', 1);
     }
 
-    public function onlineKiosk()
-    {
-        return $this->hasManyThrough('App\Kioskqrcode', 'App\Kiosk', 'business', 'ip', 'remoteAddress')->where('kioskqrcode.updated_at','>=', Carbon::now()->addMinute(-5)->toDateTimeString());
-    }
-
     public function lastPayment()
     {
         return $this->hasManyThrough('App\Staff', 'App\PaymentHistory', 'staff', 'business', 'id')->orderBy('paymenthistory.created_at','desc')->limit(20);
@@ -86,8 +80,6 @@ class Business extends Model
     }
 
     /**
-     *
-     *
      * @param string $value
      * @return void
      */
@@ -98,8 +90,6 @@ class Business extends Model
 
 
     /**
-     *
-     *
      * @param string $value
      * @return void
      */
@@ -109,8 +99,6 @@ class Business extends Model
     }
 
     /**
-     *
-     *
      * @param string $value
      * @return void
      */
@@ -120,8 +108,6 @@ class Business extends Model
     }
 
     /**
-     *
-     *
      * @param string $value
      * @return void
      */
@@ -131,8 +117,6 @@ class Business extends Model
     }
 
     /**
-     *
-     *
      * @param string $value
      * @return void
      */
@@ -142,8 +126,6 @@ class Business extends Model
     }
 
     /**
-     *
-     *
      * @param string $value
      * @return void
      */

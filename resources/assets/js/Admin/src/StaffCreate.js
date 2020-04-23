@@ -16,7 +16,7 @@ class StaffCreate extends React.Component {
     super(props)
 
     this.state = {
-      currencySymbolUtf8: this.props.data.currencySymbolUtf8,
+      currencySymbolUtf8: '',
       img: null,
       firstName: '',
       lastName: '',
@@ -111,6 +111,9 @@ class StaffCreate extends React.Component {
   }
 
   async componentDidMount() {
+    if(typeof this.props.data.data.currencySymbolUtf8 !== 'undefined'){
+      this.setState({currencySymbolUtf8: this.props.data.data.currencySymbolUtf8})
+    }
     const { data } = await axios.post('/business/experience/list')
 
     this.setState({ workingData: data.data })

@@ -1,16 +1,16 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-const Navbar = props => {
+const Navbar = ({data}) => {
   return (
     <nav className="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        {props.img != null && (
+        {data.img != null && (
           <Link
-            to={'/' + `${props.data.username}`}
+            to={'/' + `${data.businessName}`}
             className="navbar-brand brand-logo-mini"
           >
-            <img src={props.data.img} alt={props.data.username} />
+            <img src={data.img} alt={data.businessName} />
           </Link>
         )}
       </div>

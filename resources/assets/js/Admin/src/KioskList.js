@@ -6,14 +6,14 @@ import withReactContent from 'sweetalert2-react-content'
 
 const sweet = withReactContent(Swal)
 
-function KioskRender(data) {
-  return data.data.map((val, key) => (
+function KioskRender({data, deleteKiosk}) {
+  return data.map((val, key) => (
     <div key={key} className="col-lg-12 grid-margin stretch-card">
       <div className="card">
         <div className="card-body">
           <div className="col-sm-12 mb-4 mb-xl-0 d-flex justify-content-between legend-label">
             <div>
-              <h4 className="font-weight-bold text-dark">{val.name}</h4>
+              <h4 className="font-weight-bold text-dark">{val.identifier}</h4>
             </div>
             <div className="">
               <button
@@ -30,10 +30,9 @@ function KioskRender(data) {
               <div className="card">
                 <div className="card-body">
                   <div className="card-title">
-                    {' '}
                     Remote Address: <span className="text-muted">
-                      {val.ip}
-                    </span>{' '}
+                      {val.remoteAddress}
+                    </span>
                   </div>
                 </div>
               </div>

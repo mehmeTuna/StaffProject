@@ -145,9 +145,21 @@ class BusinessController extends Controller
         ]);
     }
 
-    public function home()
+    public function home($businessUsername)
     {
-        return view("business.Home");
+        $business = Business::with(['staff', 'experience', 'lastPayment', 'lastLog', 'staffWithPayment', 'kiosk.logHistory', 'kiosk.qrCode.online'])
+            ->where('username', $businessUsername)
+            ->where('id', $this->businessId)
+            ->active()
+            ->first();
+
+        if ($business == null) {
+            return redirect('/');
+        }
+
+        return view("business.Home", [
+            'business' => $business
+        ]);
     }
 
     public function businessData()

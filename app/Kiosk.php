@@ -27,9 +27,9 @@ class Kiosk extends Model
         return $query->where('active', 1);
     }
 
-    public function online()
+    public function logHistory()
     {
-        return $this->hasMany('App\Kioskqrcode', 'ip','remoteAddress')->where('updated_at', '>=', Carbon::now()->addMinute(-5)->toDateTimeString());
+        return $this->hasMany('App\Tio', 'kioskId', 'remoteAddress')->orderBy('tio.created_at', 'DESC')->limit(10);
     }
 
     public function qrCode()

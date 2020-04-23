@@ -3,8 +3,6 @@ import Swal from 'sweetalert2'
 import { Link } from 'react-router-dom'
 import withReactContent from 'sweetalert2-react-content'
 
-import { connect } from 'react-redux'
-
 import { Loading } from './components/app'
 import { getDeleteStaff, getStaffData } from './../api/staff'
 import Staff from './components/Staff/Staff'

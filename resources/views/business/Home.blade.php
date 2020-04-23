@@ -28,6 +28,11 @@
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
 
+
+    <script>
+        const rootData = {!! json_encode($business) !!}
+    </script>
+
     <script src="/public/js/app.js"></script>
     <!-- base:js -->
     <script src="/public/vendors/base/vendor.bundle.base.js"></script>
