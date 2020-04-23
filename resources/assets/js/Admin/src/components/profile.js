@@ -46,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Profile = props => {
+const Profile = ({data}) => {
   const classes = useStyles()
 
   const [updateType, setUpdateType] = React.useState('')
@@ -101,7 +101,7 @@ const Profile = props => {
                     </Typography>
                   </Grid>
                   <Grid item>
-                    {props.businessData.img === null ? (
+                    {data.image === null ? (
                       <IconButton aria-label="Name">
                         <KeyboardArrowRightIcon />
                       </IconButton>
@@ -109,7 +109,7 @@ const Profile = props => {
                       <img
                         className={classes.image}
                         alt="complex"
-                        src={props.businessData.img}
+                        src={data.image}
                       />
                     )}
                   </Grid>
@@ -125,7 +125,7 @@ const Profile = props => {
                   </Grid>
                   <Grid item lg={8}>
                     <Typography variant="body1" align="left">
-                      {props.businessData.name}
+                      {data.businessName}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -165,7 +165,7 @@ const Profile = props => {
                   </Grid>
                   <Grid item lg={8}>
                     <Typography variant="body1" align="left">
-                      {props.businessData.address}
+                      {data.address}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -198,7 +198,7 @@ const Profile = props => {
                   </Grid>
                   <Grid item lg={8}>
                     <Typography variant="body1" align="left">
-                      {props.businessData.email}
+                      {data.email}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -218,7 +218,7 @@ const Profile = props => {
                   </Grid>
                   <Grid item lg={8}>
                     <Typography variant="body1" align="left">
-                      {props.businessData.webPage}
+                      {data.webPage}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -238,7 +238,7 @@ const Profile = props => {
                   </Grid>
                   <Grid item lg={8}>
                     <Typography variant="body1" align="left">
-                      {props.businessData.phone}
+                      {data.phone}
                     </Typography>
                   </Grid>
                   <Grid item>
@@ -270,7 +270,7 @@ const Profile = props => {
                   </Grid>
                   <Grid item lg={8}>
                     <Typography variant="body1" align="left">
-                      {props.businessData.country}
+                      {data.data.country}
                     </Typography>
                   </Grid>
                   <Grid item></Grid>

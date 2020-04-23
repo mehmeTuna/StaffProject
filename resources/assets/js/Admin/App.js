@@ -80,7 +80,7 @@ export default class App extends React.Component {
                   <Route
                     path={'/' + `${this.state.data.username + '/profile'}`}
                   >
-                    <Profile businessData={this.state.data} />
+                    <Profile data={this.state.data} />
                   </Route>
                   <Route path="/">
                     <Home business={this.state.data} />
