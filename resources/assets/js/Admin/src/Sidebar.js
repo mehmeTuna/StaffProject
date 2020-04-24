@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import {Button} from '@material-ui/core'
 
 const HeroProfile = ({ url, name }) => (
   <div className="user-profile">
@@ -112,16 +113,28 @@ const Sidebar = ({ data }) => {
             icon="icon-box menu-icon"
             name="Profile"
           />
-          <li className="nav-item">
-            <span className="nav-link" style={{ cursor: 'pointer' }}>
-              <span className="menu-title">Payment Plan</span>
-            </span>
-          </li>
           <MenuListItem
             url={'/' + `${data.username + '/docs'}`}
             icon="icon-box menu-icon"
             name="Documentation"
           />
+          <li className="nav-item">
+            <div className='billing-plan justify-content-between align-items-center'>
+              <div className='row justify-content-start align-items-center'>
+                <span className='billing-plan-title'>Plan Name</span>
+                <span className='billing-plan-desc'>
+                Ucretsiz 0 ABD dolari
+              </span>
+              </div>
+              <Link to={'/' + `${data.username + '/pricing'}`}>
+                <Button
+                  style={{color: 'white'}}
+                >
+                  Yukselt
+                </Button>
+              </Link>
+            </div>
+          </li>
         </ul>
       </nav>
     </React.Fragment>

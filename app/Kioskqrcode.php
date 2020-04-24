@@ -19,6 +19,6 @@ class Kioskqrcode extends Model
 
     public function online()
     {
-        return $this->hasMany('App\Kiosk', 'remoteAddress', 'ip')->where('kioskqrcode.updated_at','>=', Carbon::now()->addMinute(-5)->toDateTimeString());
+        return $this->hasMany('App\Kiosk', 'remoteAddress', 'ip')->where('updated_at','>=', Carbon::now()->addMinute(-5)->toDateTimeString());
     }
 }

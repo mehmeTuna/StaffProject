@@ -21633,8 +21633,8 @@ dl li {
   -webkit-align-items: baseline;
   align-items: baseline;
   white-space: nowrap;
-  padding: 1rem 0.875rem 1rem 0.875rem;
-  margin: 0 1.5rem;
+  padding: 1rem 0.25rem;
+  margin: 0 1rem;
   color: #fff;
   -webkit-transition-duration: 0.45s;
   -moz-transition-duration: 0.45s;
@@ -21644,6 +21644,25 @@ dl li {
   -webkit-transition-property: background;
   font-weight: bold;
   border-top: 1px solid rgba(255, 255, 255, 0.36);
+}
+
+.sidebar .nav .nav-item .billing-plan {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-align-items: baseline;
+    align-items: baseline;
+    white-space: nowrap;
+    padding: 1rem 0.25rem;
+    margin: 0 1rem;
+    color: #fff;
+    -webkit-transition-duration: 0.45s;
+    -moz-transition-duration: 0.45s;
+    -o-transition-duration: 0.45s;
+    transition-duration: 0.45s;
+    transition-property: background;
+    -webkit-transition-property: background;
+    font-weight: bold;
+    border-top: 1px solid rgba(255, 255, 255, 0.36);
 }
 
 .sidebar .nav .nav-item .nav-link i {
@@ -22658,6 +22677,12 @@ dl li {
   }
   .sidebar-icon-only .main-panel {
     width: calc(100% - 70px);
+  }
+  .billing-plan-title {
+      font-size: 1rem;
+   }
+  .billing-plan-desc{
+      font-size: 0.75rem;
   }
 }
 
