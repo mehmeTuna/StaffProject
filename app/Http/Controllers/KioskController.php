@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use QrCode;
 use App\Kiosk;
 use App\Business;
+use App\Http\Requests\BusinessKioskRelation;
 
 class KioskController extends Controller
 {
@@ -98,12 +99,13 @@ class KioskController extends Controller
         return response($pngImage)->header('Content-type','image/png');
     }
 
-    public function AddNewKiosk(Request $request)
+    public function AddNewKiosk(BusinessKioskRelation $request)
     {
+        
         $code = $request->code;
         $name = $request->name;
         $result= (object)[];
-        $result->status = false ;
+        $result->status = false ; 
         $result->data = (object)[];
 
         if(Cache::has($code))
@@ -113,7 +115,7 @@ class KioskController extends Controller
          $kiosk = Kiosk::create([
              'identifier' => $name,
              'remoteAddress' => $kioskCode,
-             'business' => session('businessId'),
+             'business' => session('businessId'), 
          ]);
 
          $result->status = true ;

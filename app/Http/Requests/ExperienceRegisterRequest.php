@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Business ;
+use Carbon\Carbon;
 
 class ExperienceRegisterRequest extends FormRequest
 {
@@ -12,8 +14,15 @@ class ExperienceRegisterRequest extends FormRequest
      * @return bool
      */
     public function authorize()
-    {
-        return true;
+    { 
+        $business = Business::where('id', session('businessId'))->with(['planDetail', 'experience'])->first();
+
+        $nowtime = Carbon::now();
+        $packageTime = Carbon::parse($business->packageTime);
+        $canPackageTime =$nowtime->diffInSeconds($packageTime, false);
+        $response =  $business->planDetail->experience_count > $business->experience->count() &&  ($canPackageTime > 0);
+        
+        return $response;
     }
 
     /**

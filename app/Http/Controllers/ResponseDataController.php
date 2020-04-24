@@ -81,36 +81,9 @@ class ResponseDataController extends Controller
 
     public function kioskList()
     {
-        $response = Kiosk::where('business', session('businessId'))->where('active', 1)->get();
-
-        $result = $response->map(function ($val) {
-            $data = (object) [];
-            $data->id = $val->id;
-            $data->name = $val->identifier;
-            $data->ip = $val->remoteAddress;
-            $data->comment = $val->comment;
-
-            $business = Business::where('id', session('businessId'))->get();
-            $data->businessName = $business[0]->username;
-
-            $logHistory = Tio::where('business', $val->business)->where('kioskId', $data->id)->limit(10)->orderBy('created_at', 'desc')->get();
-            $logHistoryCount = Tio::where('business', $val->business)->where('kioskId', $data->id)->count();
-
-            $data->logHistory = $logHistory->map(function ($val) use ($logHistoryCount) {
-                $data = (object) [];
-                $data->count = $logHistoryCount;
-                $user = Staff::where('id', $val->staff)->get();
-                $data->username = $user[0]->firstname . ' ' . $user[0]->lastName;
-                $data->plan = $user[0]->workingPlan;
-                $data->date = $val->created_at->toDateTimeString();
-                $data->status = $val->traffic;
-                return $data;
-            });
-            return $data;
-        });
-
-        return response()
-            ->json($result);
+        $business = Business::where('id', session('businessId'))->with(['kiosk', 'kiosk.logHistory', 'kiosk.logHistory.getUser'])->get() ;
+      
+        return $this->respondSuccess($business[0]);
     }
 
     public function kioskDelete(Request $request)

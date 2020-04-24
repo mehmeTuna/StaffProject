@@ -5,6 +5,7 @@ namespace App\Observers;
 
 use App\Business;
 use Carbon\Carbon;
+use App\PlanDetail ;
 
 
 class BusinessObserver
@@ -12,7 +13,9 @@ class BusinessObserver
 
     public function creating(Business $business)
     {
-        $business->packageTime = Carbon::now()->addDay(3);
+        $planDetail = PlanDetail::find(1);
+ 
+        $business->packageTime = Carbon::now()->addDay($planDetail->day);
         $business->lastLoginTime = Carbon::now()->addDay(3);
         $business->username = str_slug($business->businessName);
     }

@@ -93,8 +93,18 @@ class BusinessController extends Controller
     {
         $username = $request->username;
         $password = $request->password;
-        $business = Business::where('email', $username)->active()->first();
+        $business = Business::where('email' , $username)->active()->first();
 
+        $nowtime = Carbon::now();
+        $packageTime = Carbon::parse($business->packageTime);
+        $canPackageTime =$nowtime->diffInSeconds($packageTime, false);
+        $response =  ($canPackageTime > 0);
+        if(!$response){
+            return $this->respondFail([
+                'type' => 'package'
+            ]);
+        }
+    
         if ($business == null || !Hash::check($password, $business->password)) {
             return $this->incorrectPassword();
         }
@@ -118,26 +128,20 @@ class BusinessController extends Controller
         $locationData = $this->learnGeoPlugin($request->ip());
         $business = (object) [];
 
-        try {
-            $business = Business::create([
-                "email" => $email,
-                "businessName" => $businessName,
-                "phone" => $phone,
-                "password" => Hash::make($password),
-                "country" => $locationData->geoplugin_countryName,
-                "lang" => $locationData->geoplugin_countryCode,
-                'data' => [
-                    'currencySymbol' => $locationData->geoplugin_currencySymbol,
-                    'timeZone' => $locationData->geoplugin_timezone,
-                    'countryCode' => $locationData->geoplugin_countryCode,
-                    'country' => $locationData->geoplugin_countryName,
-                    'currencyCode' => $locationData->geoplugin_currencyCode,
-                    'currencySymbolUtf8' => $locationData->geoplugin_currencySymbol_UTF8,
-                ],
-            ]);
-        } catch (QueryException $exception) {
-            Log::debug($exception->errorInfo);
-        }
+        $business = Business::create([
+            "email" => $email,
+            "businessName" => $businessName,
+            "phone" => $phone,
+            "password" => Hash::make($password),
+            'data' => [
+                'currencySymbol' => $locationData->geoplugin_currencySymbol,
+                'timeZone' => $locationData->geoplugin_timezone,
+                'countryCode' => $locationData->geoplugin_countryCode,
+                'country' => $locationData->geoplugin_countryName,
+                'currencyCode' => $locationData->geoplugin_currencyCode,
+                'currencySymbolUtf8' => $locationData->geoplugin_currencySymbol_UTF8,
+            ],
+        ]);
 
         session()->put("businessId", $business->id);
         return $this->respondSuccess([
@@ -147,7 +151,7 @@ class BusinessController extends Controller
 
     public function home($businessUsername)
     {
-        $business = Business::with(['staff', 'experience', 'lastPayment', 'lastLog', 'staffWithPayment', 'kiosk.logHistory', 'kiosk.qrCode.online'])
+        $business = Business::with(['planDetail', 'staff', 'experience', 'lastPayment', 'lastLog', 'staffWithPayment', 'kiosk.logHistory', 'kiosk.qrCode.online'])
             ->where('username', $businessUsername)
             ->where('id', $this->businessId)
             ->active()

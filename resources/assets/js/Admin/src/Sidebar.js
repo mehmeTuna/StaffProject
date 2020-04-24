@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import {Button} from '@material-ui/core'
+import { Button } from '@material-ui/core'
 
 const HeroProfile = ({ url, name }) => (
   <div className="user-profile">
@@ -119,19 +119,17 @@ const Sidebar = ({ data }) => {
             name="Documentation"
           />
           <li className="nav-item">
-            <div className='billing-plan justify-content-between align-items-center'>
-              <div className='row justify-content-start align-items-center'>
-                <span className='billing-plan-title'>Plan Name</span>
-                <span className='billing-plan-desc'>
-                Ucretsiz 0 ABD dolari
-              </span>
+            <div className="billing-plan justify-content-between align-items-center">
+              <div className="row justify-content-start align-items-center">
+                <span className="billing-plan-title">
+                  {data.plan_detail.name}
+                </span>
+                <span className="billing-plan-desc">
+                  {`${data.plan_detail.name} ${data.plan_detail.price} ${data.data.currencySymbolUtf8}`}
+                </span>
               </div>
               <Link to={'/' + `${data.username + '/pricing'}`}>
-                <Button
-                  style={{color: 'white'}}
-                >
-                  Yukselt
-                </Button>
+                <Button style={{ color: 'white' }}>Yukselt</Button>
               </Link>
             </div>
           </li>

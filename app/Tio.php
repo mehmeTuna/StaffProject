@@ -12,4 +12,8 @@ class Tio extends Model
     protected $primaryKey = "id";
     protected $dateFormat = 'U';
 
+    public function getUser()
+    {
+        return $this->hasOne('App\Staff', 'id', 'staff');
+    }
 }

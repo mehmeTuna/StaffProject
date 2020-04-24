@@ -29,7 +29,7 @@ class ExperienceCreate extends React.Component {
     super(props)
 
     this.state = {
-      currencySymbolUtf8: '',
+      currencySymbolUtf8: this.props.data.data.currencySymbolUtf8,
       selectedStartTime: '08:30',
       selectedEndTime: '17:00',
       showDate: false,
@@ -65,7 +65,6 @@ class ExperienceCreate extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({ currencySymbolUtf8: this.props.data.currencySymbolUtf8 })
     const { data } = await axios.post('/business/location/minWage')
 
     this.setState({ isMinWage: data })

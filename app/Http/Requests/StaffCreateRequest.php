@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Business ;
+use Carbon\Carbon;
 
 class StaffCreateRequest extends FormRequest
 {
@@ -13,7 +15,14 @@ class StaffCreateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        $business = Business::where('id', session('businessId'))->with(['planDetail', 'staff'])->first();
+
+        $nowtime = Carbon::now();
+        $packageTime = Carbon::parse($business->packageTime);
+        $canPackageTime =$nowtime->diffInSeconds($packageTime, false);
+        $response =  $business->planDetail->staff_count > $business->staff->count() &&  ($canPackageTime > 0);
+        
+        return $response;
     }
 
     /**

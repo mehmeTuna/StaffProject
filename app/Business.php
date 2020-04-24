@@ -46,7 +46,7 @@ class Business extends Model
 
     public function staff()
     {
-        return $this->hasMany('App\Staff', 'business', 'id')->where('active', 1)->orderBy('created_at', 'desc')->limit(70);
+        return $this->hasMany('App\Staff', 'business', 'id')->where('active', 1)->orderBy('created_at', 'desc');
     }
 
     public function experience()
@@ -77,6 +77,10 @@ class Business extends Model
     public function tio()
     {
         return $this->hasMany('App\Tio', 'business', 'id');
+    }
+
+    public function planDetail(){
+        return $this->hasOne('App\PlanDetail', 'id', 'plan_id');
     }
 
     /**
