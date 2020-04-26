@@ -15,7 +15,8 @@ export default class Login extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  async handleSubmit() {
+  async handleSubmit(event) {
+    event.preventDefault()
     if (this.state.username === '' || this.state.password === '') {
       this.setState({ alert: true })
       return
@@ -65,7 +66,7 @@ export default class Login extends React.Component {
                         {this.state.alertText}
                       </p>
                     )}
-                    <form className="pt-3">
+                    <form className="pt-3" onSubmit={this.handleSubmit}>
                       <div className="form-group">
                         <input
                           type="email"
@@ -75,6 +76,7 @@ export default class Login extends React.Component {
                               ? 'form-control form-control-lg border border-danger'
                               : 'form-control form-control-lg'
                           }
+                          autoComplete="email"
                           value={this.state.username}
                           onChange={e =>
                             this.setState({ username: e.target.value })
@@ -98,15 +100,13 @@ export default class Login extends React.Component {
                           placeholder="Password"
                         />
                       </div>
-                    </form>
-                    <div className="mt-3">
                       <button
-                        className="btn btn-block text-white thema-background-color btn-lg font-weight-medium auth-form-btn"
-                        onClick={this.handleSubmit}
+                        type="submit"
+                        className="mt-3 btn btn-block text-white thema-background-color btn-lg font-weight-medium auth-form-btn"
                       >
                         SIGN IN
                       </button>
-                    </div>
+                    </form>
                     <div className="my-2 d-flex justify-content-between align-items-center">
                       <div className="form-check">
                         <label className="form-check-label text-muted">

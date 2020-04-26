@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Business;
+use App\Http\Requests\BusinessProfileUpdateRequest;
 use App\Http\Requests\StoreBusinessLogin;
 use App\Http\Requests\StoreBusinessRegister;
 use App\Kioskqrcode;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
+use Image ;
 
 class BusinessController extends Controller
 {
@@ -26,54 +28,46 @@ class BusinessController extends Controller
         return view('business.login');
     }
 
-    public function update(BusinessProfileUpdateRequestss $request)
+    public function update(BusinessProfileUpdateRequest $request)
     {
         $type = ['name', 'password', 'email', 'address', 'webPage', 'phone', 'img'];
 
+        $business = Business::find(session('businessId'));
         if (in_array($request->type, $type)) {
-            $renameData = '';
-            $request->data = $request->type == 'password' ? Hash::make($request->data) : $request->data;
             switch ($request->type) {
                 case 'name':
-                    $renameData = 'businessName';
+                    $business->businessName= $request->data;
                     break;
                 case 'password':
-                    $renameData = 'password';
+                    $business->password = Hash::make($request->data) ;
                     break;
                 case 'email':
-                    $renameData = 'email';
+                    $business->email = $request->data;
                     break;
                 case 'address':
-                    $renameData = 'address';
+                    $business->address = $request->data;
                     break;
                 case 'webPage':
-                    $renameData = 'webPage';
+                    $business->webPage = $request->data;
                     break;
                 case 'phone':
-                    $renameData = 'phone';
+                    $business->phone = $request->data;
                     break;
                 case 'img':
-                    $renameData = 'image';
                     if ($request->hasFile('img')) {
                         $image = $request->file('img');
-                        $name = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
-                        $destinationPath = public_path('/images');
-                        $image->move($destinationPath, $name);
-                        $request->data = '/public/images/' . $name;
+                        $fileName = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
+                        $destinationPath = public_path('images/');
+                        $img = Image::make($image->getRealPath());
+                        $img->resize(300, 300, function ($constraint) {
+                            $constraint->aspectRatio();
+                        })->save($destinationPath.$fileName);
+
+                         $business->image = '/public/images/'.$fileName;
                     }
                     break;
             }
-
-            if ($renameData == '') {
-                return response()->json([
-                    'status' => false,
-                    'text' => 'type not null',
-                ]);
-            }
-
-            $business = Business::where('id', $this->businessId)->active()->update([
-                $renameData => $request->data,
-            ]);
+            $business->save();
             return response()->json([
                 'status' => true,
             ]);
@@ -83,7 +77,6 @@ class BusinessController extends Controller
             'status' => false,
             'text' => 'undefined parameter',
         ]);
-
     }
 
     public function login(StoreBusinessLogin $request)

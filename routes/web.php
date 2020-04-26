@@ -83,6 +83,7 @@ Route::middleware(['business'])->group(function(){
         Route::get('/', 'BusinessController@home');
         Route::get('/create', 'BusinessController@home');
         //Route::get('/pricing', 'BusinessController@home');
+        Route::get('profile', 'BusinessController@home');
 
         Route::prefix('/staff')->group(function(){
             Route::get('/list', 'BusinessController@home');
