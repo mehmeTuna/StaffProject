@@ -25,6 +25,13 @@ class BusinessProfileUpdateRequest extends FormRequest
     {
         //TODO: bu kisimda business update edilirkenki kurallar yazilacak
         return [
+            'name' => 'sometimes|min:3|max:50',
+            'password' => 'sometimes|min:3|max:50',
+            'email' => 'sometimes|email|unique:business',
+            'address' => 'sometimes|min:3|max:50',
+            'webPage' => 'sometimes|min:3|max:50',
+            'phone' => 'sometimes|min:3|max:50',
+            'img' => 'sometimes|mimes:jpg,jpeg,png|'
         ];
     }
 }

@@ -7,10 +7,7 @@ use App\Http\Requests\StoreBusinessLogin;
 use App\Http\Requests\StoreBusinessRegister;
 use App\Kioskqrcode;
 use Carbon\Carbon;
-use Illuminate\Database\QueryException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class BusinessController extends Controller
 {
@@ -29,7 +26,7 @@ class BusinessController extends Controller
         return view('business.login');
     }
 
-    public function update(Request $request)
+    public function update(BusinessProfileUpdateRequestss $request)
     {
         $type = ['name', 'password', 'email', 'address', 'webPage', 'phone', 'img'];
 
