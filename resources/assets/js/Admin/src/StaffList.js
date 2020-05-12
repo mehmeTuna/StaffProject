@@ -1,12 +1,12 @@
 import React from 'react'
 import Swal from 'sweetalert2'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import withReactContent from 'sweetalert2-react-content'
 
-import { Loading } from './components/app'
-import { getDeleteStaff, getStaffData } from './../api/staff'
+import {Loading} from './components/app'
+import {getDeleteStaff, getStaffData} from './../api/staff'
 import Staff from './components/Staff/Staff'
-import { PageHeader, PageTitle, TitleRightBtn } from './components/page-title'
+import {PageHeader, PageTitle, TitleRightBtn} from './components/page-title'
 import StaffFilter from './components/Staff/staff-filter'
 
 const sweet = withReactContent(Swal)
@@ -35,13 +35,13 @@ class StaffList extends React.Component {
   }
 
   async componentDidMount() {
-    this.setState({ Loading: true })
+    this.setState({Loading: true})
     const data = await getStaffData()
 
-    this.setState({ Loading: false, staff: data, filteredData: data })
+    this.setState({Loading: false, staff: data, filteredData: data})
   }
 
-  deleteStaff({ id, username }) {
+  deleteStaff({id, username}) {
     sweet
       .fire({
         title: `${username} are you sure you want to delete ?`,
@@ -53,13 +53,13 @@ class StaffList extends React.Component {
       })
       .then(result => {
         if (result.value) {
-          this.delete({ id, username })
+          this.delete({id, username})
         }
       })
   }
 
-  async delete({ id, username }) {
-    this.setState({ staff: this.state.staff.filter(e => e.id !== id) })
+  async delete({id, username}) {
+    this.setState({staff: this.state.staff.filter(e => e.id !== id)})
     const data = await getDeleteStaff(id)
 
     if (data.status === true) {
@@ -101,7 +101,7 @@ class StaffList extends React.Component {
     return (
       <React.Fragment>
         <StaffFilter
-          updateFilterData={e => this.setState({ filterData: e })}
+          updateFilterData={e => this.setState({filterData: e})}
           data={this.state.filterData}
           staff={this.state.staff}
           setOpen={this.filterOpen}

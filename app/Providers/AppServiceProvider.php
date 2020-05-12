@@ -20,7 +20,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Schema::defaultStringLength(191);
         Business::observe(BusinessObserver::class); //business event listen
-        Staff::observe(StaffObserver::class);//staff event listener
+        Staff::observe(StaffObserver::class);//staff event listen
     }
 
     /**

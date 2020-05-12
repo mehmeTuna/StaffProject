@@ -15,15 +15,12 @@ class BusinessKioskRelation extends FormRequest
      */
     public function authorize()
     {
-
         $business = Business::where('id', session('businessId'))->with(['planDetail', 'kiosk'])->first();
 
         $nowtime = Carbon::now();
         $packageTime = Carbon::parse($business->packageTime);
         $canPackageTime =$nowtime->diffInSeconds($packageTime, false);
-        $response =  $business->planDetail->kiosk_count > $business->kiosk->count() &&  ($canPackageTime > 0);
-        
-        return $response;
+        return $business->planDetail->kiosk_count > $business->kiosk->count() &&  ($canPackageTime > 0);
     }
 
     /**

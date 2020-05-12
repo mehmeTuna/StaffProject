@@ -7,7 +7,7 @@ import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
 import Btn from './assets/Button'
-import { businessUpdate } from './../../api/business'
+import {businessUpdate} from './../../api/business'
 import theme from './theme'
 
 export default function UpdateOtherDataModal(props) {
@@ -41,7 +41,7 @@ export default function UpdateOtherDataModal(props) {
       >
         <DialogTitle
           id="form-dialog-title"
-          style={{ textTransform: 'capitalize' }}
+          style={{textTransform: 'capitalize'}}
         >
           {props.updateType} Update
         </DialogTitle>
@@ -66,7 +66,7 @@ export default function UpdateOtherDataModal(props) {
         </DialogContent>
         <DialogActions>
           <Btn
-            style={{ backgroundColor: theme.colors.primary }}
+            style={{backgroundColor: theme.colors.primary}}
             onClick={handleUpdate}
           >
             Update

@@ -1,4 +1,4 @@
-import React, { forwardRef } from 'react'
+import React, {forwardRef} from 'react'
 import MaterialTable from 'material-table'
 
 import AddBox from '@material-ui/icons/AddBox'
@@ -40,9 +40,9 @@ const tableIcons = {
 export default function StaffLogHistory(props) {
   const [state, setState] = React.useState({
     columns: [
-      { title: 'Date', field: 'date', type: 'numeric' },
-      { title: 'Comment', field: 'comment' },
-      { title: 'Type', field: 'type' }
+      {title: 'Date', field: 'date', type: 'numeric'},
+      {title: 'Comment', field: 'comment'},
+      {title: 'Type', field: 'type'}
     ]
   })
 

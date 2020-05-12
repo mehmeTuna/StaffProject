@@ -7,13 +7,13 @@ let result = {
 }
 
 export async function businessData() {
-  const { data } = await Axios.post('/business/data')
+  const {data} = await Axios.post('/business/data')
 
   return data.data
 }
 
 export async function businessUpdate(value) {
-  const { data } = await Axios.post('/business/update', value)
+  const {data} = await Axios.post('/business/update', value)
 
   if (data.status === true) {
     location.reload()
@@ -22,7 +22,7 @@ export async function businessUpdate(value) {
 
 export async function experienceList(page = 1, count = 20) {
   try {
-    const { data } = await Axios.post(
+    const {data} = await Axios.post(
       `/business/experience/list/${page}/${count}`
     )
     result.data = data.data
@@ -39,7 +39,7 @@ export async function experienceList(page = 1, count = 20) {
 export async function experienceDelete(id = null) {
   if (id === null) return
   try {
-    const { data } = await Axios.post('/business/experience/delete', {
+    const {data} = await Axios.post('/business/experience/delete', {
       id: id
     })
     result.data = data.data

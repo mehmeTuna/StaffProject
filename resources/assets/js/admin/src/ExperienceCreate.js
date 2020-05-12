@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { Redirect } from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 
 import PageTitle from './assets/page-title'
 import FormInputElement from './assets/form-input'
@@ -11,10 +11,10 @@ import PlanDetail from './assets/plan-detail'
 
 const sweet = withReactContent(Swal)
 
-const SelectPlanText = ({ onClick, value, data, Text }) => {
+const SelectPlanText = ({onClick, value, data, Text}) => {
   return (
     <div
-      style={{ cursor: 'pointer' }}
+      style={{cursor: 'pointer'}}
       className="card-body display-4 btn-outline-success btn-fw"
       onClick={() => onClick(value)}
     >
@@ -51,9 +51,9 @@ class ExperienceCreate extends React.Component {
       },
       selectedDay: '',
       planText: [
-        { value: 'freeTime', text: 'Free Time' },
-        { value: 'plannedTime', text: 'Planned Time' },
-        { value: 'fullTime', text: 'Full Time' }
+        {value: 'freeTime', text: 'Free Time'},
+        {value: 'plannedTime', text: 'Planned Time'},
+        {value: 'fullTime', text: 'Full Time'}
       ],
       alert: false,
       redirect: null
@@ -65,13 +65,13 @@ class ExperienceCreate extends React.Component {
   }
 
   async componentDidMount() {
-    const { data } = await axios.post('/business/location/minWage')
+    const {data} = await axios.post('/business/location/minWage')
 
-    this.setState({ isMinWage: data })
+    this.setState({isMinWage: data})
   }
 
   handleChange(e) {
-    this.setState({ [e.target.name]: e.target.value })
+    this.setState({[e.target.name]: e.target.value})
   }
 
   paymentFormat(e) {
@@ -86,7 +86,7 @@ class ExperienceCreate extends React.Component {
       this.state.pay === '' ||
       this.state.workingPlan === ''
     ) {
-      this.setState({ alert: true })
+      this.setState({alert: true})
       return
     }
     axios
@@ -116,7 +116,7 @@ class ExperienceCreate extends React.Component {
         for (let [key, value] of Object.entries(res.response.data)) {
           responseText = responseText + ` ${value} <br>`
         }
-        sweet.fire({ html: responseText })
+        sweet.fire({html: responseText})
       })
   }
 
@@ -137,7 +137,7 @@ class ExperienceCreate extends React.Component {
                     name="name"
                     type="text"
                     value={this.state.name}
-                    onChange={e => this.setState({ name: e.target.value })}
+                    onChange={e => this.setState({name: e.target.value})}
                   />
                   <FormInputElement
                     alert={this.state.pay === '' && this.state.alert}
@@ -158,12 +158,12 @@ class ExperienceCreate extends React.Component {
                     value={{
                       value: this.state.factor,
                       data: [
-                        { value: 'hour', name: 'Hour' },
-                        { value: 'week', name: 'Week' },
-                        { value: 'month', name: 'Month' }
+                        {value: 'hour', name: 'Hour'},
+                        {value: 'week', name: 'Week'},
+                        {value: 'month', name: 'Month'}
                       ]
                     }}
-                    onChange={e => this.setState({ factor: e.target.value })}
+                    onChange={e => this.setState({factor: e.target.value})}
                   />
                   <FormInputElement
                     alert={this.state.periode === '' && this.state.alert}
@@ -206,7 +206,7 @@ class ExperienceCreate extends React.Component {
                 </div>
                 {this.state.planText.map((e, key) => (
                   <SelectPlanText
-                    onClick={e => this.setState({ workingPlan: e })}
+                    onClick={e => this.setState({workingPlan: e})}
                     value={e.value}
                     data={this.state.workingPlan}
                     Text={e.text}
@@ -228,12 +228,12 @@ class ExperienceCreate extends React.Component {
                       deletePlan={e => {
                         let data = this.state.workingData
                         data[e.day].splice(e.index, 1)
-                        this.setState({ workingData: data })
+                        this.setState({workingData: data})
                       }}
                       addPlan={e => {
                         let data = this.state.workingData
-                        data[e.day].push({ start: e.start, end: e.end })
-                        this.setState({ workingData: data })
+                        data[e.day].push({start: e.start, end: e.end})
+                        this.setState({workingData: data})
                       }}
                     />
                   </div>

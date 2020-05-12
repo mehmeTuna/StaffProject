@@ -1,7 +1,7 @@
 import React from 'react'
 
-import { Typography, Grid, Box } from '@material-ui/core'
-import { makeStyles } from '@material-ui/core/styles'
+import {Typography, Grid, Box} from '@material-ui/core'
+import {makeStyles} from '@material-ui/core/styles'
 import Btn from './assets/Button'
 import theme from './theme'
 import FilterListIcon from '@material-ui/icons/FilterList'
@@ -50,7 +50,7 @@ export function TitleLeftBtn(props) {
 export function TitleRightBtn(props) {
   return (
     <Btn
-      style={{ background: theme.colors.primary }}
+      style={{background: theme.colors.primary}}
       startIcon={<FilterListIcon />}
       {...props}
     >

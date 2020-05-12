@@ -9,22 +9,33 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Str;
 use QrCode;
 use App\Kiosk;
-use App\Business;
 use App\Http\Requests\BusinessKioskRelation;
+use Illuminate\Support\Facades\Redis;
+use App\Events\KioskEvent;
 
 class KioskController extends Controller
 {
 
-    public function checkModel($model)
+    public function getRedis()
     {
-        return count($model) > 0 ? true : false ;
-    }
+      //  Redis::setex('name', 10, 'mehmet');
 
-    public function dataResponse($data){
-        return response()->json([
-            'status' => $data->status,
-            'data' => $data->data
-        ]);
+      $list = Redis::KEYS("*");
+
+     
+        $result = '';
+
+        //Loop through list of keys
+        foreach ($list as $key)
+        {
+            //Get Value of Key from Redis
+            $value = Redis::get($key);
+            
+            //Print Key/value Pairs
+            $result = $result . "<b>Key:</b> $key  =>  $value <br /><br />";
+        }
+
+        return response($result);
     }
 
     public function home()
@@ -36,21 +47,22 @@ class KioskController extends Controller
 
     public function me(Request $request)
     {
-        $kiosk = Kiosk::where('remoteAddress', $request->cookie($this->kioskCookieName))
+        $id = $request['id'];
+
+        $kiosk = Kiosk::where('remoteAddress', $id)
+            ->with('getBusiness')
             ->where('active', 1)
             ->first();
 
-        if($kiosk == null)
-             return response('not found');
+        if($kiosk == null){
+            $kioskId = str_random(40);
+            $code = str_random(6);
+            Cache::put($code, $kioskId, Carbon::now()->addMinutes(10));
+            return $this->respondFail(['isLogin' => false, 'code' => $code, 'kioskId' => $kioskId]);
+        }
 
-        $business = Business::find($kiosk->business);
-
-        return response()->json([
-            'status' => true,
-            'isLogin' => false,
-            'data' => [
-                'businessName' => $business->businessName,
-            ]
+        return $this->respondSuccess([
+            'kioskId' => $kiosk->remoteAddress
         ]);
     }
 
@@ -68,6 +80,7 @@ class KioskController extends Controller
             return view('404');
         }
 
+        //TODO:: bunu bir class yap ordan yap isleri
         $updatedKiosk = Kioskqrcode::where('id', $kiosk->id)->update([
             'active' => 0
         ]);
@@ -85,7 +98,7 @@ class KioskController extends Controller
         $ip = $request->cookie($this->kioskCookieName);
         $rand = Str::random(20) ;
 
-           $randString = 'http://'.$request->getHost().'/kiosk/staff/'.$rand;
+           $randString = env('APP_URL').'/kiosk/staff/'.$rand;
            Kioskqrcode::updateOrCreate([
                'ip' => $ip
            ], [
@@ -101,54 +114,29 @@ class KioskController extends Controller
 
     public function AddNewKiosk(BusinessKioskRelation $request)
     {
-        
         $code = $request->code;
         $name = $request->name;
-        $result= (object)[];
-        $result->status = false ; 
-        $result->data = (object)[];
+        
+        if(!Cache::has($code))
+            return $this->respondFail(['text' => 'Undefined Code']);
 
-        if(Cache::has($code))
-        {
-         $kioskCode = Cache::get($code);
+        $kioskCode = Cache::get($code); 
 
-         $kiosk = Kiosk::create([
-             'identifier' => $name,
-             'remoteAddress' => $kioskCode,
-             'business' => session('businessId'), 
-         ]);
+        $kiosk = Kiosk::create([
+            'identifier' => $name,
+            'remoteAddress' => $kioskCode,
+            'business' => session('businessId'),
+        ]);
 
-         $result->status = true ;
-         $result->data->text = 'Kiosk created';
-        }else {
-            $result->data->text = 'Undefined code';
-        }
+        broadcast(new KioskEvent($kioskCode));
 
-        return $this->dataResponse($result);
+        Cache::forget($code);
+
+        return $this->respondSuccess(['text' => 'Kiosk Created']);
     }
 
     public function kioskRegisterPage(Request $request)
     {
-       $kiosk = Kiosk::where('remoteAddress', $request->cookie($this->kioskCookieName))
-           ->active()
-           ->first();
-
-        if($kiosk != null)
-        {
-            return view('kiosk.home',[
-                'name' => $kiosk->getBusiness->businessName
-            ]);
-        }
-
-        $rand = str_random(40);
-        $code = str_random(6);
-        $time = Carbon::now()->addMinutes(10) ;
-        Cache::put($code, $rand, $time);
-
-        return response()->view('kioskRegister', [
-            'code' => $code
-        ])->cookie(
-            $this->kioskCookieName, $rand, $this->oneYearCookieTime()
-        );
+        return view('kioskRegister');
     }
 }

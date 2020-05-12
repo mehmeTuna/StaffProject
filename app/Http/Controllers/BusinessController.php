@@ -84,6 +84,8 @@ class BusinessController extends Controller
         $username = $request->username;
         $password = $request->password;
         $business = Business::where('email' , $username)->active()->first();
+        if($business == null)
+            return $this->respondFail(['type' => 'undefiend user']);
 
         $nowtime = Carbon::now();
         $packageTime = Carbon::parse($business->packageTime);
@@ -105,24 +107,19 @@ class BusinessController extends Controller
 
     public function logout()
     {
-        session()->forget('businessId');
+        session()->flush();
         return $this->respondSuccess();
     }
 
     public function register(StoreBusinessRegister $request)
     {
-        $email = $request->email;
-        $businessName = $request->businessName;
-        $phone = $request->telephone;
-        $password = $request->password;
         $locationData = $this->learnGeoPlugin($request->ip());
-        $business = (object) [];
 
         $business = Business::create([
-            "email" => $email,
-            "businessName" => $businessName,
-            "phone" => $phone,
-            "password" => Hash::make($password),
+            "email" => $request->email,
+            "businessName" => $request->businessName,
+            "phone" => $request->telephone,
+            "password" => Hash::make($request->password),
             'data' => [
                 'currencySymbol' => $locationData->geoplugin_currencySymbol,
                 'timeZone' => $locationData->geoplugin_timezone,
@@ -134,6 +131,13 @@ class BusinessController extends Controller
         ]);
 
         session()->put("businessId", $business->id);
+        session()->put([
+            'kioskCount' =>$business->kiosk->count(),
+            'experienceCount' => $business->experience->count(),
+            'staffCount' => $business->staff->count(),
+            'packageTime' => $business->packageTime
+        ]);
+
         return $this->respondSuccess([
             'businessSlugName' => $business->username
         ]);
@@ -164,6 +168,7 @@ class BusinessController extends Controller
             return $this->respondFail();
         }
 
+        //TODO:: bu kisim obje olarak don ve frontend kisminda gerekli yerleri duzelt
         return $this->respondSuccess([
             "email" => $business->email,
             "username" => $business->username,
@@ -183,6 +188,7 @@ class BusinessController extends Controller
 
     public function homeData()
     {
+        //TODO:: bu kisima bak kulanilan yeri duzelt frontend kisminda da duzelt
         $business = Business::find($this->businessId);
         $kiosk = [];
 

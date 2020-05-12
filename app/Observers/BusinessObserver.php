@@ -5,8 +5,8 @@ namespace App\Observers;
 
 use App\Business;
 use Carbon\Carbon;
-use App\PlanDetail ;
-
+use App\PlanDetail;
+use App\Jobs\SemdEmailToBusinessJob;
 
 class BusinessObserver
 {
@@ -14,7 +14,8 @@ class BusinessObserver
     public function creating(Business $business)
     {
         $planDetail = PlanDetail::find(1);
- 
+
+        $business->plan_id = $planDetail->id;
         $business->packageTime = Carbon::now()->addDay($planDetail->day);
         $business->lastLoginTime = Carbon::now()->addDay(3);
         $business->username = str_slug($business->businessName);
@@ -28,6 +29,6 @@ class BusinessObserver
      */
     public function created(Business $business)
     {
-
+        dispatch(new SemdEmailToBusinessJob($business->email));
     }
 }

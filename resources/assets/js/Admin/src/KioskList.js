@@ -1,12 +1,12 @@
 import React from 'react'
 import Axios from 'axios'
-import { Link } from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 
 const sweet = withReactContent(Swal)
 
-function KioskRender({ data, deleteKiosk }) {
+function KioskRender({data, deleteKiosk}) {
   return data.map((val, key) => (
     <div key={key} className="col-lg-12 grid-margin stretch-card">
       <div className="card">
@@ -18,7 +18,7 @@ function KioskRender({ data, deleteKiosk }) {
             <div className="">
               <button
                 type="button"
-                onClick={() => data.deleteKiosk(val.id)}
+                onClick={() => deleteKiosk(val.id)}
                 className="m-2 btn btn-success btn-icon-text font-weight-bold"
               >
                 Delete Kiosk
@@ -89,7 +89,7 @@ function KioskRender({ data, deleteKiosk }) {
   ))
 }
 
-function KioskListTitle({ data, deleteKiosk }) {
+function KioskListTitle({data, deleteKiosk}) {
   return (
     <React.Fragment>
       <div className="col-sm-12 mb-4 mb-xl-0">
@@ -120,13 +120,13 @@ export default class KioskList extends React.Component {
   }
 
   async getData() {
-    const { data } = await Axios.post('/business/kiosk/list')
+    const {data} = await Axios.post('/business/kiosk/list')
 
-    this.setState({ listData: data.data.kiosk })
+    this.setState({listData: data.data.kiosk})
   }
 
   async deleteData(id) {
-    const { data } = await axios.post('/business/kiosk/delete', {
+    const {data} = await axios.post('/business/kiosk/delete', {
       id: id
     })
 

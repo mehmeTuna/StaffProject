@@ -11,14 +11,18 @@
 |
 */
 
+Route::get('getRedis', 'KioskController@getRedis');
+Route::get('test-broadcast', function(){
+   event(new \App\Events\KioskEvent('s6rnD8NfvN3dYqmcUsQy6n9VMUCeN3UwZZN1cbOn'));
+});
 
 //herhangi bir url eslesme olmaz ise bu sayfa goruntulenecek
 Route::any('/', 'WelcomeController@index');
 
 Route::get('404', 'WelcomeController@noPage');
-Route::get('forget-password', 'WelcomeController@index');
+Route::get('forget-password', 'WelcomeController@forgetPasswordPage');
 
-Route::get('kiosk', 'KioskController@kioskRegisterPage');
+Route::get('kiosk', 'KioskController@kioskRegisterPage')->name('kioskHome');
 Route::get('login', 'BusinessController@loginPage');
 
 Route::get('staff/login', 'StaffController@staticStaffLoginPage');
@@ -26,7 +30,6 @@ Route::post('kiosk/staff/login', 'StaffController@staffLogin');
 
 Route::prefix('kiosk')->group(function () {
     Route::get('staff/{code}', 'StaffController@staffLoginPage');
-    Route::post('me', 'KioskController@me');
     Route::post('register', 'KioskController@AddNewKiosk');
     Route::get('generate', 'KioskController@controllerQr');
 });
@@ -49,6 +52,13 @@ Route::prefix('business')->group(function(){
   Route::post('kiosk/add', 'KioskController@AddNewKiosk');
 
   Route::get('kiosk/qr/generate', 'KioskController@generateQr');
+});
+
+
+Route::prefix('v1')->group(function(){
+    Route::prefix('kiosk')->group(function(){
+        Route::post('me', 'KioskController@me');
+    });
 });
 
 //business route add middleware

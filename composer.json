@@ -8,15 +8,18 @@
   "license": "MIT",
   "type": "project",
   "require": {
-    "php": ">=7.0",
+    "php": "5.6.*",
     "ext-json": "*",
     "intervention/image": "^2.5",
     "laravel/framework": "5.4.*",
     "laravel/passport": "~4.0",
     "laravel/tinker": "~1.0",
+    "predis/predis": "^1.1",
+    "pusher/pusher-php-server": "^4.1",
     "simplesoftwareio/simple-qrcode": "^2.0"
   },
   "require-dev": {
+    "barryvdh/laravel-ide-helper": "2.4.3",
     "fzaninotto/faker": "~1.4",
     "mockery/mockery": "0.9.*",
     "phpunit/phpunit": "~5.7"

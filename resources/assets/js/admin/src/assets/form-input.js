@@ -2,7 +2,7 @@ import React from 'react'
 import DatePicker from 'react-date-picker'
 import Input from 'react-phone-number-input/input'
 
-const FormInputElement = ({ name, type, value, onChange, alert }) => {
+const FormInputElement = ({name, type, value, onChange, alert}) => {
   return (
     <div className="col-md-6 column justify-content-center align-items-center">
       <div className="mx-auto">

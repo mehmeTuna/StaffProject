@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Business;
 use App\Experience;
 use App\Http\Requests\ExperienceRegisterRequest;
+use App\Http\Requests\ExperienceUpdateRequest;
 use App\Staff;
 use Illuminate\Http\Request;
 
@@ -22,18 +23,16 @@ class ExperienceController extends Controller
 
     public function register(ExperienceRegisterRequest $request)
     {
-        $businessId = session("businessId");
-
         $workClass = ['freeTime', 'plannedTime', 'fullTime'];
         if (!in_array($request->workingPlan, $workClass)) {
             return response()->json(['status' => false, 'workingPlan' => 'not defined']);
         }
 
-        $workPlan = array_keys($workClass, $request->workingPlan); //db ye sayisal olarak eklenecek
+        $workPlan = array_keys($workClass, $request->workingPlan); //TODO:: db ye sayisal olarak eklenecek
 
         $experience = Experience::create([
             "workClass" => $workPlan[0],
-            'business' => $businessId,
+            'business' => $this->businessId,
             'identifier' => $request->experienceName,
             'class' => 1,
             'periode' => $request->experiencePeriode,
@@ -56,19 +55,17 @@ class ExperienceController extends Controller
         ]);
     }
 
-    public function delete(Request $request)
+    public function delete(ExperienceUpdateRequest $request)
     {
-        $id = $request->id;
-
-        $experience = Experience::where('id', $id)->update([
+        $experience = Experience::where('id', $request->id)->update([
             'active' => 0,
         ]);
-
         return $this->respondSuccess();
     }
 
     public function listData($page = 1, $count = 20)
     {
+        //TODO:: bu kisim model olarak don siralama islemini daha duzenli yap
         if ((int) $page > 10 || (int) $count > 60) {
             return $this->respondFail();
         }

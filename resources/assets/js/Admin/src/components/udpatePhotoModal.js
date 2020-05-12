@@ -2,13 +2,13 @@ import React from 'react'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
-import { makeStyles } from '@material-ui/core/styles'
+import {makeStyles} from '@material-ui/core/styles'
 import DialogContent from '@material-ui/core/DialogContent'
 import IconButton from '@material-ui/core/IconButton'
 import PhotoCamera from '@material-ui/icons/PhotoCamera'
 
 import Btn from './assets/Button'
-import { businessUpdate } from './../../api/business'
+import {businessUpdate} from './../../api/business'
 import theme from './theme'
 
 const useStyles = makeStyles(theme => ({
@@ -74,7 +74,7 @@ export default function UpdatePhotoModal(props) {
               />
               <label htmlFor="icon-button-file" className={classes.content}>
                 <IconButton aria-label="upload picture" component="span">
-                  <PhotoCamera style={{ fontSize: 40 }} />
+                  <PhotoCamera style={{fontSize: 40}} />
                 </IconButton>
               </label>
             </React.Fragment>
@@ -82,7 +82,7 @@ export default function UpdatePhotoModal(props) {
         </DialogContent>
         <DialogActions>
           <Btn
-            style={{ backgroundColor: theme.colors.primary }}
+            style={{backgroundColor: theme.colors.primary}}
             onClick={handleSubmit}
           >
             Update

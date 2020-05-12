@@ -25,7 +25,7 @@ class StoreBusinessRegister extends FormRequest
     {
         return [
             "businessName" => "required|min:3|max:255",
-            "telephone" => "required|min:3|max:40",
+            "telephone" => "required|min:3|max:40|unique:business,phone",
             'email' => 'email|required|unique:business,email',
             "password" => "required|min:3|max:100",
         ];

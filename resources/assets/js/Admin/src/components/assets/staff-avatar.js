@@ -1,7 +1,7 @@
 import React from 'react'
 import Badge from '@material-ui/core/Badge'
 import Avatar from '@material-ui/core/Avatar'
-import { makeStyles, withStyles } from '@material-ui/core/styles'
+import {makeStyles, withStyles} from '@material-ui/core/styles'
 
 const StyledBadge = withStyles(theme => ({
   badge: {
@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function StaffAvatar({ img, name, online }) {
+export default function StaffAvatar({img, name, online}) {
   const classes = useStyles()
 
   return (
@@ -55,10 +55,10 @@ export default function StaffAvatar({ img, name, online }) {
           }}
           variant="dot"
         >
-          <Avatar style={{ width: 100, height: 100 }} alt={name} src={img} />
+          <Avatar style={{width: 100, height: 100}} alt={name} src={img} />
         </StyledBadge>
       ) : (
-        <Avatar style={{ width: 100, height: 100 }} alt={name} src={img} />
+        <Avatar style={{width: 100, height: 100}} alt={name} src={img} />
       )}
     </div>
   )

@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FormSubmitBtn = ({ children, onClick }) => {
+const FormSubmitBtn = ({children, onClick}) => {
   return (
     <div className="grid-margin">
       <div className="card">

@@ -1,5 +1,5 @@
 import React from 'react'
-import { makeStyles, withStyles, CardHeader, Box } from '@material-ui/core'
+import {makeStyles, withStyles, CardHeader, Box} from '@material-ui/core'
 import Slide from '@material-ui/core/Slide'
 import Card from '@material-ui/core/Card'
 import CardActions from '@material-ui/core/CardActions'
@@ -42,7 +42,7 @@ const GreenCheckbox = withStyles({
   checked: {}
 })(props => <Checkbox color="default" {...props} />)
 
-const CustomCheckBox = ({ title, ...props }) => (
+const CustomCheckBox = ({title, ...props}) => (
   <Box>
     <FormControlLabel control={<GreenCheckbox {...props} />} label={title} />
   </Box>
@@ -60,7 +60,7 @@ export default function StaffFilter(props) {
               avatar={
                 <Btn
                   variant="outlined"
-                  style={{ color: 'black' }}
+                  style={{color: 'black'}}
                   startIcon={<CloseIcon />}
                   onClick={() => props.setOpen(false)}
                 >
@@ -73,7 +73,7 @@ export default function StaffFilter(props) {
                 checked={props.data.balance}
                 onChange={e =>
                   props.updateFilterData(
-                    Object.assign({}, props.data, { balance: e.target.checked })
+                    Object.assign({}, props.data, {balance: e.target.checked})
                   )
                 }
                 name="checkedA"
@@ -121,7 +121,7 @@ export default function StaffFilter(props) {
             </CardContent>
             <CardActions>
               <Btn
-                style={{ backgroundColor: theme.colors.primary }}
+                style={{backgroundColor: theme.colors.primary}}
                 onClick={props.applyFilter}
               >
                 APPLY FILTERS

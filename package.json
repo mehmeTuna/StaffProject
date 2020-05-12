@@ -40,6 +40,7 @@
     "history": "^4.7.2",
     "immutable": "^4.0.0-rc.12",
     "js-cookie": "^2.2.1",
+    "laravel-echo": "^1.7.0",
     "lodash": "^4.17.15",
     "material-table": "^1.57.2",
     "moment": "^2.24.0",
@@ -68,6 +69,7 @@
     "redux": "^4.0.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.3.0",
+    "socket.io-client": "^2.3.0",
     "sweetalert2": "^9.6.0",
     "sweetalert2-react-content": "^2.0.2"
   }

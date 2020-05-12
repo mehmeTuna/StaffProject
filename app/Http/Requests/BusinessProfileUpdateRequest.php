@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Staff;
 use Illuminate\Foundation\Http\FormRequest;
 
 class BusinessProfileUpdateRequest extends FormRequest
@@ -13,7 +14,15 @@ class BusinessProfileUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        return true;
+        if($this->session()->has('businessId')){
+            return false ;
+        }
+        $staff = Staff::find((int)$this->request->userId)->with('businessOwner')->active();
+        if($staff == null){
+            return false ;
+        }
+
+        return $staff->businessOwner->id == $this->session()->get('businessId');
     }
 
     /**

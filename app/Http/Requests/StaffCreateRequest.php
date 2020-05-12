@@ -20,9 +20,7 @@ class StaffCreateRequest extends FormRequest
         $nowtime = Carbon::now();
         $packageTime = Carbon::parse($business->packageTime);
         $canPackageTime =$nowtime->diffInSeconds($packageTime, false);
-        $response =  $business->planDetail->staff_count > $business->staff->count() &&  ($canPackageTime > 0);
-        
-        return $response;
+        return $business->planDetail->staff_count > $business->staff->count() &&  ($canPackageTime > 0);
     }
 
     /**

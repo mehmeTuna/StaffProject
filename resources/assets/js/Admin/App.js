@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import ReactDOM from 'react-dom'
 
 import Navbar from './src/navbar'
@@ -13,7 +13,7 @@ import ExperienceList from './src/ExperienceList'
 import KioskList from './src/KioskList'
 import KioskCreate from './src/KioskCreate'
 
-import { businessData } from './api/business'
+import {businessData} from './api/business'
 
 import Profile from './src/components/profile'
 
@@ -26,11 +26,6 @@ export default class App extends React.Component {
       data: rootData,
       token: localStorage.getItem('businessToken')
     }
-  }
-
-  async componentDidMount() {
-    //console.log(this.state.data)
-
   }
 
   render() {

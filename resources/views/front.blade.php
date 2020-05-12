@@ -1,59 +1,6 @@
-<!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title> Beta - Version 2.0 </title>
-    <meta name="description" content="description">
-    <meta name="keywords" content="keywords">
-
-    <link href="https://fonts.googleapis.com/css?family=Crimson+Text:400,400i,600|Montserrat:200,300,400"
-        rel="stylesheet">
-
-    <link rel="stylesheet" href="/public/front/assets/css/bootstrap/bootstrap.css">
-    <link rel="stylesheet" href="/public/front/assets/fonts/ionicons/css/ionicons.min.css">
-    <link rel="stylesheet" href="/public/front/assets/fonts/law-icons/font/flaticon.css">
-
-    <link rel="stylesheet" href="/public/front/assets/fonts/fontawesome/css/font-awesome.min.css">
-
-    <link rel="stylesheet" href="/public/front/assets/css/slick.css">
-    <link rel="stylesheet" href="/public/front/assets/css/slick-theme.css">
-
-    <link rel="stylesheet" href="/public/front/assets/css/helpers.css">
-    <link rel="stylesheet" href="/public/front/assets/css/style.css">
-    <link rel="stylesheet" href="/public/front/assets/css/landing-2.css">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.css">
-</head>
-
+@extends('front.head')
 <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
-    <nav class="navbar navbar-expand-lg navbar-dark pb_navbar pb_scrolled-light" id="pb-navbar">
-        <div class="container">
-            <a class="navbar-brand" href="#">Landing</a>
-            <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
-                data-target="#probootstrap-navbar" aria-controls="probootstrap-navbar" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span><i class="ion-navicon"></i></span>
-            </button>
-            <div class="collapse navbar-collapse" id="probootstrap-navbar">
-                <ul class="navbar-nav ml-auto">
-                    <li class="nav-item"><a class="nav-link" href="#section-home">Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/kiosk">Kiosk Register / Home</a></li>
-                    <li class="nav-item"><a class="nav-link" href="/staff/login">Staff</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#section-features">Features</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#section-reviews">Reviews</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#section-pricing">Pricing</a></li>
-                    <li class="nav-item cta-btn ml-xl-2 ml-lg-2 ml-md-0 ml-sm-0 ml-0"><a class="nav-link"
-                            href="/login"><span class="pb_rounded-4 px-4">Login</span></a></li>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- END nav -->
-
-
-
+@extends('front.headNavigation')
 
     <section
         class="pb_cover_v3 overflow-hidden cover-bg-indigo cover-bg-opacity text-left pb_gradient_v1 pb_slant-light"
@@ -591,59 +538,6 @@
     </section>
     <!-- END section -->
 
-    <!-- START Bootstrap-Cookie-Alert -->
-    <div class="alert text-center cookiealert" role="alert">
-        <b>Cerez politikasi </b> Daha fazla bilgi icin <a href="#" target="_blank">sayfasini ziyaret ediniz</a>
+<script src="/public/businessRegister/js/app.js"></script>
 
-        <button type="button" class="btn btn-primary btn-sm acceptcookies" aria-label="Close">
-            Anladim
-        </button>
-    </div>
-    <!-- END Bootstrap-Cookie-Alert -->
-
-    <footer class="pb_footer bg-light" role="contentinfo">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col">
-                    <ul class="list-inline">
-                        <li class="list-inline-item"><a href="#" class="p-2"><i class="fa fa-facebook"></i></a></li>
-                        <li class="list-inline-item"><a href="#" class="p-2"><i class="fa fa-twitter"></i></a></li>
-                        <li class="list-inline-item"><a href="#" class="p-2"><i class="fa fa-linkedin"></i></a></li>
-                    </ul>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col text-center">
-                    <p class="pb_font-14">&copy; 2019. All Rights Reserved. <br> <a
-                            href="https://uicookies.com/bootstrap-html-templates/">Bootstrap Templates</a> by uiCookies
-                    </p>
-                    <p class="pb_font-14">Demo Images: <a href="https://unsplash.com/" target="_blank"
-                            rel="nofollow">Unsplash</a></p>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- loader -->
-    <!-- 
-        <div id="pb_loader" class="show fullscreen"><svg class="circular" width="48px" height="48px">
-            <circle class="path-bg" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke="#eeeeee" />
-            <circle class="path" cx="24" cy="24" r="22" fill="none" stroke-width="4" stroke-miterlimit="10"
-                stroke="#1d82ff" /></svg></div>
- -->
-    <script src="/public/businessRegister/js/app.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/gh/Wruczek/Bootstrap-Cookie-Alert@gh-pages/cookiealert.js"></script>
-    <!-- cookie policy js file-->
-    <script src="/public/front/assets/js/jquery.min.js"></script>
-    <script src="/public/front/assets/js/popper.min.js"></script>
-    <script src="/public/front/assets/js/bootstrap.min.js"></script>
-    <script src="/public/front/assets/js/slick.min.js"></script>
-    <script src="/public/front/assets/js/jquery.mb.YTPlayer.min.js"></script>
-    <script src="/public/front/assets/js/jquery.waypoints.min.js"></script>
-    <script src="/public/front/assets/js/jquery.easing.1.3.js"></script>
-    <script src="/public/front/assets/js/main.js"></script>
-
-</body>
-
-</html>
+@extends('front.footer')

@@ -14,4 +14,9 @@ class WelcomeController extends Controller
     {
         return view('front');
     }
+
+    public function forgetPasswordPage()
+    {
+        return view('forgetPassword');
+    }
 }

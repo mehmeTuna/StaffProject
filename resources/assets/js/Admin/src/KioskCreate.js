@@ -2,7 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
-import { Redirect } from 'react-router-dom'
+import {Redirect} from 'react-router-dom'
 import PageTitle from './assets/page-title'
 
 const sweet = withReactContent(Swal)
@@ -23,11 +23,11 @@ export default class KioskCreate extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ hostName: window.location.host })
+    this.setState({hostName: window.location.host})
   }
 
   async newKiosk(val) {
-    const { data } = await axios.post('/kiosk/register', {
+    const {data} = await axios.post('/kiosk/register', {
       code: this.state.registerCode,
       name: val
     })
@@ -39,7 +39,7 @@ export default class KioskCreate extends React.Component {
     } else {
       sweet.fire({
         icon: 'warning',
-        title: 'Geçerli bir code giriniz',
+        title: 'Undefined Code',
         timer: 1500,
         showCloseButton: true,
         showCancelButton: false,
@@ -53,7 +53,7 @@ export default class KioskCreate extends React.Component {
     if (this.state.registerCode === '') {
       sweet.fire({
         icon: 'warning',
-        title: 'Geçerli bir code giriniz',
+        title: 'Undefined Code',
         timer: 1500,
         showCloseButton: true,
         showCancelButton: false,
@@ -106,9 +106,7 @@ export default class KioskCreate extends React.Component {
                   type="text"
                   className="form-control"
                   value={this.state.registerCode}
-                  onChange={e =>
-                    this.setState({ registerCode: e.target.value })
-                  }
+                  onChange={e => this.setState({registerCode: e.target.value})}
                   placeholder="Code"
                 />
               </div>

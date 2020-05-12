@@ -130,7 +130,7 @@ export default function StaffDetail(props) {
                   src={props.staff.image}
                   alt={`${props.staff.firstName} ${props.staff.lastName}`}
                   className="mx-auto"
-                  style={{ width: '100px', height: '100' }}
+                  style={{width: '100px', height: '100'}}
                 />
               </Grid>
               <Grid item xs={12} sm={12} md={9}>
@@ -181,7 +181,7 @@ export default function StaffDetail(props) {
               </Grid>
               <Grid item xs={12} sm={6} md={6}>
                 <Btn
-                  style={{ background: theme.colors.primary }}
+                  style={{background: theme.colors.primary}}
                   startIcon={<AccountBalanceWalletIcon />}
                   onClick={() => payData()}
                 >
