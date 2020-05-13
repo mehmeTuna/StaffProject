@@ -13,7 +13,7 @@
 
 Route::get('getRedis', 'KioskController@getRedis');
 Route::get('test-broadcast', function(){
-   event(new \App\Events\KioskEvent('s6rnD8NfvN3dYqmcUsQy6n9VMUCeN3UwZZN1cbOn'));
+   event(new \App\Events\KioskEvent());
 });
 
 //herhangi bir url eslesme olmaz ise bu sayfa goruntulenecek

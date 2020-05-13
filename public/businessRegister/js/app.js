@@ -52018,7 +52018,7 @@ function (_React$Component) {
         onSubmit: this.handleSubmit
       }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("h2", {
         className: "mb-4 mt-0 text-center"
-      }, "Sign Up for Free"), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
+      }, "Sign Up for Free "), react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("div", {
         className: "form-group"
       }, react__WEBPACK_IMPORTED_MODULE_2___default.a.createElement("small", {
         className: "form-text text-muted text-danger m-1"

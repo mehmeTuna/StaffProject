@@ -1,7 +1,8 @@
-import React from 'react'
+import React, {useEffect} from 'react'
 import ReactDOM from 'react-dom'
 import Axios from 'axios'
 import Echo from 'laravel-echo'
+import QRCode from 'react-qr-code'
 
 require('./../bootstrap')
 
@@ -16,16 +17,11 @@ function Home() {
   const [isLogin, setIsLogin] = React.useState(false)
   const [code, setCode] = React.useState('')
 
-  useEffect(async () => {
-    const {data} = await Axios.post('/v1/kiosk/me')
-
-    window.Echo.channel(`kiosk.${data.data.kioskId}`).listen(
-      'KioskEvent',
-      e => {
-        setIsLogin(true)
-        console.log(e)
-      }
-    )
+  useEffect(() => {
+    window.Echo.channel('create').listen('.KioskEvent', e => {
+      setIsLogin(true)
+      console.log(e)
+    })
   }, [])
 
   return (
@@ -50,12 +46,12 @@ function Home() {
           </div>
 
           <div className="col-md-5 relative align-self-center">
-            {this.isLogin ? (
-              <img src="/kiosk/generate" alt="Kiosk Qr Code" />
+            {isLogin ? (
+              <QRCode value="Hello, World! se se " />
             ) : (
               <div className="bg-white rounded pb_form_v1">
                 <h4 className="mb-4 mt-0 text-center">CODE</h4>
-                <h2 className="mb-4 mt-0 text-center">{this.code}</h2>
+                <h2 className="mb-4 mt-0 text-center">{code}</h2>
               </div>
             )}
           </div>

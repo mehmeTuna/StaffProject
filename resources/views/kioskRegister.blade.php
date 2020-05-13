@@ -251,7 +251,7 @@
     </footer>
 
 
-    <script src="public/kiosk/home/js/app.js"></script>
+    <script src="public/kiosk/home/js/home.js"></script>
 
     <script src="/public/front/assets/js/jquery.min.js"></script>
     <script src="/public/front/assets/js/slick.min.js"></script>

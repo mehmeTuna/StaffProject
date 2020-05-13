@@ -30,4 +30,5 @@ class BusinessRegisterEmail extends Mailable
     {
         return $this->view('business.registerEmail');
     }
+    
 }

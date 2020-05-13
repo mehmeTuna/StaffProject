@@ -6,7 +6,7 @@ use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class KioskEvent implements ShouldBroadcast
+class KioskEvent extends Event implements ShouldBroadcast
 {
     use SerializesModels;
 
@@ -17,7 +17,7 @@ class KioskEvent implements ShouldBroadcast
      *
      * @param $data
      */
-    public function __construct($data)
+    public function __construct($data = '')
     {
         $this->data = $data ;
     }
@@ -29,7 +29,7 @@ class KioskEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('kiosk.'.$this->data);
+        return new Channel('create');
     }
 
     /**

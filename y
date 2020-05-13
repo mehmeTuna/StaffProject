@@ -1,5 +1,5 @@
 {
-	"authHost": "http://localhost:8000",
+	"authHost": "http://localhost:90",
 	"authEndpoint": "/broadcasting/auth",
 	"clients": [],
 	"database": "redis",

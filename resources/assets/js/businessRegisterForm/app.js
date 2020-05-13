@@ -75,7 +75,7 @@ export default class App extends React.Component {
         className="bg-white rounded pb_form_v1 needs-validation"
         onSubmit={this.handleSubmit}
       >
-        <h2 className="mb-4 mt-0 text-center">Sign Up for Free</h2>
+        <h2 className="mb-4 mt-0 text-center">Sign Up for Free </h2>
         <div className="form-group">
           <small className="form-text text-muted text-danger m-1">
             {this.state.businessNameAlert}
