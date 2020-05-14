@@ -20,11 +20,9 @@ export async function businessUpdate(value) {
   }
 }
 
-export async function experienceList(page = 1, count = 20) {
+export async function experienceList() {
   try {
-    const {data} = await Axios.post(
-      `/business/experience/list/${page}/${count}`
-    )
+    const {data} = await Axios.post('/business/experience/list/all')
     result.data = data.data
     return result
   } catch (error) {

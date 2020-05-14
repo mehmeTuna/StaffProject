@@ -6,7 +6,7 @@ namespace App\Observers;
 use App\Business;
 use Carbon\Carbon;
 use App\PlanDetail;
-use App\Jobs\SemdEmailToBusinessJob;
+use App\Jobs\SendEmailToBusinessJob;
 
 class BusinessObserver
 {
@@ -29,6 +29,6 @@ class BusinessObserver
      */
     public function created(Business $business)
     {
-        dispatch(new SemdEmailToBusinessJob($business->email));
+        dispatch(new SendEmailToBusinessJob($business->email));
     }
 }

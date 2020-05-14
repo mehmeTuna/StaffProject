@@ -46,12 +46,18 @@ class Business extends Model
 
     public function staff()
     {
-        return $this->hasMany('App\Staff', 'business', 'id')->where('active', 1)->orderBy('created_at', 'desc');
+        return $this->hasMany('App\Staff', 'business', 'id')
+            ->where('staff.active', 1)
+            ->orderBy('staff.created_at', 'desc')
+            ->limit(100);
     }
 
     public function experience()
     {
-        return $this->hasMany('App\Experience', 'business', 'id')->where('active', 1)->orderBy('created_at', 'desc');
+        return $this->hasMany('App\Experience', 'business', 'id')
+            ->where('experience.active', 1)
+            ->orderBy('experience.created_at', 'desc')
+            ->limit(100);
     }
 
     public function kiosk()

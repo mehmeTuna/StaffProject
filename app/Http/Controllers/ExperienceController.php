@@ -63,20 +63,14 @@ class ExperienceController extends Controller
         return $this->respondSuccess();
     }
 
-    public function listData($page = 1, $count = 20)
+    public function listData()
     {
-        //TODO:: bu kisim model olarak don siralama islemini daha duzenli yap
-        if ((int) $page > 10 || (int) $count > 60) {
-            return $this->respondFail();
-        }
-
-        $perPage = ($page - 1) * $count;
         $business = Business::find($this->businessId);
         if($business == null){
             return $this->respondSuccess([]);
         }
 
-        $experience = $business->experience()->take($perPage)->limit($count)->get();
+        $experience = $business->experience()->get();
 
         $experience = $experience->map(function ($experience) use($business){
             $data = (object) [];

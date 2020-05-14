@@ -45,7 +45,8 @@ class StaffCreateRequest extends FormRequest
             'experience' => 'bail|required|exists:experience,id' ,//TODO: sorgu ekle aktif olan experience olmali
             'pay' => 'bail|required|integer',
             'factor' => 'bail|required|min:2|max:15',
-            'periode' => 'bail|required|integer'
+            'periode' => 'bail|required|integer',
+            'img' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ];
     }
 }

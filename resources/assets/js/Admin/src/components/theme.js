@@ -1,6 +1,6 @@
 import React from 'react'
 
-const theme = {
+const appTheme = {
   colors: {
     primary: '#75B72B',
     danger: '#E54F4E',
@@ -8,4 +8,4 @@ const theme = {
   }
 }
 
-export default theme
+export default appTheme

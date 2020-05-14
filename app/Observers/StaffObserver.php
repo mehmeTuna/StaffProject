@@ -5,6 +5,7 @@ namespace App\Observers;
 
 use App\Career;
 use App\Employment;
+use App\Jobs\SendEmailToStaffJob;
 use App\Staff;
 use App\Tio;
 use Carbon\Carbon;
@@ -64,6 +65,7 @@ class StaffObserver
 
     public function created(Staff $staff)
     {
+        dispatch(new SendEmailToStaffJob($staff->email));
         $career = Career::create([
             'endTime' => '',
             'workClass' => 1,//TODO: bu kisim frontend e working plan kismi hazir olduktan sonra eklenecek simdilik varsayilan 1,

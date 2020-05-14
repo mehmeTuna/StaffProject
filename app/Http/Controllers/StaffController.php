@@ -6,6 +6,7 @@ use App\Business;
 use App\Experience;
 use App\Http\Requests\BusinessStaffRelationship;
 use App\Http\Requests\StaffCreateRequest;
+use App\Http\Requests\StaffDeleteRequest;
 use App\Http\Requests\StaffPayment;
 use App\Http\Requests\StoreStaffLogin;
 use App\Kiosk;
@@ -57,15 +58,11 @@ class StaffController extends Controller
 
     public function register(StaffCreateRequest $request)
     {
-        $img = '';
-
-        if ($request->hasFile('img')) {
-            $image = $request->file('img');
-            $name = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
-            $destinationPath = public_path('/images');
-            $image->move($destinationPath, $name);
-            $img = '/public/images/' . $name;
-        }
+        $image = $request->file('img');
+        $name = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
+        $destinationPath = public_path('/images');
+        $image->move($destinationPath, $name);
+        $img = '/public/images/' . $name;
 
         $staff = Staff::create([
             "firstName" => $request->firstName,
@@ -91,14 +88,11 @@ class StaffController extends Controller
         return $this->respondSuccess();
     }
 
-    public function delete(Request $request)
+    public function delete(StaffDeleteRequest $req)
     {
-        $id = (int)$request->id;
-
-        $staff = Staff::where('id', $id)->update([
-            'active' => 0,
+        $response = Staff::find($req->id)->update([
+            'active' => 0
         ]);
-
         return $this->respondSuccess();
     }
 
@@ -139,7 +133,7 @@ class StaffController extends Controller
         return $this->respondSuccess($response);
     }
 
-    public function staffList(Request $request)
+    public function staffList()
     {
         $factorText = [
         'hour' => 'hourly',
@@ -239,6 +233,18 @@ class StaffController extends Controller
             ]);
         }
 
+        session()->put('staff', $staff->id);
+        $token =str_random(60);
+
+        $staff->loginToken = $token;
+
+        $staff->save();
+
+        return response()->json([
+            'status' => true,
+            'text' => 'Basarili  giris',
+        ])->cookie($this->staffCookieName, $token, $this->oneYearCookieTime());
+
         if (session()->has('kioskIp')) {
             $kiosk = Kiosk::where('remoteAddress', session()->get('kioskIp'))->first();
             if($kiosk == null)
@@ -289,11 +295,6 @@ class StaffController extends Controller
                 'text' => 'Basarili  giris',
             ])->cookie($this->staffCookieName, $token, $this->oneYearCookieTime());
         }
-
-        return response()->json([
-            'status' => false,
-            'text' => 'you have not logged in for a long time',
-        ]);
     }
 
     public function me()
