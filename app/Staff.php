@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
-    protected $visible = ['id', 'firstName', 'experience', 'factor', 'pay', 'periode', 'workingPlan', 'online', 'lastName', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus'];
+    protected $visible = ['id', 'firstName', 'factor', 'pay', 'periode', 'workingPlan', 'online', 'lastName', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus'];
     protected $fillable = ['id', 'password', 'experience', 'factor', 'pay', 'periode', 'workingPlan', 'online', 'firstName', 'lastName', 'active', 'loginToken', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus', 'lang', 'business', 'emaployment', 'career', 'timeSheetMap'];
     protected $table = "staff";
     protected $primaryKey = "id";
@@ -37,7 +37,7 @@ class Staff extends Model
 
     public function experinceData()
     {
-        return $this->hasOne('App\Experience','' , '')->where('experience.active', 1);
+        return $this->hasOne('App\Experience','id' , 'experince');
     }
 
     public function businessOwner()
@@ -52,7 +52,7 @@ class Staff extends Model
 
     public function logHistory()
     {
-        return $this->hasMany("App\Tio", "staff", "id")->orderBy('created_at', 'desc')->limit(100);
+        return $this->hasMany("App\Tio", "staff", "id")->orderBy('tio.created_at', 'desc')->limit(100);
     }
 
     public function career()

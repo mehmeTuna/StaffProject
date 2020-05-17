@@ -7,6 +7,7 @@ use App\Experience;
 use App\Http\Requests\BusinessStaffRelationship;
 use App\Http\Requests\StaffCreateRequest;
 use App\Http\Requests\StaffDeleteRequest;
+use App\Http\Requests\StaffMeRequest;
 use App\Http\Requests\StaffPayment;
 use App\Http\Requests\StoreStaffLogin;
 use App\Kiosk;
@@ -168,53 +169,48 @@ class StaffController extends Controller
     public function staffLoginPage(Request $request)
     {
         $kioskQrCode = Kioskqrcode::where('code', $request->code)->firstOrFail();
+
+        if($kioskQrCode == null){
+            return view('home');
+        }
+
         $staff = Staff::where('loginToken', $request->cookie($this->staffCookieName))->first();
 
         $kioskQrCode->active = 0;
         $kioskQrCode->save();
 
-        session()->put('registerTime', time());
-        session()->put('kioskIp', $kioskQrCode->ip);
-
         if($staff == null)
         {
+            $request->session()->flash('kioskIp', $kioskQrCode->ip);
             return view('staff.login');
         }
 
-        $kiosk = Kiosk::where('remoteAddress', $kioskQrCode->ip)->first();
+        $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
 
-        if ($kiosk != null) {
+        $newTio = Tio::create([
+            'staff' => $staff->id,
+            'kioskId' => $kioskQrCode->ip,
+            'traffic' => $staff->online ? 'Leave' : 'Enter',
+            'business' => $staff->business,
+        ]);
 
-            //staff daha once giris cikis islemi yapmissa
-            $newTio = Tio::create([
-                'staff' => $staff->id,
-                'kioskId' => session()->get('kioskIp'),
-                'traffic' => $staff->online == 'Enter' ? 'Leave' : 'Enter',
-                'business' => $staff->business,
-            ]);
+        if($tio != null){
+            $difference = time() - $tio->created_at->timestamp;
+            $multiplier = $staff->salary * ($difference / 3300);
 
-            //user cikis islemi yaptiginda hesaplamaya dahil edilecek fiyati
-            if ($newTio->traffic == 'Leave') {
-                $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
-                $difference = time() - $tio->created_at->timestamp;
-                $multiplier = $staff->salary * ($difference / 3300);
+            $oldBalance = $staff->balance;
+            $newBalance = round(($oldBalance + $multiplier), 2);
 
-                $oldBalance = $staff->balance;
-                $newBalance = round(($oldBalance + $multiplier), 2);
-
-                $staff->balance = $newBalance ;
-            }
-
-            $staff->online = !$staff->online ;
-            $staff->save();
-
-            session()->put('staff', $staff->id);
-            session()->forget('kioskIp');
-            session()->forget('registerTime');
-
-            return redirect('/staff/home');
+            $staff->balance = $newBalance ;
         }
-        return view('staff.login');
+        $token = str_random(60);
+        $staff->online = !$staff->online ;
+        $staff->loginToken = $token ;
+        $staff->save();
+
+        session()->put('staff', $staff->id);
+
+        return redirect('/staff/home')->cookie($this->staffCookieName, $token, $this->oneYearCookieTime());
     }
 
     public function staticStaffLoginPage()
@@ -234,80 +230,41 @@ class StaffController extends Controller
         }
 
         session()->put('staff', $staff->id);
+
+        if($request->session()->has('kioskIp')){
+            $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
+
+            $newTio = Tio::create([
+                'staff' => $staff->id,
+                'kioskId' => session('kioskIp'),
+                'traffic' => $staff->online ? 'Leave' : 'Enter',
+                'business' => $staff->business,
+            ]);
+
+            if($tio != null){
+                $difference = time() - $tio->created_at->timestamp;
+                $multiplier = $staff->salary * ($difference / 3300);
+
+                $oldBalance = $staff->balance;
+                $newBalance = round(($oldBalance + $multiplier), 2);
+
+                $staff->balance = $newBalance ;
+            }
+        }
+
         $token =str_random(60);
-
         $staff->loginToken = $token;
-
         $staff->save();
 
         return response()->json([
             'status' => true,
             'text' => 'Basarili  giris',
         ])->cookie($this->staffCookieName, $token, $this->oneYearCookieTime());
-
-        if (session()->has('kioskIp')) {
-            $kiosk = Kiosk::where('remoteAddress', session()->get('kioskIp'))->first();
-            if($kiosk == null)
-            {
-                return response()->json([
-                    'status' => false,
-                    'text' => 'error',
-                ]);
-            }
-
-            $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
-
-            $newTio = Tio::create([
-                'staff' => $staff->id,
-                'kioskId' => session()->get('kioskIp'),
-                'traffic' => $staff->online ? 'Leave' : 'Enter',
-                'business' => $staff->business,
-            ]);
-
-            if($staff->online == 1) {
-                //user cikis islemi yaptiginda hesaplamaya dahil edilecek fiyati
-                if ($tio->traffic == 'Enter') {
-                    $difference = time() - $tio->created_at->timestamp;
-                    $multiplier = $staff->salary * ($difference / 3300);
-
-                    Tio::where('id', $tio->id)->update(['active' => 0]);
-                    Tio::where('id', $newTio->id)->update(['active' => 0]);
-
-                    $oldBalance = $staff->balance;
-                    $newBalance = round(($oldBalance + $multiplier), 2);
-                    $staff->balance = $newBalance;
-                }
-            }
-
-            $staff->online = !$staff->online ;
-            session()->put('staff', $staff->id);
-            session()->forget('kioskIp');
-            session()->forget('registerTime');
-
-            $token =str_random(60);
-
-            $staff->loginToken = $token;
-
-            $staff->save();
-
-            return response()->json([
-                'status' => true,
-                'text' => 'Basarili  giris',
-            ])->cookie($this->staffCookieName, $token, $this->oneYearCookieTime());
-        }
     }
 
-    public function me()
+    public function me(StaffMeRequest $request)
     {
-        if (!session()->has('staff')) {
-            return response()->json([
-                'status' => false,
-                'text' => 'before login please',
-            ]);
-        }
-
-        $data = (object) [];
-
+        $data = (object)[];
         $staff = Staff::where('id', session('staff'))->first();
 
         if($staff == null)

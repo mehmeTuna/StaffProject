@@ -13,7 +13,7 @@
 
 Route::get('getRedis', 'KioskController@getRedis');
 Route::get('test-broadcast', function(){
-   event(new \App\Events\KioskEvent());
+   event(new \App\Events\KioskEvent('huvK8MKqJK3WKe4aHh1GbMqZblOK1EJgdPMDyGGv'));
 });
 
 //herhangi bir url eslesme olmaz ise bu sayfa goruntulenecek
@@ -26,7 +26,7 @@ Route::get('kiosk', 'KioskController@kioskRegisterPage')->name('kioskHome');
 Route::get('login', 'BusinessController@loginPage');
 
 Route::get('staff/login', 'StaffController@staticStaffLoginPage');
-Route::post('kiosk/staff/login', 'StaffController@staffLogin');
+Route::post('staff/login', 'StaffController@staffLogin');
 
 Route::prefix('kiosk')->group(function () {
     Route::get('staff/{code}', 'StaffController@staffLoginPage');

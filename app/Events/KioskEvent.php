@@ -12,17 +12,18 @@ class KioskEvent extends Event implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    public $data;
+    public $data = [
+        'kioskId' => ''
+    ];
 
     /**
      * Create a new event instance.
      *
      * @param $data
      */
-    public function __construct($data = '')
+    public function __construct($data = [])
     {
         $this->data = $data ;
-        $this->dontBroadcastToCurrentUser();
     }
 
     /**
@@ -32,7 +33,7 @@ class KioskEvent extends Event implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('create');
+        return new Channel($this->data['kioskId']);
     }
 
     /**
@@ -54,9 +55,6 @@ class KioskEvent extends Event implements ShouldBroadcast
 
     public function broadcastWith()
     {
-        return [
-            'isUsedCode' => true,
-            'refreshQr' => true
-        ];
+        return $this->data;
     }
 }

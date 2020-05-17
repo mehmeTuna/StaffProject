@@ -51952,7 +51952,7 @@ function (_React$Component) {
 
               case 3:
                 _context.next = 5;
-                return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/kiosk/staff/login', {
+                return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post('/staff/login', {
                   username: this.state.username,
                   password: this.state.password
                 });

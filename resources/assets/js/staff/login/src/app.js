@@ -21,7 +21,7 @@ export default class Login extends React.Component {
       return
     }
 
-    const {data} = await Axios.post('/kiosk/staff/login', {
+    const {data} = await Axios.post('/staff/login', {
       username: this.state.username,
       password: this.state.password
     })

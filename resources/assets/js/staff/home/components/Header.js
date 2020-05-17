@@ -139,7 +139,7 @@ export default function Header() {
   )
 
   return (
-    <div className={classes.grow}>
+    <>
       <AppBar className={classes.grow} position="static">
         <Toolbar>
           <IconButton
@@ -191,6 +191,6 @@ export default function Header() {
       </AppBar>
       {renderMobileMenu}
       {renderMenu}
-    </div>
+    </>
   )
 }

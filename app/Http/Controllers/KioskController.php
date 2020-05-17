@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Business;
 use App\Kioskqrcode;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -11,7 +12,6 @@ use QrCode;
 use App\Kiosk;
 use App\Http\Requests\BusinessKioskRelation;
 use Illuminate\Support\Facades\Redis;
-use App\Events\KioskEvent;
 
 class KioskController extends Controller
 {
@@ -47,7 +47,7 @@ class KioskController extends Controller
 
     public function me(Request $request)
     {
-        $id = $request['id'];
+        $id = $request['webKiosk'];
 
         $kiosk = Kiosk::where('remoteAddress', $id)
             ->with('getBusiness')
@@ -56,13 +56,19 @@ class KioskController extends Controller
 
         if($kiosk == null){
             $kioskId = str_random(40);
-            $code = str_random(6);
+            $code = str_random(8);
             Cache::put($code, $kioskId, Carbon::now()->addMinutes(10));
             return $this->respondFail(['isLogin' => false, 'code' => $code, 'kioskId' => $kioskId]);
         }
 
+        $code = str_random(20);
+        Cache::put($code, $kiosk->remoteAddress, Carbon::now()->addMinutes(5));
+
         return $this->respondSuccess([
-            'kioskId' => $kiosk->remoteAddress
+            'isLogin' => true,
+            'kioskId' => $kiosk->remoteAddress,
+            'business' => Business::find(session('businessId')),
+            'qrCode' => env('APP_URL').'/kiosk/staff/'.$code,
         ]);
     }
 
@@ -128,7 +134,15 @@ class KioskController extends Controller
             'business' => session('businessId'),
         ]);
 
-        broadcast(new KioskEvent($kioskCode));
+        $code = str_random(20);
+        Cache::put($code, $kiosk->remoteAddress, Carbon::now()->addMinutes(5));
+
+        event(new \App\Events\KioskEvent([
+            'kioskId' => $kioskCode,
+            'isLogin' => true,
+            'business' => Business::find(session('businessId')),
+            'refreshQrCode' => env('APP_URL').'/kiosk/staff/'.$code,
+        ]));
 
         Cache::forget($code);
 

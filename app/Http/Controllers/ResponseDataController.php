@@ -8,7 +8,9 @@ use App\Kiosk;
 use App\PaymentHistory;
 use App\Staff;
 use App\Tio;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 
 class ResponseDataController extends Controller
 {
@@ -92,6 +94,19 @@ class ResponseDataController extends Controller
         $kiosk = Kiosk::where('id', $id)->where('business', session('businessId'))->update([
             'active' => 0,
         ]);
+
+        if($kiosk == 0 )
+            return $this->respondFail();
+
+        $kiosk = Kiosk::find($id);
+        $kioskId = str_random(40);
+        $code = str_random(8);
+        Cache::put($code, $kioskId, Carbon::now()->addMinutes(10));
+
+        event(new \App\Events\KioskEvent([
+            'isLogin' => false,
+            'kioskId' => $kiosk->remoteAddress,
+        ]));
 
         return response()->json([
             'status' => true,
