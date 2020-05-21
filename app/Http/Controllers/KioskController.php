@@ -11,33 +11,9 @@ use Illuminate\Support\Str;
 use QrCode;
 use App\Kiosk;
 use App\Http\Requests\BusinessKioskRelation;
-use Illuminate\Support\Facades\Redis;
 
 class KioskController extends Controller
 {
-
-    public function getRedis()
-    {
-      //  Redis::setex('name', 10, 'mehmet');
-
-      $list = Redis::KEYS("*");
-
-     
-        $result = '';
-
-        //Loop through list of keys
-        foreach ($list as $key)
-        {
-            //Get Value of Key from Redis
-            $value = Redis::get($key);
-            
-            //Print Key/value Pairs
-            $result = $result . "<b>Key:</b> $key  =>  $value <br /><br />";
-        }
-
-        return response($result);
-    }
-
     public function home()
     {
         return view('kiosk.home', [
@@ -67,7 +43,7 @@ class KioskController extends Controller
         return $this->respondSuccess([
             'isLogin' => true,
             'kioskId' => $kiosk->remoteAddress,
-            'business' => Business::find(session('businessId')),
+            'business' => $kiosk->getBusiness,
             'qrCode' => env('APP_URL').'/kiosk/staff/'.$code,
         ]);
     }
@@ -75,27 +51,6 @@ class KioskController extends Controller
     public function staffHomePage()
     {
         return view('staff.home');
-    }
-
-    public function staffLoginPage($code)
-    {
-        $kiosk = Kioskqrcode::where('code', $code)->first();
-
-        if($kiosk == null){
-            //gecersiz code ise uyari sayfasi goster
-            return view('404');
-        }
-
-        //TODO:: bunu bir class yap ordan yap isleri
-        $updatedKiosk = Kioskqrcode::where('id', $kiosk->id)->update([
-            'active' => 0
-        ]);
-
-        session()->put('registerTime', time());
-        session()->put('kioskIp', $kiosk->remoteAddress);
-
-
-        return view('staff.login');
     }
     
     public function controllerQr(Request $request)
@@ -134,17 +89,7 @@ class KioskController extends Controller
             'business' => session('businessId'),
         ]);
 
-        $code = str_random(20);
-        Cache::put($code, $kiosk->remoteAddress, Carbon::now()->addMinutes(5));
-
-        event(new \App\Events\KioskEvent([
-            'kioskId' => $kioskCode,
-            'isLogin' => true,
-            'business' => Business::find(session('businessId')),
-            'refreshQrCode' => env('APP_URL').'/kiosk/staff/'.$code,
-        ]));
-
-        Cache::forget($code);
+       $this->kioskQrRegenerate($kiosk);
 
         return $this->respondSuccess(['text' => 'Kiosk Created']);
     }

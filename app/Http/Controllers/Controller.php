@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\KioskEvent;
+use Carbon\Carbon;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class Controller extends BaseController
 {
@@ -78,6 +81,21 @@ class Controller extends BaseController
         }
 
         return (object) unserialize($content);
+    }
+
+    public function kioskQrRegenerate($kiosk)
+    {
+        $code = str_random(20);
+        Cache::put($code, $kiosk->remoteAddress, Carbon::now()->addMinutes(5));
+
+        event(new KioskEvent([
+            'kioskId' =>  $kiosk->remoteAddress,
+            'isLogin' => true,
+            'business' => $kiosk->getBusiness,
+            'refreshQrCode' => env('APP_URL').'/kiosk/staff/'.$code,
+        ]));
+
+        return $code ;
     }
 
 }

@@ -17,6 +17,7 @@ use App\Staff;
 use App\Tio;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 
 class StaffController extends Controller
 {
@@ -168,39 +169,40 @@ class StaffController extends Controller
 
     public function staffLoginPage(Request $request)
     {
-        $kioskQrCode = Kioskqrcode::where('code', $request->code)->firstOrFail();
-
-        if($kioskQrCode == null){
-            return view('home');
+        if (!Cache::has($request->code)){
+            return redirect('/');
         }
+        $kioskQrCode = Cache::get($request->code);
 
         $staff = Staff::where('loginToken', $request->cookie($this->staffCookieName))->first();
 
-        $kioskQrCode->active = 0;
-        $kioskQrCode->save();
-
         if($staff == null)
         {
-            $request->session()->flash('kioskIp', $kioskQrCode->ip);
-            return view('staff.login');
+            $request->session()->put('kioskIp', $kioskQrCode);
+            return redirect('staff/login');
         }
+
+        $kiosk = Kiosk::where('remoteAddress', $kioskQrCode)->first();
+        if($kiosk == null){
+            return redirect('/');
+        }
+
+        $this->kioskQrRegenerate($kiosk);
 
         $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
 
         $newTio = Tio::create([
             'staff' => $staff->id,
-            'kioskId' => $kioskQrCode->ip,
+            'kioskId' => $kioskQrCode,
             'traffic' => $staff->online ? 'Leave' : 'Enter',
             'business' => $staff->business,
         ]);
 
-        if($tio != null){
+        if($staff->online){
             $difference = time() - $tio->created_at->timestamp;
             $multiplier = $staff->salary * ($difference / 3300);
-
             $oldBalance = $staff->balance;
             $newBalance = round(($oldBalance + $multiplier), 2);
-
             $staff->balance = $newBalance ;
         }
         $token = str_random(60);
@@ -231,7 +233,7 @@ class StaffController extends Controller
 
         session()->put('staff', $staff->id);
 
-        if($request->session()->has('kioskIp')){
+        if(session()->has('kioskIp')){
             $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
 
             $newTio = Tio::create([
@@ -241,7 +243,7 @@ class StaffController extends Controller
                 'business' => $staff->business,
             ]);
 
-            if($tio != null){
+            if($staff->online){
                 $difference = time() - $tio->created_at->timestamp;
                 $multiplier = $staff->salary * ($difference / 3300);
 
@@ -250,6 +252,8 @@ class StaffController extends Controller
 
                 $staff->balance = $newBalance ;
             }
+            $staff->online = !$staff->online;
+            session()->forget('kioskIp');
         }
 
         $token =str_random(60);

@@ -19,7 +19,7 @@ class Kiosk extends Model
 
     public function getBusiness()
     {
-        return $this->hasOne("App\Business", "id", "business")->where('active', 1);
+        return $this->hasOne("App\Business", "id", "business");
     }
 
     public function scopeActive($query)
