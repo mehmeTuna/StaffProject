@@ -10,11 +10,15 @@
     "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "format": "prettier --write \"resources/assets/**/*.+(js|jsx|json|css|md)\""
+    "format": "prettier --write \"resources/assets/**/*.+(js|jsx|json|css|md)\"",
+    "storybook": "start-storybook"
   },
   "devDependencies": {
+    "@babel/core": "^7.10.2",
     "@babel/plugin-proposal-optional-chaining": "^7.9.0",
+    "@storybook/react": "^5.3.19",
     "babel-eslint": "^10.1.0",
+    "babel-loader": "^8.1.0",
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^5.2.1",
     "eslint": "^6.8.0",

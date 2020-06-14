@@ -23,55 +23,72 @@ class BusinessController extends Controller
         });
     }
 
-    public function loginPage()
-    {
-        return view('business.login');
-    }
-
     public function update(BusinessProfileUpdateRequest $request)
     {
-        $type = ['name', 'password', 'email', 'address', 'webPage', 'phone', 'img'];
-
+        $type = ['password', 'email', 'address', 'webPage', 'phone', 'img'];
+        $resultData = [];
         $business = Business::find(session('businessId'));
-        if (in_array($request->type, $type)) {
-            switch ($request->type) {
-                case 'name':
-                    $business->businessName= $request->data;
-                    break;
-                case 'password':
-                    $business->password = Hash::make($request->data) ;
-                    break;
-                case 'email':
-                    $business->email = $request->data;
-                    break;
-                case 'address':
-                    $business->address = $request->data;
-                    break;
-                case 'webPage':
-                    $business->webPage = $request->data;
-                    break;
-                case 'phone':
-                    $business->phone = $request->data;
-                    break;
-                case 'img':
-                    if ($request->hasFile('img')) {
-                        $image = $request->file('img');
-                        $fileName = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
-                        $destinationPath = public_path('images/');
-                        $img = Image::make($image->getRealPath());
-                        $img->resize(300, 300, function ($constraint) {
-                            $constraint->aspectRatio();
-                        })->save($destinationPath.$fileName);
 
-                         $business->image = '/public/images/'.$fileName;
-                    }
-                    break;
-            }
+        if(isset($request['name'])){
+            $business->businessName= $request['name'];
             $business->save();
+            $resultData['name'] = $request['name'];
             return response()->json([
                 'status' => true,
+                'data' => $resultData
             ]);
         }
+        if(isset($request['address'])){
+            $business->address= $request['address'];
+            $business->save();
+            $resultData['address'] = $request['address'];
+            return response()->json([
+                'status' => true,
+                'data' => $resultData
+            ]);
+        }
+        if(isset($request['email'])){
+            $business->email= $request['email'];
+            $business->save();
+            $resultData['email'] = $request['email'];
+            return response()->json([
+                'status' => true,
+                'data' => $resultData
+            ]);
+        }
+        if(isset($request['webpage'])){
+            $business->webPage= $request['webpage'];
+            $business->save();
+            $resultData['webpage'] = $request['webpage'];
+            return response()->json([
+                'status' => true,
+                'data' => $resultData
+            ]);
+        }
+        if(isset($request['phone'])){
+            $business->phone= $request['phone'];
+            $business->save();
+            $resultData['phone'] = $request['phone'];
+            return response()->json([
+                'status' => true,
+                'data' => $resultData
+            ]);
+        }
+
+        if (in_array($request->type, $type)) {
+                if($request->type == 'img' && $request->hasFile('img')) {
+                    $image = $request->file('img');
+                    $fileName = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
+                    $destinationPath = public_path('images/');
+                    $img = Image::make($image->getRealPath());
+                    $img->resize(300, 300, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save($destinationPath . $fileName);
+
+                    $business->image = '/public/images/' . $fileName;
+                    $resultData['profileImg'] = '/public/images/' . $fileName;
+                }
+            }
 
         return response()->json([
             'status' => false,
@@ -131,12 +148,6 @@ class BusinessController extends Controller
         ]);
 
         session()->put("businessId", $business->id);
-        session()->put([
-            'kioskCount' =>$business->kiosk->count(),
-            'experienceCount' => $business->experience->count(),
-            'staffCount' => $business->staff->count(),
-            'packageTime' => $business->packageTime
-        ]);
 
         return $this->respondSuccess([
             'businessSlugName' => $business->username
@@ -145,7 +156,7 @@ class BusinessController extends Controller
 
     public function home($businessUsername)
     {
-        $business = Business::with(['planDetail', 'staff', 'experience', 'lastPayment', 'lastLog', 'staffWithPayment', 'kiosk.logHistory', 'kiosk.qrCode.online'])
+        $business = Business::with(['planDetail'])
             ->where('username', $businessUsername)
             ->where('id', $this->businessId)
             ->active()
@@ -162,28 +173,9 @@ class BusinessController extends Controller
 
     public function businessData()
     {
-        $business = Business::find($this->businessId);
+        $business = Business::active()->with('planDetail')->findOrFail($this->businessId);
 
-        if($business == null){
-            return $this->respondFail();
-        }
-
-        //TODO:: bu kisim obje olarak don ve frontend kisminda gerekli yerleri duzelt
-        return $this->respondSuccess([
-            "email" => $business->email,
-            "username" => $business->username,
-            "img" => $business->image,
-            "name" => $business->businessName,
-            "staff" => $business->staff->count(),
-            "experience" => $business->experience->count(),
-            'businessName' => $business->businessName,
-            'address' => $business->address,
-            'webPage' => $business->webPage,
-            'phone' => $business->phone,
-            'country' => is_object($business->data) ? $business->data->country : '',
-            'currencySymbolUtf8' => is_object($business->data) ? $business->data->currencySymbolUtf8 : '',
-            'currencySymbol' => is_object($business->data) ? $business->data->currencySymbol : '',
-        ]);
+        return $this->respondSuccess($business);
     }
 
     public function homeData()

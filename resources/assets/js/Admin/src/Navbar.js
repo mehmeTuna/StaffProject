@@ -1,16 +1,14 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
 
-const Navbar = ({data}) => {
+const NavbarComponent = ({username, profileImg}) => {
   return (
     <nav className="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div className="text-center navbar-brand-wrapper d-flex align-items-center justify-content-center">
-        {data.img != null && (
-          <Link
-            to={'/' + `${data.businessName}`}
-            className="navbar-brand brand-logo-mini"
-          >
-            <img src={data.img} alt={data.businessName} />
+        {profileImg.url != null && (
+          <Link to={`${username}`} className="navbar-brand brand-logo-mini">
+            <img src={profileImg.url} alt={username} />
           </Link>
         )}
       </div>
@@ -20,7 +18,7 @@ const Navbar = ({data}) => {
           type="button"
           data-toggle="minimize"
         >
-          <span className="icon-menu"></span>
+          <span className="icon-menu" />
         </button>
         <ul className="navbar-nav navbar-nav-right">
           <li className="nav-item dropdown d-flex mr-4 ">
@@ -30,7 +28,7 @@ const Navbar = ({data}) => {
               href="#"
               data-toggle="dropdown"
             >
-              <i className="icon-head"></i>
+              <i className="icon-head" />
             </a>
             <div
               className="dropdown-menu dropdown-menu-right navbar-dropdown preview-list"
@@ -40,11 +38,11 @@ const Navbar = ({data}) => {
                 Settings
               </p>
               <Link to="profile" className="dropdown-item preview-item">
-                <i className="icon-head"></i>
+                <i className="icon-head" />
                 Profile
               </Link>
               <a href="/logout" className="dropdown-item preview-item">
-                <i className="icon-inbox"></i>
+                <i className="icon-inbox" />
                 Logout
               </a>
             </div>
@@ -55,11 +53,20 @@ const Navbar = ({data}) => {
           type="button"
           data-toggle="offcanvas"
         >
-          <span className="icon-menu"></span>
+          <span className="icon-menu" />
         </button>
       </div>
     </nav>
   )
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    username: state.profileReducer.username,
+    profileImg: state.profileReducer.profileImg
+  }
+}
+
+const Navbar = connect(mapStateToProps, null)(NavbarComponent)
 
 export default Navbar

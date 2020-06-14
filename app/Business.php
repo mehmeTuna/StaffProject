@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
-    protected $hidden = ['password', 'active', 'longitute', 'latitude', 'options', 'experienceData', 'staffData', 'kioskData', 'lastLoginTime', 'created_at', 'updated_at'];
+    protected $hidden = ['password', 'active', 'longitute', 'latitude', 'options', 'experienceData', 'staffData', 'kioskData', 'plan_id', 'lastLoginTime', 'created_at', 'updated_at'];
     protected $guarded = ['id'];
     protected $table = 'business';
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = true; 
 
     /**
      * The attributes that should be cast to native types.
@@ -48,16 +48,14 @@ class Business extends Model
     {
         return $this->hasMany('App\Staff', 'business', 'id')
             ->where('staff.active', 1)
-            ->orderBy('staff.created_at', 'desc')
-            ->limit(100);
+            ->orderBy('staff.created_at', 'desc');
     }
 
     public function experience()
     {
         return $this->hasMany('App\Experience', 'business', 'id')
             ->where('experience.active', 1)
-            ->orderBy('experience.created_at', 'desc')
-            ->limit(100);
+            ->orderBy('experience.created_at', 'desc');
     }
 
     public function kiosk()
@@ -67,17 +65,17 @@ class Business extends Model
 
     public function lastPayment()
     {
-        return $this->hasManyThrough('App\Staff', 'App\PaymentHistory', 'staff', 'business', 'id')->orderBy('paymenthistory.created_at','desc')->limit(20);
+        return $this->hasManyThrough('App\Staff', 'App\PaymentHistory', 'staff', 'business', 'id')->orderBy('paymenthistory.created_at','desc');
     }
 
     public function lastLog()
     {
-        return $this->hasManyThrough('App\Staff', 'App\Tio', 'staff', 'business', 'id')->orderBy('tio.created_at','desc')->limit(20);
+        return $this->hasManyThrough('App\Staff', 'App\Tio', 'staff', 'business', 'id')->orderBy('tio.created_at','desc');
     }
 
     public function staffWithPayment()
     {
-        return $this->hasMany('App\Staff', 'business', 'id')->where('active', 1)->where('balance', '>', 0)->orderBy('balance', 'desc')->limit(40);
+        return $this->hasMany('App\Staff', 'business', 'id')->where('active', 1)->where('balance', '>', 0)->orderBy('balance', 'desc');
     }
 
     public function tio()

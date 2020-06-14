@@ -11,32 +11,22 @@
 |
 */
 
+require_once __DIR__.'/staticPage.php';
+
 Route::get('getRedis', 'KioskController@getRedis');
 Route::get('test-broadcast', function(){
    event(new \App\Events\KioskEvent('huvK8MKqJK3WKe4aHh1GbMqZblOK1EJgdPMDyGGv'));
 });
 
-//herhangi bir url eslesme olmaz ise bu sayfa goruntulenecek
-Route::any('/', 'WelcomeController@index');
-
-Route::get('404', 'WelcomeController@noPage');
-Route::get('forget-password', 'WelcomeController@forgetPasswordPage');
-
-Route::get('kiosk', 'KioskController@kioskRegisterPage')->name('kioskHome');
-Route::get('login', 'BusinessController@loginPage');
-
-Route::get('staff/login', 'StaffController@staticStaffLoginPage');
 Route::post('staff/login', 'StaffController@staffLogin');
 
 Route::prefix('kiosk')->group(function () {
     Route::get('staff/{code}', 'StaffController@staffLoginPage');
     Route::post('register', 'KioskController@AddNewKiosk');
-    Route::get('generate', 'KioskController@controllerQr');
 });
 
 Route::middleware(['staff'])->group(function(){
     Route::prefix('staff')->group(function(){
-        Route::get('home', 'StaffController@staffHomePage');
         Route::post('me', 'StaffController@me');
         Route::post('logout', 'StaffController@staffLogout');
     });
@@ -46,16 +36,16 @@ Route::prefix('business')->group(function(){
   Route::post('loginData', 'BusinessController@login');
   Route::post('register', 'BusinessController@register');
 
-
   //kiosk islemleri bu kisim istekleri  sadece  kiosk requestleri icin dir
   Route::post('kiosk/code/generate', 'KioskController@generateId');
   Route::post('kiosk/add', 'KioskController@AddNewKiosk');
-
-  Route::get('kiosk/qr/generate', 'KioskController@generateQr');
 });
 
 
 Route::prefix('v1')->group(function(){
+    Route::prefix('business')->group(function(){
+        Route::get('data', 'BusinessController@businessData');
+    });
     Route::prefix('kiosk')->group(function(){
         Route::post('me', 'KioskController@me');
     });
@@ -89,30 +79,19 @@ Route::middleware(['business'])->group(function(){
 
     //business route group
     Route::prefix('/{businessUsername}')->group(function(){
-
         Route::get('/', 'BusinessController@home');
-        Route::get('/create', 'BusinessController@home');
-        //Route::get('/pricing', 'BusinessController@home');
-        Route::get('profile', 'BusinessController@home');
+
+        Route::get('/{secondTag}', 'BusinessController@home');
 
         Route::prefix('/staff')->group(function(){
-            Route::get('/list', 'BusinessController@home');
-            Route::get('/create', 'BusinessController@home');
-
             Route::post('/create', 'StaffController@register');
         });
 
         Route::prefix('/experience')->group(function(){
-            Route::get('/list', 'BusinessController@home');
-            Route::get('/create', 'BusinessController@home');
-
             Route::post('/create', 'ExperienceController@register');
         });
 
         Route::prefix('/kiosk')->group(function(){
-            Route::get('list', 'BusinessController@home');
-            Route::get('/create', 'BusinessController@home');
-
             Route::post('/create', 'KioskController@AddNewKiosk');
         });
     });

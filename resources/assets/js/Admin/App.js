@@ -1,7 +1,9 @@
 import React from 'react'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import ReactDOM from 'react-dom'
+import {Provider, connect} from 'react-redux'
 
+import {store} from './redux/store'
 import Navbar from './src/navbar'
 import Sidebar from './src/sidebar'
 import Footer from './src/Footer'
@@ -13,13 +15,12 @@ import ExperienceList from './src/ExperienceList'
 import KioskList from './src/KioskList'
 import KioskCreate from './src/KioskCreate'
 
-import {businessData} from './api/business'
-
-import Profile from './src/components/profile'
+import Profile from './src/profile'
+import {getBusinessProfileData} from './redux/actions/ProfileActions'
 
 require('../bootstrap')
 
-export default class App extends React.Component {
+export default class AppComponent extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -28,16 +29,23 @@ export default class App extends React.Component {
     }
   }
 
+  componentDidMount() {
+    this.props.getBusinessProfileData()
+  }
+
   render() {
     return (
       <Router>
         <div className="container-scroller">
-          <Navbar data={this.state.data} />
+          <Navbar />
           <div className="container-fluid page-body-wrapper">
-            <Sidebar data={this.state.data} />
+            <Sidebar />
             <div className="main-panel">
               <div className="mx-1 mt-4">
                 <Switch>
+                  <Route exact path={`/${this.state.data.username}`}>
+                    <Home />
+                  </Route>
                   <Route
                     path={'/' + `${this.state.data.username + '/staff/create'}`}
                   >
@@ -77,9 +85,6 @@ export default class App extends React.Component {
                   >
                     <Profile data={this.state.data} />
                   </Route>
-                  <Route path="/">
-                    <Home business={this.state.data} />
-                  </Route>
                 </Switch>
               </div>
             </div>
@@ -91,6 +96,21 @@ export default class App extends React.Component {
   }
 }
 
+const mapDispatchToProps = dispatch => {
+  return {
+    getBusinessProfileData: () => {
+      dispatch(getBusinessProfileData())
+    }
+  }
+}
+
+const App = connect(null, mapDispatchToProps)(AppComponent)
+
 if (document.getElementById('root')) {
-  ReactDOM.render(<App />, document.getElementById('root'))
+  ReactDOM.render(
+    <Provider store={store}>
+      <App />
+    </Provider>,
+    document.getElementById('root')
+  )
 }

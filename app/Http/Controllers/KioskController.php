@@ -48,30 +48,6 @@ class KioskController extends Controller
         ]);
     }
 
-    public function staffHomePage()
-    {
-        return view('staff.home');
-    }
-    
-    public function controllerQr(Request $request)
-    {
-        $randString = '';
-        $ip = $request->cookie($this->kioskCookieName);
-        $rand = Str::random(20) ;
-
-           $randString = env('APP_URL').'/kiosk/staff/'.$rand;
-           Kioskqrcode::updateOrCreate([
-               'ip' => $ip
-           ], [
-               'code' => $rand,
-               'time' => time() + 60
-           ]);
-
-        $pngImage = QrCode::format('png')->size(300)->errorCorrection('H')
-        ->generate($randString);
-
-        return response($pngImage)->header('Content-type','image/png');
-    }
 
     public function AddNewKiosk(BusinessKioskRelation $request)
     {
@@ -92,10 +68,5 @@ class KioskController extends Controller
        $this->kioskQrRegenerate($kiosk);
 
         return $this->respondSuccess(['text' => 'Kiosk Created']);
-    }
-
-    public function kioskRegisterPage(Request $request)
-    {
-        return view('kioskRegister');
     }
 }

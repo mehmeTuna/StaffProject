@@ -162,10 +162,6 @@ class StaffController extends Controller
         return $this->respondSuccess($staff);
     }
 
-    public function staffHomePage()
-    {
-        return view('staff.home');
-    }
 
     public function staffLoginPage(Request $request)
     {
@@ -213,11 +209,6 @@ class StaffController extends Controller
         session()->put('staff', $staff->id);
 
         return redirect('/staff/home')->cookie($this->staffCookieName, $token, $this->oneYearCookieTime());
-    }
-
-    public function staticStaffLoginPage()
-    {
-        return view('staff.login');
     }
 
     public function staffLogin(StoreStaffLogin $request)

@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 
 import TextField from '@material-ui/core/TextField'
 import Dialog from '@material-ui/core/Dialog'
@@ -6,28 +7,59 @@ import DialogActions from '@material-ui/core/DialogActions'
 import DialogContent from '@material-ui/core/DialogContent'
 import DialogTitle from '@material-ui/core/DialogTitle'
 
+import {
+  businessProfileUpdateUsername,
+  businessProfileUpdateAddress,
+  businessProfileUpdateEmail,
+  businessProfileUpdateWebpage,
+  businessProfileUpdatePhone
+} from './../../redux/actions/ProfileActions'
 import Btn from './assets/Button'
-import {businessUpdate} from './../../api/business'
 import theme from './theme'
 
-export default function UpdateOtherDataModal(props) {
+const UpdateOtherDataModalComponent = ({
+  updateType,
+  updateTypeState,
+  username,
+  email,
+  phone,
+  profileUpdateUsername,
+  profileUpdateAddress,
+  profileUpdateEmail,
+  profileUpdateWebpage,
+  profileUpdatePhone
+}) => {
   const [maxWidth, setMaxWidth] = React.useState('md')
 
   const [open, setOpen] = React.useState(true)
-  const [value, setValue] = React.useState('')
+  const [value, setValue] = React.useState(
+    updateType === 'name'
+      ? username
+      : updateType === 'email'
+      ? email
+      : updateType === 'phone'
+      ? phone
+      : ''
+  )
 
   const handleClose = () => {
     setOpen(false)
-    props.updateTypeState('')
+    updateTypeState('')
   }
 
   const handleUpdate = () => {
-    const dataType = props.updateType
     handleClose()
-    businessUpdate({
-      data: value,
-      type: dataType
-    })
+    if (updateType === 'name') {
+      profileUpdateUsername(value)
+    } else if (updateType === 'address') {
+      profileUpdateAddress(value)
+    } else if (updateType === 'email') {
+      profileUpdateEmail(value)
+    } else if (updateType === 'webPage') {
+      profileUpdateWebpage(value)
+    } else if (updateType === 'phone') {
+      profileUpdatePhone(value)
+    }
   }
 
   return (
@@ -43,24 +75,24 @@ export default function UpdateOtherDataModal(props) {
           id="form-dialog-title"
           style={{textTransform: 'capitalize'}}
         >
-          {props.updateType} Update
+          {updateType} Update
         </DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label={props.updateType}
+            value={value}
             type={
-              props.updateType === 'password'
+              updateType === 'password'
                 ? 'password'
-                : props.updateType === 'email'
+                : updateType === 'email'
                 ? 'email'
-                : props.updateType === 'phone'
+                : updateType === 'phone'
                 ? 'number'
                 : 'text'
             }
             fullWidth
-            name={props.updateType}
+            name={updateType}
             onChange={e => setValue(e.target.value)}
           />
         </DialogContent>
@@ -76,3 +108,38 @@ export default function UpdateOtherDataModal(props) {
     </div>
   )
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    username: state.profileReducer.username,
+    email: state.profileReducer.email,
+    phone: state.profileReducer.phone
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    profileUpdateUsername: data => {
+      dispatch(businessProfileUpdateUsername(data))
+    },
+    profileUpdateAddress: data => {
+      dispatch(businessProfileUpdateAddress(data))
+    },
+    profileUpdateEmail: data => {
+      dispatch(businessProfileUpdateEmail(data))
+    },
+    profileUpdateWebpage: data => {
+      dispatch(businessProfileUpdateWebpage(data))
+    },
+    profileUpdatePhone: data => {
+      dispatch(businessProfileUpdatePhone(data))
+    }
+  }
+}
+
+const UpdateOtherDataModal = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UpdateOtherDataModalComponent)
+
+export default UpdateOtherDataModal

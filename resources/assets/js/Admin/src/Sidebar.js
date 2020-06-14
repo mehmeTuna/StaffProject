@@ -1,6 +1,8 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
 import {Button} from '@material-ui/core'
+import {connect} from 'react-redux'
+import PropTypes from 'prop-types'
 
 const HeroProfile = ({url, name}) => (
   <div className="user-profile">
@@ -22,14 +24,14 @@ const MenuListItem = ({icon, url, name}) => (
   </li>
 )
 
-const Sidebar = ({data}) => {
+const SidebarComponent = ({...props}) => {
+  const {username, packageName, packagePrice, currencySymbolUtf8} = props
   return (
-    <React.Fragment>
+    <>
       <nav className="sidebar sidebar-offcanvas" id="sidebar">
-        <HeroProfile url={data.image} name={data.username} />
         <ul className="nav">
           <MenuListItem
-            url={'/' + `${data.username}`}
+            url={`/${username}`}
             icon="icon-box menu-icon"
             name="AnaSayfa"
           />
@@ -48,11 +50,11 @@ const Sidebar = ({data}) => {
             <div className="collapse" id="auth">
               <ul className="nav flex-column sub-menu">
                 <MenuListItem
-                  url={'/' + `${data.username + '/staff/list'}`}
+                  url={`/${username}/staff/list`}
                   name="Staff List"
                 />
                 <MenuListItem
-                  url={'/' + `${data.username + '/staff/create'}`}
+                  url={`/${username}/staff/create`}
                   name="Staff Create"
                 />
               </ul>
@@ -73,11 +75,11 @@ const Sidebar = ({data}) => {
             <div className="collapse" id="ui-basic">
               <ul className="nav flex-column sub-menu">
                 <MenuListItem
-                  url={'/' + `${data.username + '/experience/create'}`}
+                  url={`/${username}/experience/create`}
                   name="Experience Create"
                 />
                 <MenuListItem
-                  url={'/' + `${data.username + '/experience/list'}`}
+                  url={`/${username}/experience/list`}
                   name="Experience List"
                 />
               </ul>
@@ -98,45 +100,54 @@ const Sidebar = ({data}) => {
             <div className="collapse" id="kiosk">
               <ul className="nav flex-column sub-menu">
                 <MenuListItem
-                  url={'/' + `${data.username + '/kiosk/create'}`}
+                  url={`/${username}/kiosk/create`}
                   name="Kiosk Create"
                 />
                 <MenuListItem
-                  url={'/' + `${data.username + '/kiosk/list'}`}
+                  url={`/${username}/kiosk/list`}
                   name="Kiosk List"
                 />
               </ul>
             </div>
           </li>
           <MenuListItem
-            url={'/' + `${data.username + '/profile'}`}
+            url={`/${username}/profile`}
             icon="icon-box menu-icon"
             name="Profile"
           />
           <MenuListItem
-            url={'/' + `${data.username + '/docs'}`}
+            url={`/${username}/docs`}
             icon="icon-box menu-icon"
             name="Documentation"
           />
           <li className="nav-item">
             <div className="billing-plan justify-content-between align-items-center">
               <div className="row justify-content-start align-items-center">
-                <span className="billing-plan-title">
-                  {data.plan_detail.name}
-                </span>
+                <span className="billing-plan-title">{packageName}</span>
                 <span className="billing-plan-desc">
-                  {`${data.plan_detail.name} ${data.plan_detail.price} ${data.data.currencySymbolUtf8}`}
+                  {`${packagePrice} ${currencySymbolUtf8}`}
                 </span>
               </div>
-              <Link to={'/' + `${data.username + '/pricing'}`}>
+              <Link to={`/${username}/pricing`}>
                 <Button style={{color: 'white'}}>Yukselt</Button>
               </Link>
             </div>
           </li>
         </ul>
       </nav>
-    </React.Fragment>
+    </>
   )
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    username: state.profileReducer.username,
+    packageName: state.profileReducer.packageName,
+    packagePrice: state.profileReducer.packagePrice,
+    currencySymbolUtf8: state.profileReducer.currencySymbolUtf8
+  }
+}
+
+const Sidebar = connect(mapStateToProps)(SidebarComponent)
 
 export default Sidebar

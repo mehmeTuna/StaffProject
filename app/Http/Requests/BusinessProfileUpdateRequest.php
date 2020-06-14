@@ -14,15 +14,10 @@ class BusinessProfileUpdateRequest extends FormRequest
      */
     public function authorize()
     {
-        if($this->session()->has('businessId')){
+        if(!$this->session()->has('businessId')){
             return false ;
         }
-        $staff = Staff::find((int)$this->request->userId)->with('businessOwner')->active();
-        if($staff == null){
-            return false ;
-        }
-
-        return $staff->businessOwner->id == $this->session()->get('businessId');
+        return true ;
     }
 
     /**
@@ -40,7 +35,7 @@ class BusinessProfileUpdateRequest extends FormRequest
             'address' => 'sometimes|min:3|max:50',
             'webPage' => 'sometimes|min:3|max:50',
             'phone' => 'sometimes|min:3|max:50',
-            'img' => 'sometimes|mimes:jpg,jpeg,png|'
+            'img' => 'sometimes|mimes:jpg,jpeg,png'
         ];
     }
 }

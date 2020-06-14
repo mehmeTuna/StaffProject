@@ -1,4 +1,5 @@
 import React from 'react'
+import {connect} from 'react-redux'
 
 import Dialog from '@material-ui/core/Dialog'
 import DialogActions from '@material-ui/core/DialogActions'
@@ -8,8 +9,9 @@ import IconButton from '@material-ui/core/IconButton'
 import PhotoCamera from '@material-ui/icons/PhotoCamera'
 
 import Btn from './assets/Button'
-import {businessUpdate} from './../../api/business'
 import theme from './theme'
+
+import {businessProfileUpdateImg} from './../../redux/actions/ProfileActions'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,24 +28,27 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function UpdatePhotoModal(props) {
+const UpdatePhotoModalComponent = ({
+  profileImg,
+  profileUpdateImg,
+  updateTypeState
+}) => {
   const classes = useStyles()
 
   const [open, setOpen] = React.useState(true)
-  const [img, setImg] = React.useState([])
+  const [img, setImg] = React.useState({url: null, file: ''})
+  const [change, updateChange] = React.useState(false)
 
   const handleClose = () => {
     setOpen(false)
-    props.updateTypeState('')
+    updateTypeState('')
   }
 
   const handleSubmit = () => {
-    console.log('submitted')
-    if (img !== []) {
-      let formData = new FormData()
-      formData.set('img', img.file)
-      formData.set('type', 'img')
-      businessUpdate(formData)
+    if (change) {
+      profileUpdateImg(img)
+      setOpen(false)
+      updateTypeState('')
     }
   }
 
@@ -52,7 +57,9 @@ export default function UpdatePhotoModal(props) {
       url: URL.createObjectURL(event.target.files[0]),
       file: event.target.files[0]
     })
+    updateChange(true)
   }
+
   return (
     <div>
       <Dialog
@@ -61,10 +68,10 @@ export default function UpdatePhotoModal(props) {
         aria-labelledby="form-dialog-title"
       >
         <DialogContent>
-          {img.length !== 0 ? (
+          {img.url !== null ? (
             <img src={img.url} width="100%" />
           ) : (
-            <React.Fragment>
+            <>
               <input
                 accept="image/*"
                 className={classes.input}
@@ -77,7 +84,7 @@ export default function UpdatePhotoModal(props) {
                   <PhotoCamera style={{fontSize: 40}} />
                 </IconButton>
               </label>
-            </React.Fragment>
+            </>
           )}
         </DialogContent>
         <DialogActions>
@@ -92,3 +99,24 @@ export default function UpdatePhotoModal(props) {
     </div>
   )
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    profileImg: state.profileReducer.profileImg
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    profileUpdateImg: data => {
+      dispatch(businessProfileUpdateImg(data))
+    }
+  }
+}
+
+const UpdatePhotoModal = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(UpdatePhotoModalComponent)
+
+export default UpdatePhotoModal
