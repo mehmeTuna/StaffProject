@@ -3,7 +3,7 @@ import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import {Provider, connect} from 'react-redux'
 
-import {store} from './redux/store'
+import                             {store} from './redux/store'
 import Navbar from './src/navbar'
 import Sidebar from './src/sidebar'
 import Footer from './src/Footer'

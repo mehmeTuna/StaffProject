@@ -4,6 +4,7 @@
 namespace App\Observers;
 
 use App\Business;
+use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\PlanDetail;
 use App\Jobs\SendEmailToBusinessJob;
@@ -17,7 +18,7 @@ class BusinessObserver
 
         $business->plan_id = $planDetail->id;
         $business->packageTime = Carbon::now()->addDay($planDetail->day);
-        $business->lastLoginTime = Carbon::now()->addDay(3);
+        $business->lastLoginTime = Carbon::now();
         $business->username = str_slug($business->businessName);
     }
 

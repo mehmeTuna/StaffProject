@@ -80,20 +80,10 @@ Route::middleware(['business'])->group(function(){
     //business route group
     Route::prefix('/{businessUsername}')->group(function(){
         Route::get('/', 'BusinessController@home');
-
         Route::get('/{secondTag}', 'BusinessController@home');
-
-        Route::prefix('/staff')->group(function(){
-            Route::post('/create', 'StaffController@register');
-        });
-
-        Route::prefix('/experience')->group(function(){
-            Route::post('/create', 'ExperienceController@register');
-        });
-
-        Route::prefix('/kiosk')->group(function(){
-            Route::post('/create', 'KioskController@AddNewKiosk');
-        });
+        Route::post('/staff/create', 'StaffController@register');
+        Route::post('/experience/create', 'ExperienceController@register');
+        Route::post('/kiosk/create', 'KioskController@AddNewKiosk');
     });
 
     Route::post('user/data', 'ResponseDataController@staffData');

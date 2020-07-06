@@ -53,7 +53,7 @@ class Controller extends BaseController
 
     public function learnGeoPlugin($ip)
     {
-        if ($ip == '::1') {
+        if (env('APP_ENV') == 'local') {
             $result = (object) [];
             $result->geoplugin_request = $ip;
             $result->geoplugin_status = 200;

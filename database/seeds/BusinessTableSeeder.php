@@ -16,16 +16,20 @@ class BusinessTableSeeder extends Seeder
 
         $faker = Faker::create();
 
-        DB::table('business')->insert([
-            'email' => $faker->email,
-            'WebPage' => $faker->safeEmailDomain,
-            'Image' => $faker->imageUrl(640, 480),
-            'longitute' => $faker->longitude(-180, 180),
-            'latitude' => $faker->latitude(-90, 90),
-            'Address' => $faker->streetAddress,
-            'CompanyName' => $faker->company,
-            'options' => json_encode([]),
-            'data' => json_encode([]),
-        ]);
+        for($a=0; $a<=1000; $a++):
+            $name = $faker->name;
+            DB::table('business')->insert([
+                'email' => $faker->email,
+                'password' => bcrypt(12345),
+                'username' => str_slug($name),
+                'phone' =>  $faker->phoneNumber,
+                'plan_id' => 1,
+                'WebPage' => $faker->safeEmailDomain,
+                'Image' => $faker->imageUrl(640, 480),
+                'address' => $faker->streetAddress,
+                'businessName' => $name,
+                'data' => '{"currencySymbol":"&#8378;","timeZone":"Europe\/Istanbul","countryCode":"TR","country":"Turkey","currencyCode":"TRY","currencySymbolUtf8":"\u20ba"}',
+            ]);
+        endfor;
     }
 }

@@ -75,20 +75,22 @@ class BusinessController extends Controller
             ]);
         }
 
-        if (in_array($request->type, $type)) {
-                if($request->type == 'img' && $request->hasFile('img')) {
-                    $image = $request->file('img');
-                    $fileName = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
-                    $destinationPath = public_path('images/');
-                    $img = Image::make($image->getRealPath());
-                    $img->resize(300, 300, function ($constraint) {
-                        $constraint->aspectRatio();
-                    })->save($destinationPath . $fileName);
+        if($request->hasFile('img')) {
+            $image = $request->file('img');
+            $fileName = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path();
+            $img = Image::make($image->getRealPath());
+            $img->resize(300, 300, function ($constraint) {
+                $constraint->aspectRatio();
+            })->save($destinationPath . '/images/'.$fileName);
 
-                    $business->image = '/public/images/' . $fileName;
-                    $resultData['profileImg'] = '/public/images/' . $fileName;
-                }
-            }
+            $business->image = '/public/images/' . $fileName;
+            $resultData['profileImg'] = '/public/images/' . $fileName;
+            return response()->json([
+                'status' => true,
+                'data' => $resultData
+            ]);
+        }
 
         return response()->json([
             'status' => false,
