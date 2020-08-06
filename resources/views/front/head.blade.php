@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title> Beta - Version 1.0 </title>
+    <title> Scionair </title>
     <meta name="description" content="description">
     <meta name="keywords" content="keywords">
 

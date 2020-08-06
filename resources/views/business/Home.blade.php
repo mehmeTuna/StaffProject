@@ -33,7 +33,7 @@
         const rootData = {!! json_encode($business) !!}
     </script>
 
-    <script src="/public/js/app.js"></script>
+    <script src="/public/js/NewApp.js"></script>
     <!-- base:js -->
     <script src="/public/vendors/base/vendor.bundle.base.js"></script>
     <!-- endinject -->

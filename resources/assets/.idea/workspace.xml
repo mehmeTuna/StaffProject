@@ -2,14 +2,57 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="2f91cbb7-cbf0-4371-831c-34425797dcaf" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dictionaries/Mehmet.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/eslintPlugin.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/Main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Footer/Footer.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Footer/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Sidebar/Sidebar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Sidebar/components/Profile/Profile.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Sidebar/components/Profile/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Sidebar/components/SidebarNav/SidebarNav.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Sidebar/components/SidebarNav/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Sidebar/components/UpgradePlan/UpgradePlan.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Sidebar/components/UpgradePlan/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Sidebar/components/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Sidebar/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Topbar/Topbar.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/Topbar/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/src/layouts/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/overrides/MuiButton.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/overrides/MuiIconButton.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/overrides/MuiPaper.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/overrides/MuiTableCell.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/overrides/MuiTableHead.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/overrides/MuiTableRow.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/overrides/MuiTypography.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/overrides/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/palette.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/js/Admin/theme/typography.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.env.example" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../../.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.htaccess" beforeDir="false" afterPath="$PROJECT_DIR$/../../.htaccess" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../.storybook/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../.storybook/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../public/js/app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../public/js/app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../public/mix-manifest.json" beforeDir="false" afterPath="$PROJECT_DIR$/../../public/mix-manifest.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.stories.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/Admin/App.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/Admin/App.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../views/front.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../views/front.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../views/front/head.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../views/front/head.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../views/front/headNavigation.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/../views/front/headNavigation.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../../webpack.mix.js" beforeDir="false" afterPath="$PROJECT_DIR$/../../webpack.mix.js" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="JavaScript File" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
@@ -26,15 +69,19 @@
   </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
-    <option name="showExcludedFiles" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../.eslintrc" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../.." />
     <property name="settings.editor.selected.configurable" value="com.eslint.settings.ESLintSettingsPage" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Mehmet\Documents\GitHub\StaffProject\resources\assets\js\admin\src\layouts" />
+    </key>
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -54,27 +101,20 @@
       <workItem from="1586075584292" duration="1494000" />
       <workItem from="1586159596028" duration="494000" />
       <workItem from="1586166165373" duration="563000" />
+      <workItem from="1596704440087" duration="2283000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
-    <option name="version" value="1" />
+    <option name="version" value="2" />
   </component>
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
   </component>
   <component name="WindowStateProjectService">
-    <state x="552" y="183" key="#Notifications" timestamp="1586160077873">
+    <state x="740" y="280" key="FileChooserDialogImpl" timestamp="1596711185734">
       <screen x="0" y="0" width="1920" height="1050" />
     </state>
-    <state x="552" y="183" key="#Notifications/0.0.1920.1050/-1366.306.1366.738@0.0.1920.1050" timestamp="1586160077873" />
-    <state x="902" y="269" key="FileChooserDialogImpl" timestamp="1586160091503">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="902" y="269" key="FileChooserDialogImpl/0.0.1920.1050/-1366.306.1366.738@0.0.1920.1050" timestamp="1586160091503" />
-    <state x="536" y="137" key="SettingsEditor" timestamp="1586160096605">
-      <screen x="0" y="0" width="1920" height="1050" />
-    </state>
-    <state x="536" y="137" key="SettingsEditor/0.0.1920.1050/-1366.306.1366.738@0.0.1920.1050" timestamp="1586160096605" />
+    <state x="740" y="280" key="FileChooserDialogImpl/0.0.1920.1050/-1366.0.1366.738@0.0.1920.1050" timestamp="1596711185734" />
   </component>
 </project>

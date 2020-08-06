@@ -8,7 +8,7 @@
         <div class="container">
             <div class="row align-items-center justify-content-center">
                 <div class="col-md-6">
-                    <h2 class="heading mb-3">Kontroller hic bu kadar kolay olmamisti</h2>
+                    <h2 class="heading mb-3">Sign up for free</h2>
                     <div class="sub-heading">
                         <p class="mb-4"> </p>
                         <p class="mb-5"><a class="btn btn-success btn-lg pb_btn-pill smoothscroll"

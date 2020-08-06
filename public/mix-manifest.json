@@ -1,7 +1,7 @@
 {
     "/business/login/js/app.js": "/business/login/js/app.js",
     "/businessRegister/js/app.js": "/businessRegister/js/app.js",
-    "/js/app.js": "/js/app.js",
+    "/js/NewApp.js": "/js/NewApp.js",
     "/kiosk/home/js/home.js": "/kiosk/home/js/home.js",
     "/staff/home/js/app.js": "/staff/home/js/app.js",
     "/staff/login/js/app.js": "/staff/login/js/app.js"

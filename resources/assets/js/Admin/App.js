@@ -2,11 +2,14 @@ import React from 'react'
 import {BrowserRouter as Router, Route, Switch} from 'react-router-dom'
 import ReactDOM from 'react-dom'
 import {Provider, connect} from 'react-redux'
+import {createBrowserHistory} from 'history'
+import {ThemeProvider} from '@material-ui/styles'
+import theme from './theme'
 
-import                             {store} from './redux/store'
+import {store} from './redux/store'
 import Navbar from './src/navbar'
 import Sidebar from './src/sidebar'
-import Footer from './src/Footer'
+import Footer from './src/layouts/Footer'
 import StaffCreate from './src/StaffCreate'
 import StaffList from './src/StaffList'
 import Home from './src/Home'
@@ -19,6 +22,8 @@ import Profile from './src/profile'
 import {getBusinessProfileData} from './redux/actions/ProfileActions'
 
 require('../bootstrap')
+
+const browserHistory = createBrowserHistory()
 
 export default class AppComponent extends React.Component {
   constructor(props) {
@@ -35,63 +40,70 @@ export default class AppComponent extends React.Component {
 
   render() {
     return (
-      <Router>
-        <div className="container-scroller">
-          <Navbar />
-          <div className="container-fluid page-body-wrapper">
-            <Sidebar />
-            <div className="main-panel">
-              <div className="mx-1 mt-4">
-                <Switch>
-                  <Route exact path={`/${this.state.data.username}`}>
-                    <Home />
-                  </Route>
-                  <Route
-                    path={'/' + `${this.state.data.username + '/staff/create'}`}
-                  >
-                    <StaffCreate data={this.state.data} />
-                  </Route>
-                  <Route
-                    path={
-                      '/' + `${this.state.data.username + '/experience/create'}`
-                    }
-                  >
-                    <ExperienceCreate data={this.state.data} />
-                  </Route>
-                  <Route
-                    path={
-                      '/' + `${this.state.data.username + '/experience/List'}`
-                    }
-                  >
-                    <ExperienceList data={this.state.data} />
-                  </Route>
-                  <Route
-                    path={'/' + `${this.state.data.username + '/staff/list'}`}
-                  >
-                    <StaffList data={this.state.data} />
-                  </Route>
-                  <Route
-                    path={'/' + `${this.state.data.username + '/kiosk/list'}`}
-                  >
-                    <KioskList data={this.state.data} />
-                  </Route>
-                  <Route
-                    path={'/' + `${this.state.data.username + '/kiosk/create'}`}
-                  >
-                    <KioskCreate data={this.state.data} />
-                  </Route>
-                  <Route
-                    path={'/' + `${this.state.data.username + '/profile'}`}
-                  >
-                    <Profile data={this.state.data} />
-                  </Route>
-                </Switch>
+      <ThemeProvider theme={theme}>
+        <Router>
+          <div className="container-scroller">
+            <Navbar />
+            <div className="container-fluid page-body-wrapper">
+              <Sidebar />
+              <div className="main-panel">
+                <div className="mx-1 mt-4">
+                  <Switch>
+                    <Route exact path={`/${this.state.data.username}`}>
+                      <Home />
+                    </Route>
+                    <Route
+                      path={
+                        '/' + `${this.state.data.username + '/staff/create'}`
+                      }
+                    >
+                      <StaffCreate data={this.state.data} />
+                    </Route>
+                    <Route
+                      path={
+                        '/' +
+                        `${this.state.data.username + '/experience/create'}`
+                      }
+                    >
+                      <ExperienceCreate data={this.state.data} />
+                    </Route>
+                    <Route
+                      path={
+                        '/' + `${this.state.data.username + '/experience/List'}`
+                      }
+                    >
+                      <ExperienceList data={this.state.data} />
+                    </Route>
+                    <Route
+                      path={'/' + `${this.state.data.username + '/staff/list'}`}
+                    >
+                      <StaffList data={this.state.data} />
+                    </Route>
+                    <Route
+                      path={'/' + `${this.state.data.username + '/kiosk/list'}`}
+                    >
+                      <KioskList data={this.state.data} />
+                    </Route>
+                    <Route
+                      path={
+                        '/' + `${this.state.data.username + '/kiosk/create'}`
+                      }
+                    >
+                      <KioskCreate data={this.state.data} />
+                    </Route>
+                    <Route
+                      path={'/' + `${this.state.data.username + '/profile'}`}
+                    >
+                      <Profile data={this.state.data} />
+                    </Route>
+                  </Switch>
+                </div>
               </div>
             </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
-      </Router>
+        </Router>
+      </ThemeProvider>
     )
   }
 }

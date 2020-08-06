@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg navbar-dark pb_navbar pb_scrolled-light" id="pb-navbar">
     <div class="container">
-        <a class="navbar-brand" href="#">Landing</a>
+        <a class="navbar-brand" href="/">scionair</a>
         <button class="navbar-toggler ml-auto" type="button" data-toggle="collapse"
                 data-target="#probootstrap-navbar" aria-controls="probootstrap-navbar" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -8,7 +8,7 @@
         </button>
         <div class="collapse navbar-collapse" id="probootstrap-navbar">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item"><a class="nav-link" href="#section-home">Home</a></li>
+                <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="/kiosk">Kiosk Register / Home</a></li>
                 <li class="nav-item"><a class="nav-link" href="/staff/login">Staff</a></li>
                 <li class="nav-item"><a class="nav-link" href="#section-features">Features</a></li>

@@ -12,3 +12,9 @@ yarn-error.log
 .env
 passport.txt
 _ide_helper.php
+.editorconfig
+.eslintrc
+.storybook
+.prettierrc.js
+
+
