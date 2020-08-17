@@ -3,7 +3,11 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import {Redirect} from 'react-router-dom'
+<<<<<<< Updated upstream
 import PageTitle from './assets/page-title'
+=======
+import PageTitle from './../assets/page-title'
+>>>>>>> Stashed changes
 
 const sweet = withReactContent(Swal)
 
