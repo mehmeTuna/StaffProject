@@ -53,6 +53,30 @@ Route::prefix('v1')->group(function(){
 
 //business route add middleware
 Route::middleware(['business'])->group(function(){
+<<<<<<< Updated upstream
+=======
+  Route::prefix('v1')->group(function(){
+      Route::prefix('business')->group(function(){
+          Route::get('data', 'BusinessController@businessData');
+      });
+      Route::prefix('staff')->group(function(){
+          Route::get('list', 'StaffController@getList');
+          Route::post('profile', 'StaffController@getProfile');
+          Route::post("payment/history", 'StaffController@paymentHistory');
+          Route::post("log/history", 'StaffController@logHistory');
+      });
+      Route::prefix('kiosk')->group(function(){
+          Route::post('me', 'KioskController@me');
+          Route::post('register', 'KioskController@AddNewKiosk');
+      });
+      Route::prefix('experience')->group(function(){
+          Route::post('create', 'ExperienceController@register');
+          Route::get("list/all", 'ExperienceController@listData');
+          Route::post("delete", 'ExperienceController@delete');
+      });
+      Route::post("location/minWage", 'ResponseDataController@getBusinessLocationMinWage');
+  });
+>>>>>>> Stashed changes
 
     Route::prefix('business')->group(function (){
         //data controller
