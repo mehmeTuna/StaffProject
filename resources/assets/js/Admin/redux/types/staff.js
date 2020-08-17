@@ -1,3 +1,16 @@
 const GET_STAFF_COUNT = 'GET_STAFF_COUNT'
 
+<<<<<<< Updated upstream
 export {GET_STAFF_COUNT}
+=======
+export {
+  GET_STAFF_COUNT,
+  GET_STAFF_DEFAULT_LIST,
+  STAFF_LOADING,
+  STAFF_PAY,
+  STAFF_PAY_LOADING,
+  STAFF_DETAIL,
+  STAFF_GET_DATA,
+  PROFILE_LOADING
+}
+>>>>>>> Stashed changes
