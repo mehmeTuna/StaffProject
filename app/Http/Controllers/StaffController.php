@@ -35,13 +35,11 @@ class StaffController extends Controller
     {
         $user = $request->userId;
         $pay = (int) $request->pay;
-        $comment = $request->comment ;
 
         $staff = Staff::where('id', $user)->first();
 
         if($staff == null)
             return $this->respondFail([]);
-
         $staff->balance = ($pay > $staff->balance) ? 0 : $staff->balance - $pay;
 
         if ($staff->balance != 0 && $pay != 0) {
@@ -50,7 +48,6 @@ class StaffController extends Controller
                 'type' => 'payment',
                 'staff' => $user,
                 'pay' => $pay, //TODO: odeme ekleme kismi hatali (odenen tutar bakiyeden fazla bakiye kadarini ekleycek tutari degil)
-                'comment' => $comment
             ]);
         }
         $staff->save();
@@ -135,6 +132,28 @@ class StaffController extends Controller
         return $this->respondSuccess($response);
     }
 
+<<<<<<< Updated upstream
+=======
+    public function getList()
+    {
+        $response = Staff::active()
+            ->where('business', $this->businessId)
+            ->with(['experienceData'])
+            ->get();
+
+        return $this->respondSuccess($response);
+    }
+
+    public function getProfile(Request $request)
+    {
+        $userId = $request->id;
+
+        $staff = Staff::active()->with(['experienceData', 'paymentHistory', 'logHistory'])->where('id', $userId)->first();
+
+        return $this->respondSuccess($staff);
+    }
+
+>>>>>>> Stashed changes
     public function staffList()
     {
         $factorText = [

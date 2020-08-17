@@ -26,7 +26,6 @@ class StaffPayment extends FormRequest
         return [
             'userId' => 'required|integer',
             'pay' => 'required|integer|min:1|max:70000',
-            'comment' => 'required|max:100'
         ];
     }
 }
