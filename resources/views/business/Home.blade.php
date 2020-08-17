@@ -29,6 +29,7 @@
     <div id="root"></div>
 
 
+<<<<<<< Updated upstream
     <script>
         const rootData = {!! json_encode($business) !!}
     </script>
@@ -51,6 +52,9 @@
     <!-- Custom js for this page-->
     <script src="/public/js/dashboard.js"></script>
     <!-- End custom js for this page-->
+=======
+    <script src="/public/js/App.js"></script>
+>>>>>>> Stashed changes
 </body>
 
 </html>
