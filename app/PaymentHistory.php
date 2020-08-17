@@ -6,10 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class PaymentHistory extends Model
 {
-    protected $visible = ['id', 'type', "staff", 'pay', 'active', 'comment', 'created_at', 'updated_at'];
-    protected $fillable = ['id', 'type', "staff", 'pay', 'active', 'comment', 'created_at', 'updated_at'];
+    protected $hidden = ['active', 'updated_at'];
+    protected $guarded = ['id'];
     protected $table = 'paymenthistory';
     protected $primaryKey = 'id';
     public $timestamps = true;
 
+    protected $attributes = [
+        'comment' => 'default'
+    ];
 }
