@@ -22,7 +22,7 @@ export async function businessUpdate(value) {
 
 export async function experienceList() {
   try {
-    const {data} = await Axios.post('/business/experience/list/all')
+    const {data} = await Axios.get('/v1/experience/list/all')
     result.data = data.data
     return result
   } catch (error) {

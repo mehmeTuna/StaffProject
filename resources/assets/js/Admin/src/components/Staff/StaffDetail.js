@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 
 import PaymentHistory from './component/paymentHistory'
 
-import {getStaffDetail} from './../../../api/staff'
+import {getStaffDetail} from '../../../api/staff'
 import Loading from './../atoms/loading'
 import PaymentDialog from './paymentDialog'
 

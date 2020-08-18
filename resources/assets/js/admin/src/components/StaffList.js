@@ -33,12 +33,7 @@ const Item = ({item, businessName}) => {
     <ListItem
       button
       component={Link}
-      to={{
-        pathname: `/${businessName}/staff/list/${item.id}`,
-        query: {
-          profileData: item
-        }
-      }}
+      to={`/${businessName}/staff/list/${item.id}`}
     >
       <ListItemAvatar>
         <StaffAvatar src={item.image} online={item.online} />
@@ -52,7 +47,7 @@ const Item = ({item, businessName}) => {
         secondary={
           item.experience_data !== null && (
             <Typography variant="h6" gutterBottom>
-              {`${item.experience_data.identifier}`}
+              {item.experience_data.identifier}
             </Typography>
           )
         }

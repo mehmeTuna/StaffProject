@@ -1,8 +1,6 @@
 import axios from 'axios'
 
-<<<<<<< Updated upstream
 import {GET_STAFF_COUNT} from '../types/staff'
-=======
 import {
   STAFF_PAY,
   GET_STAFF_DEFAULT_LIST,
@@ -83,4 +81,3 @@ const getStaffProfileData = id => {
 }
 
 export {getStaffDefaultListAction, staffPay, getStaffProfileData}
->>>>>>> Stashed changes

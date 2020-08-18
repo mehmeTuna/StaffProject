@@ -29,32 +29,11 @@
     <div id="root"></div>
 
 
-<<<<<<< Updated upstream
     <script>
         const rootData = {!! json_encode($business) !!}
     </script>
 
-    <script src="/public/js/NewApp.js"></script>
-    <!-- base:js -->
-    <script src="/public/vendors/base/vendor.bundle.base.js"></script>
-    <!-- endinject -->
-    <!-- Plugin js for this page-->
-    <!-- End plugin js for this page-->
-    <!-- inject:js -->
-    <script src="/public/js/off-canvas.js"></script>
-    <script src="/public/js/hoverable-collapse.js"></script>
-    <script src="/public/js/template.js"></script>
-    <!-- endinject -->
-    <!-- plugin js for this page -->
-    <script src="/public/vendors/chart.js/Chart.min.js"></script>
-    <script src="/public/vendors/jquery-bar-rating/jquery.barrating.min.js"></script>
-    <!-- End plugin js for this page -->
-    <!-- Custom js for this page-->
-    <script src="/public/js/dashboard.js"></script>
-    <!-- End custom js for this page-->
-=======
-    <script src="/public/js/App.js"></script>
->>>>>>> Stashed changes
+    <script src="/public/js/app.js"></script>
 </body>
 
 </html>

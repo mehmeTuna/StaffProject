@@ -23,7 +23,7 @@ class KioskMiddleware
 
         if(!isset($kiosk[0]))
         {
-            return redirect('/kiosk/ekle');
+            return redirect('/kiosk');
         }
 
         return $next($request);

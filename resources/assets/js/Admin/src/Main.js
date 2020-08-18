@@ -1,10 +1,12 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 import clsx from 'clsx'
 import {makeStyles, useTheme} from '@material-ui/styles'
 import {useMediaQuery} from '@material-ui/core'
 
 import {Sidebar, Topbar, Footer} from './layouts'
+import {getBusinessProfileData} from '../redux/actions/ProfileActions'
+import {connect} from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -18,12 +20,22 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 240
   },
   content: {
-    height: '100%'
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'start',
+    flexWrap: 'wrap',
+    paddingLeft: theme.spacing(2),
+    paddingRight: theme.spacing(2),
+    paddingTop: theme.spacing(2),
+    height: 'calc(100vh - 90px)',
+    [theme.breakpoints.up('sm')]: {
+      height: 'calc(100vh - 100px)'
+    }
   }
 }))
 
-const Main = props => {
-  const {children} = props
+const MainComponent = props => {
+  const {getBusinessProfileData, username, children} = props
 
   const classes = useStyles()
   const theme = useTheme()
@@ -40,6 +52,10 @@ const Main = props => {
   const handleSidebarClose = () => {
     setOpenSidebar(false)
   }
+
+  useEffect(() => {
+    getBusinessProfileData()
+  }, [])
 
   const shouldOpenSidebar = isDesktop ? true : openSidebar
 
@@ -58,14 +74,30 @@ const Main = props => {
       />
       <main className={classes.content}>
         {children}
-        <Footer />
+        {/* <Footer /> */}
       </main>
     </div>
   )
 }
 
-Main.propTypes = {
+MainComponent.propTypes = {
   children: PropTypes.node
 }
+
+const mapStateProps = (state, ownProps) => {
+  return {
+    username: state.profileReducer.username
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    getBusinessProfileData: () => {
+      dispatch(getBusinessProfileData())
+    }
+  }
+}
+
+const Main = connect(mapStateProps, mapDispatchToProps)(MainComponent)
 
 export default Main

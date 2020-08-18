@@ -6,8 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
-    protected $visible = ['id', 'firstName', 'factor', 'pay', 'periode', 'workingPlan', 'online', 'lastName', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus'];
-    protected $fillable = ['id', 'password', 'experience', 'factor', 'pay', 'periode', 'workingPlan', 'online', 'firstName', 'lastName', 'active', 'loginToken', 'balance', 'totalPayment', 'salary', 'birthday', 'image', 'address', 'telephone', 'gsm', 'email', 'gender', 'martialStatus', 'lang', 'business', 'emaployment', 'career', 'timeSheetMap'];
+    protected $hidden = [
+        'loginToken',
+        'experience',
+        'password',
+        'business',
+        'updated_at',
+        'created_at'
+    ];
+    protected $guarded = ['id'];
     protected $table = "staff";
     protected $primaryKey = "id";
     protected $casts = [
@@ -35,9 +42,9 @@ class Staff extends Model
 
     }
 
-    public function experinceData()
+    public function experienceData()
     {
-        return $this->hasOne('App\Experience','id' , 'experince');
+        return $this->hasOne('App\Experience','id' , 'experience');
     }
 
     public function businessOwner()

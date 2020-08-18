@@ -13,6 +13,7 @@ import SettingsIcon from '@material-ui/icons/Settings'
 import LockOpenIcon from '@material-ui/icons/LockOpen'
 
 import {Profile, SidebarNav, UpgradePlan} from './components'
+import {connect} from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   drawer: {
@@ -37,50 +38,50 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Sidebar = props => {
-  const {open, variant, onClose, className, ...rest} = props
+const SidebarComponent = props => {
+  const {username, open, variant, onClose, className} = props
 
   const classes = useStyles()
 
   const pages = [
     {
-      title: 'Dashboard',
-      href: '/dashboard',
+      title: 'AnaSayfa',
+      href: `/${username}`,
       icon: <DashboardIcon />
     },
     {
-      title: 'Users',
-      href: '/users',
+      title: 'Staff List',
+      href: `/${username}/staff/list`,
       icon: <PeopleIcon />
     },
     {
-      title: 'Products',
-      href: '/products',
+      title: 'Staff Create',
+      href: `/${username}/staff/create`,
       icon: <ShoppingBasketIcon />
     },
     {
-      title: 'Authentication',
-      href: '/sign-in',
+      title: 'Experience Create',
+      href: `/${username}/experience/create`,
       icon: <LockOpenIcon />
     },
     {
-      title: 'Typography',
-      href: '/typography',
+      title: 'Experience List',
+      href: `/${username}/experience/list`,
       icon: <TextFieldsIcon />
     },
     {
-      title: 'Icons',
-      href: '/icons',
+      title: 'Kiosk Create',
+      href: `/${username}/kiosk/create`,
       icon: <ImageIcon />
     },
     {
-      title: 'Account',
-      href: '/account',
+      title: 'Kiosk List',
+      href: `/${username}/kiosk/list`,
       icon: <AccountBoxIcon />
     },
     {
-      title: 'Settings',
-      href: '/settings',
+      title: 'Account',
+      href: `/${username}/profile`,
       icon: <SettingsIcon />
     }
   ]
@@ -93,7 +94,7 @@ const Sidebar = props => {
       open={open}
       variant={variant}
     >
-      <div {...rest} className={clsx(classes.root, className)}>
+      <div className={clsx(classes.root, className)}>
         <Profile />
         <Divider className={classes.divider} />
         <SidebarNav className={classes.nav} pages={pages} />
@@ -103,11 +104,19 @@ const Sidebar = props => {
   )
 }
 
-Sidebar.propTypes = {
+SidebarComponent.propTypes = {
   className: PropTypes.string,
   onClose: PropTypes.func,
   open: PropTypes.bool.isRequired,
   variant: PropTypes.string.isRequired
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    username: state.profileReducer.username
+  }
+}
+
+const Sidebar = connect(mapStateToProps, null)(SidebarComponent)
 
 export default Sidebar

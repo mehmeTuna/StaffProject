@@ -1,9 +1,8 @@
 import React from 'react'
 import {Switch, Route} from 'react-router-dom'
 
-import {Home as HomeView} from './src/pages'
-import {StaffPage as StaffListView} from './src/pages'
-import {Profile as ProfileView} from './src/pages'
+import StaffPage from './src/pages/Staff'
+import Profile from './src/pages/Profile'
 import Main from './src/Main'
 import StaffCreate from './src/pages/StaffCreate'
 import ExperienceCreate from './src/pages/ExperienceCreate'
@@ -29,15 +28,15 @@ const RouteWithLayout = props => {
 const Routes = () => {
   return (
     <Switch>
-      <RouteWithLayout component={StaffListView} exact path="/" />
-      <RouteWithLayout component={StaffListView} exact path="/:businessName" />
+      <RouteWithLayout component={StaffPage} exact path="/" />
+      <RouteWithLayout component={StaffPage} exact path="/:businessName" />
       <RouteWithLayout
-        component={StaffListView}
+        component={StaffPage}
         exact
         path="/:businessName/staff/list"
       />
       <RouteWithLayout
-        component={ProfileView}
+        component={Profile}
         exact
         path="/:businessName/profile"
       />

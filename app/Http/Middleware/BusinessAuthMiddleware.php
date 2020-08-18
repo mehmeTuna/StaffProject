@@ -17,7 +17,7 @@ class BusinessAuthMiddleware
     {   
         if(!session()->has('businessId'))
         {
-            return redirect('/yonetim/giris');
+            return redirect('/login');
         }
         
         return $next($request);

@@ -127,7 +127,7 @@ class BusinessController extends Controller
     public function logout()
     {
         session()->flush();
-        return $this->respondSuccess();
+        return redirect('/login');
     }
 
     public function register(StoreBusinessRegister $request)

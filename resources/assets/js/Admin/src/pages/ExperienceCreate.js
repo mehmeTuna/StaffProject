@@ -4,10 +4,10 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import {Redirect} from 'react-router-dom'
 
-import PageTitle from './assets/page-title'
-import FormInputElement from './assets/form-input'
-import FormSubmitBtn from './assets/form-submit-btn'
-import PlanDetail from './assets/plan-detail'
+import PageTitle from '../assets/page-title'
+import FormInputElement from '../assets/form-input'
+import FormSubmitBtn from '../assets/form-submit-btn'
+import PlanDetail from '../assets/plan-detail'
 
 const sweet = withReactContent(Swal)
 
@@ -29,7 +29,7 @@ class ExperienceCreate extends React.Component {
     super(props)
 
     this.state = {
-      currencySymbolUtf8: this.props.data.data.currencySymbolUtf8,
+      currencySymbolUtf8: '',
       selectedStartTime: '08:30',
       selectedEndTime: '17:00',
       showDate: false,
@@ -90,7 +90,7 @@ class ExperienceCreate extends React.Component {
       return
     }
     axios
-      .post(`/${this.props.data.username}/experience/create`, {
+      .post('/v1/experience/create', {
         experienceName: this.state.name,
         experiencePay: parseInt(this.state.pay),
         experienceFactor: this.state.factor,
@@ -107,7 +107,7 @@ class ExperienceCreate extends React.Component {
       .then(res => {
         sweet.fire('Created').then(() =>
           this.setState({
-            redirect: `/${this.props.data.username}/experience/list`
+            redirect: `/${this.props.match.params.businessName}/experience/list`
           })
         )
       })

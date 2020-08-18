@@ -1,17 +1,11 @@
 import React from 'react'
 import {connect} from 'react-redux'
-import {
-  ButtonBase,
-  Typography,
-  Paper,
-  Grid,
-  IconButton,
-  Box
-} from '@material-ui/core'
+import {Typography, Paper, Grid, IconButton, Box} from '@material-ui/core'
 import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight'
 import {makeStyles, withStyles} from '@material-ui/core/styles'
-import UpdatePhotoModal from './components/udpatePhotoModal'
-import UpdateOtherDataModal from './components/updateOtherDataModal'
+import UpdatePhotoModal from '../components/udpatePhotoModal'
+import UpdateOtherDataModal from '../components/updateOtherDataModal'
+import {getBusinessProfileData} from '../../redux/actions/ProfileActions'
 
 const ProfileRow = withStyles(theme => ({
   root: {
@@ -93,7 +87,7 @@ const ProfileComponent = ({
               >
                 Profile
               </Typography>
-              <Grid container item container direction="column">
+              <Grid container item direction="column">
                 <ProfileRow
                   onClick={() => updateData({type: 'photo'})}
                   container
@@ -194,7 +188,7 @@ const ProfileComponent = ({
               >
                 Contact information
               </Typography>
-              <Grid container item container direction="column">
+              <Grid container item direction="column">
                 <ProfileRow
                   container
                   justify="space-between"
@@ -267,7 +261,7 @@ const ProfileComponent = ({
               >
                 Location
               </Typography>
-              <Grid container item container direction="column">
+              <Grid container item direction="column">
                 <ProfileRow
                   container
                   justify="space-between"
@@ -281,7 +275,7 @@ const ProfileComponent = ({
                       {country}
                     </Typography>
                   </Grid>
-                  <Grid item></Grid>
+                  <Grid item />
                 </ProfileRow>
               </Grid>
             </Paper>
@@ -313,4 +307,5 @@ const mapDispatchToProps = dispatch => {
 }
 
 const Profile = connect(mapStateToProps, mapDispatchToProps)(ProfileComponent)
+
 export default Profile

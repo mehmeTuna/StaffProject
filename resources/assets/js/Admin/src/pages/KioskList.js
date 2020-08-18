@@ -156,7 +156,11 @@ export default class KioskList extends React.Component {
                 </div>
                 <div className="row display-3">
                   <Link
-                    to={'/' + `${this.props.data.username + '/kiosk/create'}`}
+                    to={
+                      '/' +
+                      `${this.props.match.params.businessName +
+                        '/kiosk/create'}`
+                    }
                     className="nav-link mx-auto"
                   >
                     <button

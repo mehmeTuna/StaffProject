@@ -1,10 +1,3 @@
-<<<<<<< Updated upstream
-import {GET_STAFF_COUNT} from '../types/staff'
-
-const initialState = {
-  staff: [],
-  onlineStaff: []
-=======
 import {
   GET_STAFF_COUNT,
   GET_STAFF_DEFAULT_LIST,
@@ -20,16 +13,12 @@ const initialState = {
   staffProfileLoading: false,
   loading: false,
   payDataLoading: false
->>>>>>> Stashed changes
 }
 
 export const staffReducer = function(state = initialState, action) {
   switch (action.type) {
     case GET_STAFF_COUNT:
       return state.staff.length
-<<<<<<< Updated upstream
-
-=======
     case STAFF_LOADING:
       return Object.assign({}, state, {loading: action.payload.loading})
     case STAFF_PAY_LOADING:
@@ -39,10 +28,7 @@ export const staffReducer = function(state = initialState, action) {
     case STAFF_GET_DATA:
       return Object.assign({}, state, {staffProfile: action.payload})
     case PROFILE_LOADING:
-      return Object.assign({}, state, {
-        staffProfileLoading: action.payload.loading
-      })
->>>>>>> Stashed changes
+      return Object.assign({}, state, {staffProfileLoading: action.payload})
     default:
       return state
   }

@@ -1,12 +1,8 @@
 {
     "/business/login/js/app.js": "/business/login/js/app.js",
     "/businessRegister/js/app.js": "/businessRegister/js/app.js",
-<<<<<<< Updated upstream
-    "/js/NewApp.js": "/js/NewApp.js",
-    "/kiosk/home/js/home.js": "/kiosk/home/js/home.js",
-=======
     "/js/App.js": "/js/App.js",
->>>>>>> Stashed changes
+    "/kiosk/home/js/home.js": "/kiosk/home/js/home.js",
     "/staff/home/js/app.js": "/staff/home/js/app.js",
     "/staff/login/js/app.js": "/staff/login/js/app.js"
 }

@@ -11,7 +11,6 @@ use App\Http\Requests\StaffMeRequest;
 use App\Http\Requests\StaffPayment;
 use App\Http\Requests\StoreStaffLogin;
 use App\Kiosk;
-use App\Kioskqrcode;
 use App\PaymentHistory;
 use App\Staff;
 use App\Tio;
@@ -97,7 +96,7 @@ class StaffController extends Controller
 
     public function paymentHistory(BusinessStaffRelationship $request)
     {
-        $staff = Staff::find('id', $request->userId)->with(['businessOwner', 'paymentHistory']);
+        $staff = Staff::where('id', $request->userId)->with(['businessOwner', 'paymentHistory'])->first();
 
         $data = [];
         foreach ($staff->paymentHistory as $value){
@@ -132,13 +131,11 @@ class StaffController extends Controller
         return $this->respondSuccess($response);
     }
 
-<<<<<<< Updated upstream
-=======
     public function getList()
     {
         $response = Staff::active()
-            ->where('business', $this->businessId)
             ->with(['experienceData'])
+            ->where('business', $this->businessId)
             ->get();
 
         return $this->respondSuccess($response);
@@ -153,7 +150,6 @@ class StaffController extends Controller
         return $this->respondSuccess($staff);
     }
 
->>>>>>> Stashed changes
     public function staffList()
     {
         $factorText = [
@@ -180,7 +176,6 @@ class StaffController extends Controller
 
         return $this->respondSuccess($staff);
     }
-
 
     public function staffLoginPage(Request $request)
     {
@@ -230,7 +225,7 @@ class StaffController extends Controller
         return redirect('/staff/home')->cookie($this->staffCookieName, $token, $this->oneYearCookieTime());
     }
 
-    public function staffLogin(StoreStaffLogin $request)
+    public function login(StoreStaffLogin $request)
     {
         $staff = Staff::where('email', $request->username)->firstOrFail();
 

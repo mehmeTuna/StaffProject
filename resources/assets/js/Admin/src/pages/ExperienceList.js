@@ -4,7 +4,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import {Link} from 'react-router-dom'
 
-import {experienceList} from './../api/business'
+import {experienceList} from '../../api/business'
 
 const sweet = withReactContent(Swal)
 
@@ -180,7 +180,7 @@ class ExperienceList extends React.Component {
 
   async delete({id, username}) {
     this.setState({list: this.state.list.filter(e => e.id !== id)})
-    const {status} = await Axios.post('/business/experience/delete', {
+    const {status} = await Axios.post('/v1/experience/delete', {
       id: id
     })
 
@@ -207,7 +207,9 @@ class ExperienceList extends React.Component {
                 <div className="row display-3">
                   <Link
                     to={
-                      '/' + `${this.props.data.username + '/experience/create'}`
+                      '/' +
+                      `${this.props.match.params.businessName +
+                        '/experience/create'}`
                     }
                     className="nav-link mx-auto"
                   >

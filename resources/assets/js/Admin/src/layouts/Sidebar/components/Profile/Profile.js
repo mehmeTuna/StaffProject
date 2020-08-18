@@ -4,6 +4,7 @@ import clsx from 'clsx'
 import PropTypes from 'prop-types'
 import {makeStyles} from '@material-ui/styles'
 import {Avatar, Typography} from '@material-ui/core'
+import {connect} from 'react-redux'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,36 +22,39 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-const Profile = props => {
-  const {className, ...rest} = props
-
+const ProfileComponent = props => {
+  const {username, businessName, profileImg, className} = props
   const classes = useStyles()
 
-  const user = {
-    name: 'Shen Zhi',
-    avatar: '/images/avatars/avatar_11.png',
-    bio: 'Brain Director'
-  }
-
   return (
-    <div {...rest} className={clsx(classes.root, className)}>
+    <div className={clsx(classes.root, className)}>
       <Avatar
         alt="Person"
         className={classes.avatar}
         component={RouterLink}
-        src={user.avatar}
-        to="/settings"
+        src={profileImg.url}
+        to={`/${username}/profile`}
       />
       <Typography className={classes.name} variant="h4">
-        {user.name}
+        {businessName}
       </Typography>
-      <Typography variant="body2">{user.bio}</Typography>
+      <Typography variant="body2">{username}</Typography>
     </div>
   )
 }
 
-Profile.propTypes = {
+ProfileComponent.propTypes = {
   className: PropTypes.string
 }
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    username: state.profileReducer.username,
+    businessName: state.profileReducer.businessName,
+    profileImg: state.profileReducer.profileImg
+  }
+}
+
+const Profile = connect(mapStateToProps, null)(ProfileComponent)
 
 export default Profile
