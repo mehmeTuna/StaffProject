@@ -4,10 +4,10 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import {Redirect} from 'react-router-dom'
 
-import PageTitle from './assets/page-title'
-import FormInputElement from './assets/form-input'
-import FormSubmitBtn from './assets/form-submit-btn'
-import PlanDetail from './assets/plan-detail'
+import PageTitle from './../assets/page-title'
+import FormInputElement from './../assets/form-input'
+import FormSubmitBtn from './../assets/form-submit-btn'
+import PlanDetail from './../assets/plan-detail'
 
 const sweet = withReactContent(Swal)
 

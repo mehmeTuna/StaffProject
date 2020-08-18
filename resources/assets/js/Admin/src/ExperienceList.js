@@ -4,7 +4,11 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import {Link} from 'react-router-dom'
 
+<<<<<<< Updated upstream
 import {experienceList} from './../api/business'
+=======
+import {experienceList} from './../../api/business'
+>>>>>>> Stashed changes
 
 const sweet = withReactContent(Swal)
 
@@ -206,9 +210,19 @@ class ExperienceList extends React.Component {
                 </div>
                 <div className="row display-3">
                   <Link
+<<<<<<< Updated upstream
                     to={
                       '/' + `${this.props.data.username + '/experience/create'}`
                     }
+=======
+<<<<<<<< Updated upstream
+                    to={`/${this.state.businessUsername}/experience/create`}
+========
+                    to={
+                      '/' + `${this.props.data.username + '/experience/create'}`
+                    }
+>>>>>>>> Stashed changes
+>>>>>>> Stashed changes
                     className="nav-link mx-auto"
                   >
                     <button
