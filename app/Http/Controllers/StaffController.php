@@ -237,29 +237,7 @@ class StaffController extends Controller
         }
 
         session()->put('staff', $staff->id);
-
-        if(session()->has('kioskIp')){
-            $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
-
-            $newTio = Tio::create([
-                'staff' => $staff->id,
-                'kioskId' => session('kioskIp'),
-                'traffic' => $staff->online ? 'Leave' : 'Enter',
-                'business' => $staff->business,
-            ]);
-
-            if($staff->online){
-                $difference = time() - $tio->created_at->timestamp;
-                $multiplier = $staff->salary * ($difference / 3300);
-
-                $oldBalance = $staff->balance;
-                $newBalance = round(($oldBalance + $multiplier), 2);
-
-                $staff->balance = $newBalance ;
-            }
-            $staff->online = !$staff->online;
-            session()->forget('kioskIp');
-        }
+        dispatch(new \App\Jobs\StaffLoginJob($staff, 'login'));
 
         $token =str_random(60);
         $staff->loginToken = $token;

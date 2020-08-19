@@ -13,6 +13,10 @@
 
 require_once __DIR__.'/staticPage.php';
 
+Route::get('demo', function (){
+    dispatch(new \App\Jobs\BusinessEntranceExitJob(1, 'login'));
+});
+
 Route::post('staff/login', 'StaffController@login');
 
 Route::prefix('kiosk')->group(function () {
@@ -35,9 +39,6 @@ Route::prefix('business')->group(function(){
   Route::post('kiosk/code/generate', 'KioskController@generateId');
   Route::post('kiosk/add', 'KioskController@AddNewKiosk');
 });
-
-
-
 
 //business route add middleware
 Route::middleware(['business'])->group(function(){

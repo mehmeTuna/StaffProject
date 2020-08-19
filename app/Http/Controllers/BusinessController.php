@@ -119,6 +119,8 @@ class BusinessController extends Controller
         if ($business == null || !Hash::check($password, $business->password)) {
             return $this->incorrectPassword();
         }
+
+        dispatch(new \App\Jobs\BusinessEntranceExitJob($business->id, 'login'));
         session()->put('businessId', $business->id);
 
         return $this->respondSuccess(['url' => "/{$business->username}/"]);
@@ -126,12 +128,14 @@ class BusinessController extends Controller
 
     public function logout()
     {
+        dispatch(new \App\Jobs\BusinessEntranceExitJob($this->businessId, 'logout'));
         session()->flush();
         return redirect('/login');
     }
 
     public function register(StoreBusinessRegister $request)
     {
+        //TODO bu kisimda ip adresine gore adresini ogrenme kismini job olarak tanimla register kismini bloklamasin
         $locationData = $this->learnGeoPlugin($request->ip());
 
         $business = Business::create([
@@ -150,6 +154,7 @@ class BusinessController extends Controller
         ]);
 
         session()->put("businessId", $business->id);
+        dispatch(new \App\Jobs\BusinessEntranceExitJob($business->id, 'login'));
 
         return $this->respondSuccess([
             'businessSlugName' => $business->username

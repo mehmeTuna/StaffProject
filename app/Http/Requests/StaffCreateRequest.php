@@ -17,9 +17,8 @@ class StaffCreateRequest extends FormRequest
     {
         $business = Business::where('id', session('businessId'))->with(['planDetail', 'staff'])->first();
 
-        $nowtime = Carbon::now();
         $packageTime = Carbon::parse($business->packageTime);
-        $canPackageTime =$nowtime->diffInSeconds($packageTime, false);
+        $canPackageTime = Carbon::now()->diffInSeconds($packageTime, false);
         return $business->planDetail->staff_count > $business->staff->count() &&  ($canPackageTime > 0);
     }
 
@@ -30,7 +29,6 @@ class StaffCreateRequest extends FormRequest
      */
     public function rules()
     {
-        //TODO: img kontrol et kismi eklenecek
         return [
             'firstName' => 'bail|required|min:3|max:100',
             'lastName' => 'bail|required|min:3|max:100',
