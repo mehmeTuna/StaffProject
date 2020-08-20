@@ -11,7 +11,7 @@ let mix = require('laravel-mix')
  |
  */
 
-mix.react('resources/assets/js/admin/App.js', 'public/js')
+mix.react('resources/assets/js/Admin/App.js', 'public/js')
 
 mix.react(
   'resources/assets/js/business/login/app.js',
