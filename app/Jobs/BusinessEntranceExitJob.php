@@ -25,7 +25,7 @@ class BusinessEntranceExitJob implements ShouldQueue
     public function __construct($businessId, $type)
     {
         $this->businessId = $businessId;
-        $type->type = $type ;
+        $this->type = $type ;
     }
 
     /**
