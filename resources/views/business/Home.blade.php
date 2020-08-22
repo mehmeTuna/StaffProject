@@ -8,10 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title> Beta - Version 2.0</title>
     <!-- base:css -->
-    <link rel="stylesheet" href="/public/vendors/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="/public/vendors/feather/feather.css">
-    <link rel="stylesheet" href="/public/vendors/base/vendor.bundle.base.css">
-    <link rel='stylesheet' href='/public/vendors/select2/select2.min.css'>
     <link rel='stylesheet' href='/public/vendors/select2-bootstrap-theme/select2-bootstrap.min.css'>
     <!-- endinject -->
     <!-- plugin css for this page -->
@@ -20,20 +16,25 @@
     <link rel="stylesheet" href="/public/vendors/jquery-bar-rating/fontawesome-stars-o.css">
     <link rel="stylesheet" href="/public/vendors/jquery-bar-rating/fontawesome-stars.css">
     <!-- End plugin css for this page -->
-    <!-- inject:css -->
     <link rel="stylesheet" href="/public/css/style.css">
+    <style>
+        body {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+        }
+        .isapp {
+            width: inherit;
+            height: inherit;
+        }
+    </style>
 </head>
 
 <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root" class="isapp"></div>
 
-
-    <script>
-        const rootData = {!! json_encode($business) !!}
-    </script>
-
-    <script src="/public/js/app.js"></script>
+    <script src="/public/js/App.js"></script>
 </body>
 
 </html>

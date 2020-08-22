@@ -92,7 +92,9 @@ const StaffDetailComponent = props => {
 
   return (
     <Grid container direction="column" spacing={2} className={classes.root}>
-      {isPaymentShow && <PaymentDialog userId={staffId} isOpen={e => setIsPaymentShow(e)} />}
+      {isPaymentShow && (
+        <PaymentDialog userId={staffId} isOpen={e => setIsPaymentShow(e)} />
+      )}
       <Grid
         item
         container

@@ -1,7 +1,10 @@
-@extends('front.head')
-<body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
-@extends('front.headNavigation')
+@component('front.head')
 
+@endcomponent
+<body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
+@component('front.headNavigation')
+
+@endcomponent
     <section
         class="pb_cover_v3 overflow-hidden cover-bg-indigo cover-bg-opacity text-left pb_gradient_v1 pb_slant-light"
         id="section-home">
@@ -539,5 +542,6 @@
     <!-- END section -->
 
 <script src="/public/businessRegister/js/app.js"></script>
+@component('front.footer')
 
-@extends('front.footer')
+@endcomponent

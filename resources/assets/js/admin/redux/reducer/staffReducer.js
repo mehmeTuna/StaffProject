@@ -28,7 +28,9 @@ export const staffReducer = function(state = initialState, action) {
     case STAFF_GET_DATA:
       return Object.assign({}, state, {staffProfile: action.payload})
     case PROFILE_LOADING:
-      return Object.assign({}, state, {staffProfileLoading: action.payload})
+      return Object.assign({}, state, {
+        staffProfileLoading: action.payload.loading
+      })
     default:
       return state
   }

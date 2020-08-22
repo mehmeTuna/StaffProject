@@ -1,9 +1,11 @@
-import React, {forwardRef} from 'react'
+import React, {forwardRef, useState} from 'react'
 import {NavLink as RouterLink} from 'react-router-dom'
 import clsx from 'clsx'
 import PropTypes from 'prop-types'
-import {makeStyles} from '@material-ui/styles'
+import {makeStyles, useTheme} from '@material-ui/styles'
 import {List, ListItem, Button, colors} from '@material-ui/core'
+import ExitToAppIcon from '@material-ui/icons/ExitToApp'
+import useMediaQuery from '@material-ui/core/useMediaQuery'
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -48,6 +50,12 @@ const SidebarNav = props => {
   const {pages, className, ...rest} = props
 
   const classes = useStyles()
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('md'))
+
+  const logout = () => {
+    window.location.href = '/business/logout'
+  }
 
   return (
     <List {...rest} className={clsx(classes.root, className)}>
@@ -64,6 +72,21 @@ const SidebarNav = props => {
           </Button>
         </ListItem>
       ))}
+      {matches && (
+        <ListItem
+          className={classes.item}
+          disableGutters
+          key="logout"
+          onClick={logout}
+        >
+          <Button className={classes.button}>
+            <div className={classes.icon}>
+              <ExitToAppIcon />
+            </div>
+            Logout
+          </Button>
+        </ListItem>
+      )}
     </List>
   )
 }

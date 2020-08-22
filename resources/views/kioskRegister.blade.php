@@ -1,11 +1,15 @@
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 
-@include('front.head')
+@component('front.head')
+
+@endcomponent
 
 
 <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
-    @include('front.headNavigation')
+@component('front.headNavigation')
+
+@endcomponent
 
     <div id="kiosk-app"
         class="pb_cover_v3 overflow-hidden cover-bg-indigo cover-bg-opacity text-left pb_gradient_v1 pb_slant-light">

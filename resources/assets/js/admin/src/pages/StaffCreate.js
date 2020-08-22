@@ -1,5 +1,5 @@
 import React from 'react'
-import {Redirect} from 'react-router-dom'
+import {Redirect, useParams} from 'react-router-dom'
 import Swal from 'sweetalert2'
 import axios from 'axios'
 import withReactContent from 'sweetalert2-react-content'
@@ -92,7 +92,7 @@ class StaffCreate extends React.Component {
     formData.set('periode', this.state.selectedExperience.periode)
 
     axios
-      .post(`/${this.props.data.username}/staff/create`, formData, {
+      .post(`/${this.props.match.params.businessName}/staff/create`, formData, {
         headers: {
           'content-type': 'multipart/form-data' // do not forget this
         }
@@ -101,7 +101,7 @@ class StaffCreate extends React.Component {
         if (res.data.status === true) {
           sweet.fire('Created').then(() =>
             this.setState({
-              redirect: `/${this.props.data.username}/staff/list`
+              redirect: `/${this.props.match.params.businessName}/staff/list`
             })
           )
         } else {
@@ -111,11 +111,6 @@ class StaffCreate extends React.Component {
   }
 
   async componentDidMount() {
-    if (typeof this.props.data.data.currencySymbolUtf8 !== 'undefined') {
-      this.setState({
-        currencySymbolUtf8: this.props.data.data.currencySymbolUtf8
-      })
-    }
     const {data} = await axios.post('/business/experience/list')
 
     this.setState({workingData: data.data})

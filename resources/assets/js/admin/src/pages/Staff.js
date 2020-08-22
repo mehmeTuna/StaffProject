@@ -10,16 +10,15 @@ import Button from '@material-ui/core/Button'
 import AddIcon from '@material-ui/icons/Add'
 import {Typography} from '@material-ui/core'
 import {Link} from 'react-router-dom'
-import CircularProgress from '@material-ui/core/CircularProgress'
 import theme from '../components/theme'
 import FilterListIcon from '@material-ui/icons/FilterList'
 import Btn from '../components/assets/Button'
+import PageLoading from '../assets/PageLoading'
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: '900px',
-    width: '-webkit-fill-available',
-    height: '-webkit-fill-available',
+    width: 'inherit',
+    height: 'inherit',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
@@ -27,10 +26,20 @@ const useStyles = makeStyles(theme => ({
   },
   rootPage: {
     maxWidth: '900px',
-    width: '-webkit-fill-available',
-    height: '-webkit-fill-available',
+    width: 'inherit',
+    height: 'inherit',
     paddingLeft: theme.spacing(1),
     paddingRight: theme.spacing(1)
+  },
+  newAdd: {
+    width: '200px',
+    height: '120px',
+    color: theme.palette.black,
+    display: 'flex',
+    justifyContent: 'center',
+    direction: 'column',
+    border: '1px solid',
+    borderColor: theme.palette.primary.main
   },
   header: {
     display: 'flex',
@@ -56,31 +65,15 @@ const InitialStaff = ({getAllList, staff, username, loading}) => {
   }, [])
 
   if (loading) {
-    return (
-      <div className={classes.root}>
-        <CircularProgress />
-      </div>
-    )
+    return <PageLoading />
   }
 
   if (staff.length === 0) {
     return (
       <div className={classes.root}>
-        <Grid container direction="column" justify="center" alignItems="center">
-          <Typography>
-            Registered personnel could not be found. You can define a new one
-          </Typography>
-          <Link to={`/${username}/staff/create`}>
-            <Button
-              variant="contained"
-              color="primary"
-              size="large"
-              startIcon={<AddIcon />}
-            >
-              Staff Add
-            </Button>
-          </Link>
-        </Grid>
+        <Button variant="outlined" color="primary" className={classes.newAdd} component={Link} to={`/${username}/staff/create`} startIcon={<AddIcon />}>
+          <Typography>Staff Add</Typography>
+        </Button>
       </div>
     )
   }
@@ -88,6 +81,7 @@ const InitialStaff = ({getAllList, staff, username, loading}) => {
   return (
     <div className={classes.rootPage}>
       <div className={classes.header}>
+        <div />
         <Typography variant="h3" gutterBottom className={classes.headerTitle}>
           Staff List
         </Typography>

@@ -15,8 +15,7 @@ const columns = [
     id: 'created_at',
     label: 'Time',
     minWidth: 170,
-    align: 'right',
-
+    align: 'right'
   },
   {
     id: 'pay',
@@ -68,21 +67,21 @@ export default function PaymentHistoryTable({rows}) {
           </TableHead>
           <TableBody>
             {rows
-            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-            .map(row => {
-              return (
-                <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
-                  {columns.map(column => {
-                    const value = row[column.id]
-                    return (
-                      <TableCell key={column.id} align={column.align}>
-                        {value}
-                      </TableCell>
-                    )
-                  })}
-                </TableRow>
-              )
-            })}
+              .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              .map(row => {
+                return (
+                  <TableRow hover role="checkbox" tabIndex={-1} key={row.id}>
+                    {columns.map(column => {
+                      const value = row[column.id]
+                      return (
+                        <TableCell key={column.id} align={column.align}>
+                          {value}
+                        </TableCell>
+                      )
+                    })}
+                  </TableRow>
+                )
+              })}
           </TableBody>
         </Table>
       </TableContainer>

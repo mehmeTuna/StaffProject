@@ -11,7 +11,8 @@ import {connect} from 'react-redux'
 const useStyles = makeStyles(theme => ({
   root: {
     paddingTop: 56,
-    height: '100%',
+    height: 'inherit',
+    width: 'inherit',
     [theme.breakpoints.up('sm')]: {
       paddingTop: 64
     }
@@ -20,6 +21,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: 240
   },
   content: {
+    flex: 1,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'start',
@@ -27,10 +29,8 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(2),
     paddingRight: theme.spacing(2),
     paddingTop: theme.spacing(2),
-    height: 'calc(100vh - 90px)',
-    [theme.breakpoints.up('sm')]: {
-      height: 'calc(100vh - 100px)'
-    }
+    width: 'inherit',
+    height: 'inherit'
   }
 }))
 
