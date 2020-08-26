@@ -182,41 +182,27 @@ class StaffController extends Controller
         if (!Cache::has($request->code)){
             return redirect('/');
         }
-        $kioskQrCode = Cache::get($request->code);
+
+        $kioskRemoteAddress = Cache::get($request->code);
 
         $staff = Staff::where('loginToken', $request->cookie($this->staffCookieName))->first();
+        $staffIsLogin = $staff->online ;
 
-        if($staff == null)
-        {
-            $request->session()->put('kioskIp', $kioskQrCode);
-            return redirect('staff/login');
-        }
-
-        $kiosk = Kiosk::where('remoteAddress', $kioskQrCode)->first();
+        $kiosk = Kiosk::where('remoteAddress', $kioskRemoteAddress)->first();
         if($kiosk == null){
             return redirect('/');
         }
 
-        $this->kioskQrRegenerate($kiosk);
-
-        $tio = Tio::where('staff', $staff->id)->orderBy('created_at', 'desc')->first();
-
-        $newTio = Tio::create([
-            'staff' => $staff->id,
-            'kioskId' => $kioskQrCode,
-            'traffic' => $staff->online ? 'Leave' : 'Enter',
-            'business' => $staff->business,
-        ]);
-
-        if($staff->online){
-            $difference = time() - $tio->created_at->timestamp;
-            $multiplier = $staff->salary * ($difference / 3300);
-            $oldBalance = $staff->balance;
-            $newBalance = round(($oldBalance + $multiplier), 2);
-            $staff->balance = $newBalance ;
+        if($staff == null){
+            $request->session()->flash('kioskIp', $kioskRemoteAddress);
+            return redirect('staff/login');
         }
+
+        dispatch(new \App\Jobs\StaffLoginJob($staff, $staffIsLogin ? 'logout' : 'login'));
+        dispatch(new \App\Jobs\KioskQrGenerateJob($kiosk));
+        dispatch(new \App\Jobs\StaffPaymentCalculationJob($staff, $kiosk, time()));
+
         $token = str_random(60);
-        $staff->online = !$staff->online ;
         $staff->loginToken = $token ;
         $staff->save();
 
@@ -237,7 +223,15 @@ class StaffController extends Controller
         }
 
         session()->put('staff', $staff->id);
-        dispatch(new \App\Jobs\StaffLoginJob($staff, 'login'));
+        
+        
+        if(session()->has('kioskIp')){
+            $kiosk = Kiosk::where('remoteAddress', session('kioskIp'))->first();
+            dispatch(new \App\Jobs\StaffPaymentCalculationJob($staff, $kiosk, time()));
+        }else {
+            //TODO: bu kisim normal giris oldugu zaman
+            dispatch(new \App\Jobs\StaffLoginJob($staff, 'login'));
+        }
 
         $token =str_random(60);
         $staff->loginToken = $token;
@@ -249,7 +243,7 @@ class StaffController extends Controller
         ])->cookie($this->staffCookieName, $token, $this->oneYearCookieTime());
     }
 
-    public function me(StaffMeRequest $request)
+    public function me(Request $request)
     {
         $data = (object)[];
         $staff = Staff::where('id', session('staff'))->first();
@@ -278,12 +272,14 @@ class StaffController extends Controller
 
             $data->logHistory->balance = $staff->balance;
             $data->logHistory->type = 'log';
+            
             $data->logHistory->logHistory = $logHistory->map(function ($data) {
                 $result = (object) [];
                 $result->time = $data->created_at->toDateTimeString();
                 $result->traffic = $data->traffic;
                 return $result;
             });
+
             $data->logHistory->logCount = $logCount;
             $data->logHistory->total = $paymentHistoryTotalCalculatedPrice;
             $data->logHistory->paymentHistory = $paymentHistory->map(function ($data) {
@@ -314,10 +310,9 @@ class StaffController extends Controller
         }
 
         $cookie = \Cookie::forget($this->staffCookieName);
+        session()->flush();
 
-        return response()->json([
-            'status' => true,
-        ])->withCookie($cookie);
+        return redirect('/staff/login')->withCookie($cookie);
     }
 
     public function index()

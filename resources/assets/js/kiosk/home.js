@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react'
 import ReactDOM from 'react-dom'
-import Axios from 'axios'
 import Echo from 'laravel-echo'
 import QRCode from 'react-qr-code'
 
@@ -14,49 +13,27 @@ window.Echo = new Echo({
 })
 
 function Home() {
-  const [isLogin, setIsLogin] = useState(false)
+  const [kioskData, setKioskData] = useState(rootData)
+  const [isLogin, setIsLogin] = useState(kioskData.isLogin)
   const [qrCode, setQrCode] = useState('')
-  const [registerCode, setRegisterCode] = useState('')
-  const [kioskData, setKioskData] = useState(localStorage.getItem('kioskId'))
-  const [businessData, setBusinessData] = useState({})
-  const [isDeleted, setIsDeleted] = useState(false)
+  const [businessData, setBusinessData] = useState(kioskData.business)
+
 
   useEffect(() => {
-    const fetchData = async () => {
-      const {data} = await Axios.post('/v1/kiosk/me', {
-        webKiosk: kioskData
-      })
-
-      setIsLogin(data.data.isLogin)
-      updateKioskId(data.data.kioskId)
-      if (data.data.isLogin) {
-        setQrCode(data.data.qrCode)
-        setBusinessData(data.data.business)
-      } else {
-        setRegisterCode(data.data.code)
-      }
-      connectSocketListenEvent(data.data.kioskId)
-    }
-
-    fetchData()
+    connectSocketListenEvent(kioskData.roomId)
   }, [])
 
   const connectSocketListenEvent = channel => {
     window.Echo.channel(channel).listen('.KioskEvent', e => {
       if (e.isLogin) {
-        setIsLogin(true)
         setBusinessData(e.business)
         setQrCode(e.refreshQrCode)
+        setIsLogin(e.isLogin)
       }
       if (!e.isLogin) {
         location.reload()
       }
     })
-  }
-
-  const updateKioskId = (id = '') => {
-    setKioskData(id)
-    localStorage.setItem('kioskId', id)
   }
 
   return (
@@ -65,7 +42,7 @@ function Home() {
         <div className="row flex-sm-column-reverse flex-md-row flex-lg-row align-items-center justify-content-between">
           {isLogin ? (
             <div className="col-md-6">
-              <h2 className="heading mb-3">Hi, {businessData.username}</h2>
+              <h2 className="heading mb-3">Hi, {businessData.businessName}</h2>
               <div className="sub-heading">
                 <p className="mb-4"></p>
                 <p className="mb-5"></p>
@@ -73,13 +50,8 @@ function Home() {
             </div>
           ) : (
             <div className="col-md-6">
-              {isDeleted ? (
-                <h2 className="heading mb-3">Deleted Kiosk</h2>
-              ) : (
-                <h2 className="heading mb-3">Kiosk Define</h2>
-              )}
               <div className="sub-heading">
-                <p className="mb-4"></p>
+                <p className="mb-4">Kiosk Define</p>
                 <p className="mb-5">
                   <a
                     className="btn btn-success btn-lg pb_btn-pill smoothscroll"
@@ -99,7 +71,7 @@ function Home() {
             ) : (
               <div className="bg-white rounded pb_form_v1">
                 <h4 className="mb-4 mt-0 text-center">CODE</h4>
-                <h2 className="mb-4 mt-0 text-center">{registerCode}</h2>
+                <h2 className="mb-4 mt-0 text-center">{kioskData.code}</h2>
               </div>
             )}
           </div>

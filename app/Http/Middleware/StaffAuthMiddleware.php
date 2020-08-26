@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App\Staff;
 
 class StaffAuthMiddleware
 {
@@ -15,9 +16,10 @@ class StaffAuthMiddleware
      */
     public function handle($request, Closure $next)
     {   
-        if(!session()->has('staff'))
-        {
-            return redirect('/');
+        $staff = Staff::where('loginToken', $request->cookie('_s'))->first();
+
+        if($staff == null){
+            return redirect('staff/login');
         }
         
         return $next($request);

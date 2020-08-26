@@ -16,10 +16,6 @@ const columns = [
     label: 'Time',
     minWidth: 170,
     align: 'right',
-    format: value => {
-      let time = new Date(value * 1000)
-      return time.toLocaleString()
-    }
   },
   {
     id: 'traffic',
@@ -79,9 +75,7 @@ export default function LogHistoryTable({rows}) {
                       const value = row[column.id]
                       return (
                         <TableCell key={column.id} align={column.align}>
-                          {column.id === 'created_at'
-                            ? column.format(value)
-                            : value}
+                          {value}
                         </TableCell>
                       )
                     })}

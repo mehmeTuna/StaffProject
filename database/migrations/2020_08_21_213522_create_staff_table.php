@@ -18,6 +18,7 @@ class CreateStaffTable extends Migration
             $table->char('firstName', 191);
             $table->char('lastName', 191);
             $table->boolean('active')->nullable()->default(1);
+            $table->boolean('online')->nullable()->default(0);
             $table->char('loginToken', 191)->nullable();
             $table->double('balance', 6, 2)->nullable()->default(0)->comment('Bakiye');
             $table->double('totalPayment', 6, 2)->nullable()->default(0)->comment('Odenen Toplam ucret');
@@ -45,6 +46,7 @@ class CreateStaffTable extends Migration
 
             $table->index('id');
             $table->index('active');
+            $table->index('online');
             $table->index('loginToken');
             $table->index('balance');
             $table->index('totalPayment');

@@ -35,9 +35,12 @@ class BusinessEntranceExitJob implements ShouldQueue
      */
     public function handle()
     {
+       /*
+
         BusinessEntranceExitLog::create([
             'business_id' => $this->businessId,
             'type' => $this->type
         ]);
+        */
     }
 }

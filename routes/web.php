@@ -14,7 +14,7 @@
 require_once __DIR__.'/staticPage.php';
 
 Route::get('demo', function (){
-    dispatch(new \App\Jobs\BusinessEntranceExitJob(1, 'login'));
+  //  dispatch(new \App\Jobs\BusinessEntranceExitJob(1, 'login'));
 });
 
 Route::post('staff/login', 'StaffController@login');
@@ -25,8 +25,8 @@ Route::prefix('kiosk')->group(function () {
 
 Route::middleware(['staff'])->group(function(){
     Route::prefix('staff')->group(function(){
-        Route::post('me', 'StaffController@me');
-        Route::post('logout', 'StaffController@staffLogout');
+        Route::get('me', 'StaffController@me');
+        Route::get('logout', 'StaffController@staffLogout');
     });
 });
 
@@ -37,9 +37,13 @@ Route::prefix('business')->group(function(){
 
   //kiosk islemleri bu kisim istekleri  sadece  kiosk requestleri icin dir
   Route::post('kiosk/code/generate', 'KioskController@generateId');
-  Route::post('kiosk/add', 'KioskController@AddNewKiosk');
+  Route::post('kiosk/add', 'KioskController@create');
 });
-
+Route::prefix('v1')->group(function(){
+    Route::prefix('kiosk')->group(function(){
+        Route::post('me', 'KioskController@me');
+    });
+});
 //business route add middleware
 Route::middleware(['business'])->group(function(){
   Route::prefix('v1')->group(function(){
@@ -53,8 +57,7 @@ Route::middleware(['business'])->group(function(){
           Route::post("log/history", 'StaffController@logHistory');
       });
       Route::prefix('kiosk')->group(function(){
-          Route::post('me', 'KioskController@me');
-          Route::post('register', 'KioskController@AddNewKiosk');
+          Route::post('register', 'KioskController@create');
       });
       Route::prefix('experience')->group(function(){
           Route::post('create', 'ExperienceController@register');

@@ -30,6 +30,7 @@ class BusinessKioskRelation extends FormRequest
      */
     public function rules()
     {
+        //TODO kontrol ekle
         return [
             //
         ];

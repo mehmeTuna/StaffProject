@@ -1,12 +1,7 @@
 import React from 'react'
-import Axios from 'axios'
 
 async function logOut() {
-  const {data} = await Axios.post('/staff/logout')
-
-  if (data.status === true) {
-    window.location.href = '/staff/login'
-  }
+  window.location.href = '/staff/logout'
 }
 
 const Navbar = props => {

@@ -12,14 +12,10 @@ Route::get('forget-password', function(){
     return view('forgetPassword');
 });
 
-Route::get('kiosk', function(){
-    return view('kioskRegister');
-})->name('kioskHome');
+Route::get('kiosk', 'KioskController@home');
 
 Route::prefix('kiosk')->group(function(){
-    Route::get('/', function(){
-        return view('kioskRegister');
-    })->name('kioskHome');
+    Route::get('/', 'KioskController@home');
 });
 
 Route::get('login', function (){

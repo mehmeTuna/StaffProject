@@ -23,18 +23,19 @@ export default class KioskCreate extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.props)
     this.setState({hostName: window.location.host})
   }
 
   async newKiosk(val) {
-    const {data} = await axios.post('/kiosk/register', {
+    const {data} = await axios.post('/v1/kiosk/register', {
       code: this.state.registerCode,
       name: val
     })
 
     if (data.status === true) {
       this.setState({
-        redirect: `/${this.props.data.username}/kiosk/list`
+        redirect: `/${this.props.match.params.businessName}/kiosk/list`
       })
     } else {
       sweet.fire({
@@ -91,10 +92,11 @@ export default class KioskCreate extends React.Component {
                 </li>
                 <li className="lead">
                   If you don't know how to view the code
-                  <span className="text-success">
-                    {' '}
-                    {`${this.state.hostName}/kiosk`}
-                  </span>{' '}
+                  <a href='/kiosk' target='_blank'>
+                    <span className="text-success">
+                      {`${this.state.hostName}/kiosk`}
+                    </span>
+                  </a>
                   visit the page
                 </li>
               </ul>

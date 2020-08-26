@@ -10,7 +10,6 @@ class Tio extends Model
     protected $guarded = ['id'];
     protected $table = "tio";
     protected $primaryKey = "id";
-    protected $dateFormat = 'U';
 
     public function getUser()
     {
