@@ -18,12 +18,13 @@ import LogHistoryTable from '../components/Staff/LogHistoryTable'
 import PaymentHistoryTable from '../components/Staff/PaymentHistoryTable'
 import Button from '@material-ui/core/Button'
 import PaymentDialog from '../components/Staff/paymentDialog'
+import StaffPlan from '../components/Staff/StaffPlan'
 
 function NavBreadcrumbs({beforePageUrl}) {
   return (
     <Breadcrumbs aria-label="breadcrumb">
       <Link color="inherit" component={RouterLink} to={beforePageUrl}>
-        <ArrowBackIosIcon style={{fontSize: '1rem'}} />
+        <ArrowBackIosIcon style={{fontSize: '1rem'}}/>
         Back to staff List
       </Link>
     </Breadcrumbs>
@@ -85,7 +86,7 @@ const StaffDetailComponent = props => {
   if (profileLoading) {
     return (
       <div className={classes.root}>
-        <CircularProgress />
+        <CircularProgress/>
       </div>
     )
   }
@@ -93,7 +94,7 @@ const StaffDetailComponent = props => {
   return (
     <Grid container direction="column" spacing={2} className={classes.root}>
       {isPaymentShow && (
-        <PaymentDialog userId={staffId} isOpen={e => setIsPaymentShow(e)} />
+        <PaymentDialog userId={staffId} isOpen={e => setIsPaymentShow(e)}/>
       )}
       <Grid
         item
@@ -134,13 +135,14 @@ const StaffDetailComponent = props => {
               <Grid item>
                 <Typography variant="h3">{`${staffProfile.firstName} ${staffProfile.lastName}`}</Typography>
                 {staffProfile.experience_data !== null &&
-                  typeof staffProfile.experience_data !== 'undefined' && (
-                    <Typography variant="subtitle2">
-                      {staffProfile.experience_data.identifier}
-                    </Typography>
-                  )}
+                typeof staffProfile.experience_data !== 'undefined' && (
+                  <Typography variant="subtitle2">
+                    {staffProfile.experience_data.identifier}
+                  </Typography>
+                )}
 
-                <Typography variant="subtitle2">{`${staffProfile.periode} ${staffProfile.factor} ${staffProfile.salary} ${currencySymbolUtf8}`}</Typography>
+                <Typography
+                  variant="subtitle2">{`${staffProfile.periode} ${staffProfile.factor} ${staffProfile.salary} ${currencySymbolUtf8}`}</Typography>
               </Grid>
             </Grid>
             <Grid
@@ -183,17 +185,17 @@ const StaffDetailComponent = props => {
             textColor="primary"
             centered
           >
-            <Tab label="Plan" />
-            <Tab label="Payment History" />
-            <Tab label="Log History" />
+            <Tab label="Plan"/>
+            <Tab label="Payment History"/>
+            <Tab label="Log History"/>
           </Tabs>
         </Paper>
       </Grid>
       <Grid>
         {tabData === 0 && 'Editing'}
-        {tabData === 2 && <LogHistoryTable rows={staffProfile.log_history} />}
+        {tabData === 2 && <LogHistoryTable rows={staffProfile.log_history}/>}
         {tabData === 1 && (
-          <PaymentHistoryTable rows={staffProfile.payment_history} />
+          <PaymentHistoryTable rows={staffProfile.payment_history}/>
         )}
       </Grid>
     </Grid>

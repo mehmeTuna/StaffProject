@@ -3,11 +3,13 @@ import axios from 'axios'
 import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import {Redirect} from 'react-router-dom'
-
+import CheckIcon from '@material-ui/icons/Check'
 import PageTitle from '../assets/page-title'
 import FormInputElement from '../assets/form-input'
 import FormSubmitBtn from '../assets/form-submit-btn'
 import PlanDetail from '../assets/plan-detail'
+import {Grid} from '@material-ui/core'
+import Typography from '@material-ui/core/Typography'
 
 const sweet = withReactContent(Swal)
 
@@ -18,7 +20,7 @@ const SelectPlanText = ({onClick, value, data, Text}) => {
       className="card-body display-4 btn-outline-success btn-fw"
       onClick={() => onClick(value)}
     >
-      {data === value && <i className="icon-check icon-lg text-primary" />}
+      {data === value && <CheckIcon/>}
       {Text}
     </div>
   )
@@ -122,7 +124,7 @@ class ExperienceCreate extends React.Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
+      return <Redirect to={this.state.redirect}/>
     }
     return (
       <React.Fragment>
@@ -180,14 +182,8 @@ class ExperienceCreate extends React.Component {
               </form>
             </div>
           </div>
-          <div className="grid-margin row mt-2">
-            <div
-              className={
-                this.state.workingPlan === ''
-                  ? 'col-sm-12 col-md-12 grid-margin'
-                  : 'col-sm-12 col-md-4 grid-margin'
-              }
-            >
+          <Grid container style={{marginTop: 5, marginBottom: 5}}>
+            <Grid item xs={12} md={this.state.workingPlan === '' ? 12 : 4}>
               <div
                 className={
                   this.state.workingPlan === '' && this.state.alert
@@ -214,33 +210,29 @@ class ExperienceCreate extends React.Component {
                   />
                 ))}
               </div>
-            </div>
+            </Grid>
             {this.state.workingPlan !== '' && (
-              <div className="col-md-8 grid-margin stretch-card">
-                <div className="card">
-                  <div className="card-body">
-                    <p className="card-description">
-                      Defining a work plan depending on the chosen working
-                      method
-                    </p>
-                    <PlanDetail
-                      data={this.state.workingData}
-                      deletePlan={e => {
-                        let data = this.state.workingData
-                        data[e.day].splice(e.index, 1)
-                        this.setState({workingData: data})
-                      }}
-                      addPlan={e => {
-                        let data = this.state.workingData
-                        data[e.day].push({start: e.start, end: e.end})
-                        this.setState({workingData: data})
-                      }}
-                    />
-                  </div>
-                </div>
-              </div>
+              <Grid item xs={12} md={8} style={{border: '1px solid #e4e6f6', paddingLeft: 14}}>
+                <Typography>
+                  Defining a work plan depending on the chosen working
+                  method
+                </Typography>
+                <PlanDetail
+                  data={this.state.workingData}
+                  deletePlan={e => {
+                    let data = this.state.workingData
+                    data[e.day].splice(e.index, 1)
+                    this.setState({workingData: data})
+                  }}
+                  addPlan={e => {
+                    let data = this.state.workingData
+                    data[e.day].push({start: e.start, end: e.end})
+                    this.setState({workingData: data})
+                  }}
+                />
+              </Grid>
             )}
-          </div>
+          </Grid>
           <FormSubmitBtn onClick={this.handleSubmit}>Create</FormSubmitBtn>
         </div>
       </React.Fragment>

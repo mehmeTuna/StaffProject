@@ -1,4 +1,5 @@
 import React from 'react'
+import AddIcon from '@material-ui/icons/Add'
 
 const FormSubmitBtn = ({children, onClick}) => {
   return (
@@ -12,7 +13,7 @@ const FormSubmitBtn = ({children, onClick}) => {
               onClick={onClick}
             >
               <span className="badge">
-                <i className="icon-circle-plus" />
+                <AddIcon/>
               </span>
               <span>{children}</span>
             </button>

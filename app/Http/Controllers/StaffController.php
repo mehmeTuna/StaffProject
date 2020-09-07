@@ -33,12 +33,12 @@ class StaffController extends Controller
     public function payment(StaffPayment $request)
     {
         $user = $request->userId;
-        $pay = (int) $request->pay;
+        $pay = $request->pay;
 
-        $staff = Staff::where('id', $user)->first();
+        $staff = Staff::where('id', $user)->where('business', $this->businessId)->first();
 
-        if($staff == null)
-            return $this->respondFail([]);
+        if($staff == null) return $this->respondFail([]);
+
         $staff->balance = ($pay > $staff->balance) ? 0 : $staff->balance - $pay;
 
         if ($staff->balance != 0 && $pay != 0) {
@@ -88,7 +88,7 @@ class StaffController extends Controller
 
     public function delete(StaffDeleteRequest $req)
     {
-        $response = Staff::find($req->id)->update([
+        $response = Staff::where('id', $req->id)->where('business', $this->businessId)->update([
             'active' => 0
         ]);
         return $this->respondSuccess();
@@ -96,7 +96,7 @@ class StaffController extends Controller
 
     public function paymentHistory(BusinessStaffRelationship $request)
     {
-        $staff = Staff::where('id', $request->userId)->with(['businessOwner', 'paymentHistory'])->first();
+        $staff = Staff::where('id', $request->userId)->where('business', $this->businessId)->with(['businessOwner', 'paymentHistory'])->first();
 
         $data = [];
         foreach ($staff->paymentHistory as $value){
@@ -113,7 +113,7 @@ class StaffController extends Controller
     public function logHistory(Request $request)
     {
         $staffId = (int)$request->userId;
-        $staff = Staff::where('id', $staffId)->first();
+        $staff = Staff::where('id', $staffId)->where('business', $this->businessId)->first();
 
         $data = $staff->logHistory()->get();
 
@@ -145,7 +145,7 @@ class StaffController extends Controller
     {
         $userId = $request->id;
 
-        $staff = Staff::active()->with(['experienceData', 'paymentHistory', 'logHistory'])->where('id', $userId)->first();
+        $staff = Staff::active()->with(['experienceData', 'paymentHistory', 'logHistory'])->where('id', $userId)->where('business', $this->businessId)->first();
 
         return $this->respondSuccess($staff);
     }
@@ -186,7 +186,6 @@ class StaffController extends Controller
         $kioskRemoteAddress = Cache::get($request->code);
 
         $staff = Staff::where('loginToken', $request->cookie($this->staffCookieName))->first();
-        $staffIsLogin = $staff->online ;
 
         $kiosk = Kiosk::where('remoteAddress', $kioskRemoteAddress)->first();
         if($kiosk == null){
@@ -198,6 +197,11 @@ class StaffController extends Controller
             return redirect('staff/login');
         }
 
+        if($staff->business != $kiosk->business){
+            return redirect('/');
+        }
+
+        $staffIsLogin = $staff->online ;
         dispatch(new \App\Jobs\StaffLoginJob($staff, $staffIsLogin ? 'logout' : 'login'));
         dispatch(new \App\Jobs\KioskQrGenerateJob($kiosk));
         dispatch(new \App\Jobs\StaffPaymentCalculationJob($staff, $kiosk, time()));

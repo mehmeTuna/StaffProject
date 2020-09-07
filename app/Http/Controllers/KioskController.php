@@ -41,8 +41,10 @@ class KioskController extends Controller
         }
 
         $code = str_random(20);
+        $newRemoteAddress = str_random(20);
         Cache::put($code, $kiosk->remoteAddress, Carbon::now()->addMinutes(100));
-        Cookie::queue('webKiosk', $kiosk->remoteAddress, 2628000);
+        Cookie::queue('webKiosk', $newRemoteAddress, 2628000);
+        $kiosk->remoteAddress = $newRemoteAddress;
 
         return view('kioskRegister',[
             'rootData' => [

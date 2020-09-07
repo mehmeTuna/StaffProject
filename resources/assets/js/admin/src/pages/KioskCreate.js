@@ -4,6 +4,7 @@ import Swal from 'sweetalert2'
 import withReactContent from 'sweetalert2-react-content'
 import {Redirect} from 'react-router-dom'
 import PageTitle from './../assets/page-title'
+import AddCircleIcon from '@material-ui/icons/AddCircle'
 
 const sweet = withReactContent(Swal)
 
@@ -76,7 +77,7 @@ export default class KioskCreate extends React.Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
+      return <Redirect to={this.state.redirect}/>
     }
     return (
       <React.Fragment>
@@ -119,7 +120,7 @@ export default class KioskCreate extends React.Component {
                   onClick={this.addCode}
                 >
                   <span className="badge">
-                    <i className="icon-circle-plus" />
+                   <AddCircleIcon/>
                   </span>
                   <span>Kiosk Define Name</span>
                 </button>

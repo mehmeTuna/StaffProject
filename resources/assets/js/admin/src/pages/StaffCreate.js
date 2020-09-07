@@ -8,6 +8,7 @@ import PlanDetail from './../assets/plan-detail'
 import PageTitle from './../assets/page-title'
 import FormInputElement from './../assets/form-input'
 import FormSubmitBtn from './../assets/form-submit-btn'
+import AddIcon from '@material-ui/icons/Add'
 
 const sweet = withReactContent(Swal)
 
@@ -146,7 +147,7 @@ class StaffCreate extends React.Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect} />
+      return <Redirect to={this.state.redirect}/>
     }
     return (
       <div className="container">
@@ -163,9 +164,9 @@ class StaffCreate extends React.Component {
                   />
                 ) : (
                   <span
-                    className="glyphicon glyphicon-folder-open"
-                    aria-hidden="true"
+                    className="d-flex"
                   >
+                    <AddIcon/>
                     <p
                       className={
                         this.state.alert && this.state.img === null
@@ -175,7 +176,6 @@ class StaffCreate extends React.Component {
                     >
                       Select image
                     </p>
-                    <i className="icon-circle-plus icon-lg text-success" />
                   </span>
                 )}
                 <input

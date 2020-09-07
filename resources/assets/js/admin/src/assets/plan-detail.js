@@ -1,12 +1,16 @@
 import React from 'react'
 
 import selectClock from './select-time'
+import Grid from '@material-ui/core/Grid'
+import {Typography} from '@material-ui/core'
+import AddIcon from '@material-ui/icons/Add'
+import ClearIcon from '@material-ui/icons/Clear'
 
 const PlanDetail = ({data, deletePlan, addPlan}) => {
   return Object.entries(data).map((key, index) => (
-    <div key={index} className="row display-4 justify-content-sm-end">
-      <div className="w-auto mx-auto">{key[0]}</div>
-      <div className="flex-fill d-flex justify-content-end">
+    <Grid key={index} item container alignItems='center'>
+      <Typography variant="h4">{key[0]}</Typography>
+      <Grid item>
         {key[1].length !== 0 && (
           <PlanList
             data={key[1]}
@@ -25,12 +29,12 @@ const PlanDetail = ({data, deletePlan, addPlan}) => {
           onClick={() => selectClock(addPlan, key[0])}
         >
           <span className="badge">
-            <i className="icon-circle-plus" />
+           <AddIcon/>
           </span>
           <span>Add new Plan</span>
         </button>
-      </div>
-    </div>
+      </Grid>
+    </Grid>
   ))
 }
 
@@ -48,7 +52,7 @@ function PlanList({data, deleteTime, day}) {
         {value.start}- {value.end}
       </span>
       <span className="badge badge-light">
-        <i className="icon-cross"></i>
+        <ClearIcon/>
       </span>
     </button>
   ))

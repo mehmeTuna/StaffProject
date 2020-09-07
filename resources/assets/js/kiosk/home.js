@@ -15,7 +15,7 @@ window.Echo = new Echo({
 function Home() {
   const [kioskData, setKioskData] = useState(rootData)
   const [isLogin, setIsLogin] = useState(kioskData.isLogin)
-  const [qrCode, setQrCode] = useState('')
+  const [qrCode, setQrCode] = useState(kioskData.qrCode)
   const [businessData, setBusinessData] = useState(kioskData.business)
 
 

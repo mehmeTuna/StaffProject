@@ -5,7 +5,6 @@
 
 @endcomponent
 
-
 <body data-spy="scroll" data-target="#pb-navbar" data-offset="200">
 @component('front.headNavigation')
 
@@ -254,6 +253,9 @@
         </div>
     </footer>
 
+<script>
+    var rootData = {!! json_encode($rootData) !!} ;
+</script>
 
     <script src="public/kiosk/home/js/home.js"></script>
 
