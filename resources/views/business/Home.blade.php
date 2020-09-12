@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title> Beta - Version 2.0</title>
+    <title> Scionair </title>
     <!-- base:css -->
     <link rel='stylesheet' href='/public/vendors/select2-bootstrap-theme/select2-bootstrap.min.css'>
     <!-- endinject -->

@@ -25,7 +25,7 @@ class KioskController extends Controller
             ->where('active', 1)
             ->first();
 
-        if($kiosk == null){
+        if ($kiosk == null) {
             $kioskId = str_random(40);
             $code = str_random(8);
             Cache::put($code, $kioskId, Carbon::now()->addMinutes(10));
@@ -46,12 +46,14 @@ class KioskController extends Controller
         Cookie::queue('webKiosk', $newRemoteAddress, 2628000);
         $kiosk->remoteAddress = $newRemoteAddress;
 
-        return view('kioskRegister',[
+        $kiosk->save();
+
+        return view('kioskRegister', [
             'rootData' => [
                 'isLogin' => true,
                 'roomId' => $kiosk->remoteAddress,
                 'business' => $kiosk->getBusiness,
-                'qrCode' => env('APP_URL').'/kiosk/staff/'.$code,
+                'qrCode' => env('APP_URL') . '/kiosk/staff/' . $code,
             ]
         ]);
     }
@@ -65,7 +67,7 @@ class KioskController extends Controller
             ->where('active', 1)
             ->first();
 
-        if($kiosk == null){
+        if ($kiosk == null) {
             $kioskId = str_random(40);
             $code = str_random(8);
             Cache::put($code, $kioskId, Carbon::now()->addMinutes(10));
@@ -79,7 +81,7 @@ class KioskController extends Controller
             'isLogin' => true,
             'kioskId' => $kiosk->remoteAddress,
             'business' => $kiosk->getBusiness,
-            'qrCode' => env('APP_URL').'/kiosk/staff/'.$code,
+            'qrCode' => env('APP_URL') . '/kiosk/staff/' . $code,
         ]);
     }
 
@@ -88,11 +90,11 @@ class KioskController extends Controller
     {
         $code = $request->code;
         $name = $request->name;
-        
-        if(!Cache::has($code))
+
+        if (!Cache::has($code))
             return $this->respondFail(['text' => 'Undefined code. Refresh page']);
 
-        $kioskCode = Cache::get($code); 
+        $kioskCode = Cache::get($code);
 
         $kiosk = Kiosk::create([
             'identifier' => $name,
@@ -104,10 +106,10 @@ class KioskController extends Controller
         Cache::put($code, $kiosk->remoteAddress, Carbon::now()->addMinutes(5));
 
         broadcast(new KioskEvent([
-            'kioskId' =>  $kiosk->remoteAddress,
+            'kioskId' => $kiosk->remoteAddress,
             'isLogin' => true,
             'business' => $kiosk->getBusiness,
-            'refreshQrCode' => env('APP_URL').'/kiosk/staff/'.$code,
+            'refreshQrCode' => env('APP_URL') . '/kiosk/staff/' . $code,
         ]));
 
         return $this->respondSuccess(['text' => 'Kiosk Created']);

@@ -29,8 +29,8 @@ export default function PaymentDialog(props) {
 
     const data = await staffPayment({id: props.userId, pay: pay})
 
-    console.log(data) //bu kisim icin hat componenti yapildiktan sonra ekle
     handleClose()
+    window.location.reload()
   }
 
   return (

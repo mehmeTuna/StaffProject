@@ -98,7 +98,7 @@ export default class App extends React.Component {
             {this.state.telephoneAlert}
           </small>
           <input
-            type="text"
+            type="number"
             className={
               this.state.alert == true && this.state.telephone === ''
                 ? 'form-control pb_height-50 reverse border border-danger'

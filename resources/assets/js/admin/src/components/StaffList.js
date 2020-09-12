@@ -12,9 +12,10 @@ import {
   List,
   ListItemSecondaryAction
 } from '@material-ui/core'
-import InfoIcon from '@material-ui/icons/Info'
+import DeleteOutlineIcon from '@material-ui/icons/DeleteOutline'
 import {Link} from 'react-router-dom'
 import StaffAvatar from './Staff/StaffAvatar'
+import Axios from 'axios'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -29,6 +30,12 @@ const useStyles = makeStyles(theme => ({
 }))
 
 const Item = ({item, businessName}) => {
+  const staffDelete = id => {
+    Axios.post('/business/staff/delete', {
+      id: id
+    }).then(() => window.location.reload())
+  }
+
   return (
     <ListItem
       button
@@ -53,8 +60,12 @@ const Item = ({item, businessName}) => {
         }
       />
       <ListItemSecondaryAction>
-        <IconButton edge="end" aria-label="Info">
-          <InfoIcon />
+        <IconButton
+          edge="end"
+          aria-label="Info"
+          onClick={() => staffDelete(item.id)}
+        >
+          <DeleteOutlineIcon />
         </IconButton>
       </ListItemSecondaryAction>
     </ListItem>

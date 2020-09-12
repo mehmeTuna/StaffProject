@@ -20,7 +20,7 @@ class StaffObserver
      */
     public function creating(Staff $staff)
     {
-        $staffWorkingPlan = $staff->workingPlan ;
+        $staffWorkingPlan = json_decode($staff->workingPlan, true) ;
         $calculatedTime = 0 ;
         $days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'];
 
@@ -57,7 +57,6 @@ class StaffObserver
                 $salary = round($pay, 2);
                 break;
         }
-
 
         $staff->workingPlan = $staffWorkingPlan;
         $staff->salary = $salary ;

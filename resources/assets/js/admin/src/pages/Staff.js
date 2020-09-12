@@ -71,7 +71,14 @@ const InitialStaff = ({getAllList, staff, username, loading}) => {
   if (staff.length === 0) {
     return (
       <div className={classes.root}>
-        <Button variant="outlined" color="primary" className={classes.newAdd} component={Link} to={`/${username}/staff/create`} startIcon={<AddIcon />}>
+        <Button
+          variant="outlined"
+          color="primary"
+          className={classes.newAdd}
+          component={Link}
+          to={`/${username}/staff/create`}
+          startIcon={<AddIcon />}
+        >
           <Typography>Staff Add</Typography>
         </Button>
       </div>
@@ -85,14 +92,7 @@ const InitialStaff = ({getAllList, staff, username, loading}) => {
         <Typography variant="h3" gutterBottom className={classes.headerTitle}>
           Staff List
         </Typography>
-        <Btn
-          style={{background: theme.colors.primary}}
-          startIcon={<FilterListIcon />}
-        >
-          Filter
-        </Btn>
       </div>
-      <Paper className={classes.paper}>Filter</Paper>
       <StaffList staffList={staff} />
     </div>
   )

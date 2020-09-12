@@ -6,7 +6,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title> Beta - Version 2.0</title>
+    <title> SCI</title>
     <!-- base:css -->
     <link rel="stylesheet" href="/public/vendors/mdi/css/materialdesignicons.min.css">
     <link rel="stylesheet" href="/public/vendors/feather/feather.css">

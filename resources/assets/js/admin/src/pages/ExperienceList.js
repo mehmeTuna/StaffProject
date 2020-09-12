@@ -120,7 +120,7 @@ function ExperienceRender(props) {
                       >
                         <div className="d-flex align-items-center">
                           <img
-                            src={val.img}
+                            src={val.image}
                             alt={`${val.firstName} ${val.lastName}`}
                             className="mr-1 rounded-circle z-depth-2"
                             style={{width: '50px', height: '50px'}}

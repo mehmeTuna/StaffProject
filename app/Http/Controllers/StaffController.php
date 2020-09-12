@@ -56,6 +56,7 @@ class StaffController extends Controller
 
     public function register(StaffCreateRequest $request)
     {
+
         $image = $request->file('img');
         $name = time() . rand(1, 100) . '.' . $image->getClientOriginalExtension();
         $destinationPath = public_path('/images');

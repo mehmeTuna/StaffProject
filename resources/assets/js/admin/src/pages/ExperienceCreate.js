@@ -20,7 +20,7 @@ const SelectPlanText = ({onClick, value, data, Text}) => {
       className="card-body display-4 btn-outline-success btn-fw"
       onClick={() => onClick(value)}
     >
-      {data === value && <CheckIcon/>}
+      {data === value && <CheckIcon />}
       {Text}
     </div>
   )
@@ -35,7 +35,7 @@ class ExperienceCreate extends React.Component {
       selectedStartTime: '08:30',
       selectedEndTime: '17:00',
       showDate: false,
-      isMinWage: [],
+      isMinWage: [1],
       lang: '',
       name: '',
       pay: '',
@@ -67,9 +67,8 @@ class ExperienceCreate extends React.Component {
   }
 
   async componentDidMount() {
-    const {data} = await axios.post('/business/location/minWage')
-
-    this.setState({isMinWage: data})
+    //const {data} = await axios.post('/business/location/minWage')
+    //this.setState({isMinWage: data})
   }
 
   handleChange(e) {
@@ -124,7 +123,7 @@ class ExperienceCreate extends React.Component {
 
   render() {
     if (this.state.redirect) {
-      return <Redirect to={this.state.redirect}/>
+      return <Redirect to={this.state.redirect} />
     }
     return (
       <React.Fragment>
@@ -143,7 +142,7 @@ class ExperienceCreate extends React.Component {
                   />
                   <FormInputElement
                     alert={this.state.pay === '' && this.state.alert}
-                    name={`Pay (${this.state.currencySymbolUtf8})`}
+                    name="Pay"
                     type="number"
                     value={this.state.pay}
                     onChange={e =>
@@ -212,10 +211,14 @@ class ExperienceCreate extends React.Component {
               </div>
             </Grid>
             {this.state.workingPlan !== '' && (
-              <Grid item xs={12} md={8} style={{border: '1px solid #e4e6f6', paddingLeft: 14}}>
+              <Grid
+                item
+                xs={12}
+                md={8}
+                style={{border: '1px solid #e4e6f6', paddingLeft: 14}}
+              >
                 <Typography>
-                  Defining a work plan depending on the chosen working
-                  method
+                  Defining a work plan depending on the chosen working method
                 </Typography>
                 <PlanDetail
                   data={this.state.workingData}

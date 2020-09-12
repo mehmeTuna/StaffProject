@@ -32,16 +32,6 @@ class Staff extends Model
         return $this->where('active', 1);
     }
 
-    public function setworkingPlanAttribute($value)
-    {
-        if (is_array($value)) {
-            $this->attributes['workingPlan'] = json_encode($value);
-        } else {
-            $this->attributes['workingPlan'] = json_encode([]);
-        }
-
-    }
-
     public function experienceData()
     {
         return $this->hasOne('App\Experience','id' , 'experience');
